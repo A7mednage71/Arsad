@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Arsad</string>
 
+    <string name="splash_logo_content_description">Arsad app logo</string>
+    <string name="splash_title">ARSAD</string>
+    <string name="splash_subtitle">Your weather insights, right now.</string>
+    <string name="splash_loading">Preparing forecast data...</string>
+
     <string name="home_title">Welcome to Arsad</string>
     <string name="home_subtitle">Home screen is ready for your weather content.</string>
 </resources>

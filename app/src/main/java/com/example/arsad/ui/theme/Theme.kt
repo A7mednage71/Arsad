@@ -10,27 +10,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = NightPrimary,
-    onPrimary = NightOnPrimary,
-    secondary = NightSecondary,
-    tertiary = NightTertiary,
-    background = NightBackground,
-    onBackground = NightOnBackground,
-    surface = NightSurface,
-    onSurface = NightOnSurface,
-    surfaceVariant = NightSurfaceVariant,
-    onSurfaceVariant = NightOnSurfaceVariant
+    primary = SunYellow,
+    onPrimary = NightModeBackground,
+    secondary = SkyBlue,
+    tertiary = Turquoise,
+    background = NightModeBackground,
+    onBackground = TextOnDarkPrimary,
+    surface = NightModeSurface,
+    onSurface = TextOnDarkPrimary,
+    surfaceVariant = NightModeSurfaceAlt,
+    onSurfaceVariant = TextOnDarkSecondary
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = DayPrimary,
-    secondary = DaySecondary,
-    tertiary = DayTertiary,
-    background = DayBackground,
-    onBackground = DayOnBackground,
-    surface = DaySurface,
-    onSurface = DayOnSurface,
-    surfaceVariant = DaySurfaceVariant
+    primary = SunYellow,
+    onPrimary = NightModeBackground,
+    secondary = SkyBlue,
+    tertiary = Turquoise,
+    background = DayModeBackground,
+    onBackground = TextOnLightPrimary,
+    surface = DayModeSurface,
+    onSurface = TextOnLightPrimary,
+    surfaceVariant = DayModeSurfaceAlt,
+    onSurfaceVariant = TextOnLightSecondary
 )
 
 @Composable
