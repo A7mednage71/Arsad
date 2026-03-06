@@ -7,6 +7,8 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -57,4 +59,24 @@ fun ArsadTheme(
         typography = Typography,
         content = content
     )
+}
+
+object ArsadGradient {
+    val screenBackground: Brush
+        @Composable
+        @ReadOnlyComposable
+        get() {
+            val isDark = MaterialTheme.colorScheme.background == NightModeBackground
+            return if (isDark) {
+                Brush.verticalGradient(listOf(GradientDarkTop, GradientDarkMid, GradientDarkBottom))
+            } else {
+                Brush.verticalGradient(
+                    listOf(
+                        GradientLightTop,
+                        GradientLightMid,
+                        GradientLightBottom
+                    )
+                )
+            }
+        }
 }

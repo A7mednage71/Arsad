@@ -4,8 +4,15 @@
     <string name="splash_logo_content_description">Arsad app logo</string>
     <string name="splash_title">ARSAD</string>
     <string name="splash_subtitle">Your weather insights, right now.</string>
-    <string name="splash_loading">Preparing forecast data...</string>
+    <string name="splash_loading">Preparing forecast data…</string>
 
     <string name="home_title">Welcome to Arsad</string>
     <string name="home_subtitle">Home screen is ready for your weather content.</string>
+
+    <string name="section_today_hourly">Today</string>
+    <string name="section_five_day">5-Day Forecast</string>
+    <string name="label_humidity">Humidity</string>
+    <string name="label_pressure">Pressure</string>
+    <string name="label_clouds">Clouds</string>
+    <string name="label_wind">Wind</string>
 </resources>
