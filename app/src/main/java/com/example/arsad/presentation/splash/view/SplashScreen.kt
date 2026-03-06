@@ -23,16 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.arsad.R
-import com.example.arsad.ui.theme.AppStyle
+import com.example.arsad.ui.theme.ArsadGradient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,13 +71,7 @@ fun SplashScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            colors.background.copy(alpha = 0.7f),
-                            colors.surfaceVariant.copy(alpha = 0.85f),
-                            colors.background
-                        )
-                    )
+                    ArsadGradient.screenBackground
                 )
         )
 
@@ -97,7 +92,7 @@ fun SplashScreen(
 
             Text(
                 text = stringResource(id = R.string.splash_title).uppercase(),
-                style = AppStyle.headlineLarge,
+                style = MaterialTheme.typography.headlineLarge,
                 color = colors.onBackground
             )
 
@@ -105,7 +100,7 @@ fun SplashScreen(
 
             Text(
                 text = stringResource(id = R.string.splash_subtitle),
-                style = AppStyle.bodyLargeCenter,
+                style = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.Center),
                 color = colors.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 48.dp)
             )
@@ -125,7 +120,7 @@ fun SplashScreen(
 
             Text(
                 text = stringResource(id = R.string.splash_loading),
-                style = AppStyle.labelMedium,
+                style = MaterialTheme.typography.labelMedium,
                 color = colors.onSurfaceVariant
             )
         }
@@ -134,7 +129,7 @@ fun SplashScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 24.dp),
-            style = AppStyle.labelExtraSmall,
+            style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
             color = colors.onSurfaceVariant.copy(alpha = 0.6f)
         )
     }

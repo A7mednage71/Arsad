@@ -30,3 +30,14 @@ val TextOnLightHint = Color(0xFF4A6B8A)
 // Card Backgrounds (with transparency)
 val CardBackgroundDark = Color(0xCC34547A)
 val CardBackgroundLight = Color(0xCC7BA3D1)
+
+// Screen Gradient - Dark Theme
+val GradientDarkTop = Color(0xB31E3A5F)
+val GradientDarkMid = Color(0xD934547A)
+val GradientDarkBottom = Color(0xFF1E3A5F)
+
+// Screen Gradient - Light Theme
+val GradientLightTop = Color(0xFFD4E4F7)
+val GradientLightMid = Color(0xFFBDD5F0)
+val GradientLightBottom = Color(0xFFA8C5E5)
+
