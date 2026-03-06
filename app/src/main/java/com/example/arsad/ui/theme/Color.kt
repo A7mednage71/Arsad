@@ -41,3 +41,8 @@ val GradientLightTop = Color(0xFFD4E4F7)
 val GradientLightMid = Color(0xFFBDD5F0)
 val GradientLightBottom = Color(0xFFA8C5E5)
 
+// Red colors
+
+val DeleteRed = Color(0xFFFF3B30)
+val SoftErrorBg = Color(0xFFFFDAD6)
+val DeepWarning = Color(0xFF410002)

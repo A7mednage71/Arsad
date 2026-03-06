@@ -10,12 +10,14 @@ activityCompose = "1.12.4"
 kotlin = "2.0.21"
 composeBom = "2024.09.00"
 lottieCompose = "6.6.0"
+osmdroidAndroid = "6.1.18"
 roomCommonJvm = "2.8.4"
 roomKtx = "2.8.4"
 ui = "1.10.4"
 runtime = "1.10.4"
 navigationRuntimeKtx = "2.9.7"
 navigationCompose = "2.8.0"
+material3 = "1.4.0"
 
 [libraries]
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
@@ -41,6 +43,8 @@ lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+osmdroid-android = { module = "org.osmdroid:osmdroid-android", version.ref = "osmdroidAndroid" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 
 
 [plugins]
