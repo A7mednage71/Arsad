@@ -5,6 +5,7 @@ import com.example.arsad.R
 sealed class Screen(val route: String) {
     object Splash : Screen("splash_screen")
     object MainContainer : Screen("main_container")
+    object MapPicker : Screen("map_picker")
 
     sealed class BottomBar(
         val baseRoute: String,
@@ -20,9 +21,9 @@ sealed class Screen(val route: String) {
             inactiveIcon = R.drawable.ic_home_light
         )
 
-        object Favorites : BottomBar(
-            baseRoute = "favorites",
-            title = "Favorites",
+        object Saved : BottomBar(
+            baseRoute = "saved",
+            title = "Saved",
             activeIcon = R.drawable.ic_bookmark_bold,
             inactiveIcon = R.drawable.ic_bookmark_light
         )
@@ -45,7 +46,7 @@ sealed class Screen(val route: String) {
 
 val navItems = listOf(
     Screen.BottomBar.Home,
-    Screen.BottomBar.Favorites,
+    Screen.BottomBar.Saved,
     Screen.BottomBar.Alerts,
     Screen.BottomBar.Settings
 )
