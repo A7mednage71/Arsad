@@ -1,6 +1,5 @@
 package com.example.arsad.presentation.home.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -28,7 +27,6 @@ import com.example.arsad.presentation.home.view.components.HourlyForecastSection
 import com.example.arsad.presentation.home.view.components.MainWeatherCard
 import com.example.arsad.presentation.home.view.components.WeatherDetail
 import com.example.arsad.presentation.home.view.components.WeatherDetailsGrid
-import com.example.arsad.ui.theme.ArsadGradient
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
@@ -66,12 +64,11 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(ArsadGradient.screenBackground)
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp, vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(30.dp))
             Text(
                 text = "Cairo, Egypt",
                 style = typography.headlineMedium,
@@ -107,7 +104,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
         item {
             FiveDayForecastSection(dailyData = dailyData)
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }
