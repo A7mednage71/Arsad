@@ -22,4 +22,26 @@
     <string name="saved_add_location">Add Location</string>
     <string name="saved_delete">Delete</string>
     <string name="saved_swipe_hint">Swipe left to remove</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_subtitle">Customize your experience</string>
+
+    <string name="settings_section_units">Units</string>
+    <string name="settings_temp_unit">Temperature Unit</string>
+    <string name="settings_temp_celsius">Celsius (°C)</string>
+    <string name="settings_temp_fahrenheit">Fahrenheit (°F)</string>
+    <string name="settings_temp_kelvin">Kelvin (K)</string>
+    <string name="settings_wind_unit">Wind Speed Unit</string>
+    <string name="settings_wind_ms">Meter/sec (m/s)</string>
+    <string name="settings_wind_mph">Mile/hour (mph)</string>
+
+    <string name="settings_section_language">Language</string>
+    <string name="settings_language">App Language</string>
+    <string name="settings_lang_english">English</string>
+    <string name="settings_lang_arabic">العربية</string>
+
+    <string name="settings_section_location">Location</string>
+    <string name="settings_location_method">Location Method</string>
+    <string name="settings_location_gps">GPS</string>
+    <string name="settings_location_map">Map</string>
 </resources>
