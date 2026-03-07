@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.arsad.presentation.alerts.view.AlertsScreen
 import com.example.arsad.presentation.home.view.HomeScreen
 import com.example.arsad.presentation.saved.view.MapPickerScreen
 import com.example.arsad.presentation.saved.view.SavedScreen
@@ -50,7 +51,7 @@ fun AppNavGraph(
             )
         }
 
-        composable(Screen.BottomBar.Alerts.route) { PlaceholderScreen("Alerts") }
+        composable(Screen.BottomBar.Alerts.route) { AlertsScreen() }
 
         composable(Screen.BottomBar.Settings.route) { SettingsScreen() }
 
