@@ -44,4 +44,23 @@
     <string name="settings_location_method">Location Method</string>
     <string name="settings_location_gps">GPS</string>
     <string name="settings_location_map">Map</string>
+
+    <string name="alerts_title">Weather Alerts</string>
+    <string name="alerts_subtitle">Get notified about severe weather</string>
+    <string name="alerts_add">Add Alert</string>
+    <string name="alerts_empty_title">No alerts set</string>
+    <string name="alerts_empty_subtitle">Tap + to schedule a weather alert</string>
+    <string name="alerts_delete">Delete alert</string>
+
+    <string name="alert_sheet_title">New Weather Alert</string>
+    <string name="alert_sheet_from">Fr</string>
+    <string name="alert_sheet_to">To</string>
+    <string name="alert_sheet_type">Alert Type</string>
+    <string name="alert_type_notification">Notification</string>
+    <string name="alert_type_alarm">Alarm Sound</string>
+    <string name="alert_sheet_save">Save Alert</string>
+    <string name="alert_sheet_cancel">Cancel</string>
+    <string name="alert_active">Active</string>
+    <string name="alert_expired">Expired</string>
+    <string name="alert_stop">Stop</string>
 </resources>
