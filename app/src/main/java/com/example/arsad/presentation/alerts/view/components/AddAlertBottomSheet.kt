@@ -40,6 +40,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
 import com.example.arsad.presentation.alerts.model.AlertType
+import com.example.arsad.util.formatTime
+import com.example.arsad.util.toDisplayDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,10 +86,12 @@ fun AddAlertBottomSheet(
                 TextButton(onClick = {
                     state.selectedDateMillis?.let { fromDateMillis = it }
                     showFromDatePicker = false
-                }) { Text("OK") }
+                }) { Text(stringResource(R.string.picker_ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showFromDatePicker = false }) { Text("Cancel") }
+                TextButton(onClick = {
+                    showFromDatePicker = false
+                }) { Text(stringResource(R.string.picker_cancel)) }
             }
         ) { DatePicker(state = state) }
     }
@@ -100,10 +104,12 @@ fun AddAlertBottomSheet(
                 TextButton(onClick = {
                     state.selectedDateMillis?.let { toDateMillis = it }
                     showToDatePicker = false
-                }) { Text("OK") }
+                }) { Text(stringResource(R.string.picker_ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showToDatePicker = false }) { Text("Cancel") }
+                TextButton(onClick = {
+                    showToDatePicker = false
+                }) { Text(stringResource(R.string.picker_cancel)) }
             }
         ) { DatePicker(state = state) }
     }
@@ -169,7 +175,7 @@ fun AddAlertBottomSheet(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Set the duration and alert type",
+                text = stringResource(R.string.alert_sheet_subtitle),
                 style = typography.bodySmall,
                 color = colors.onSurfaceVariant.copy(alpha = 0.6f)
             )
@@ -178,7 +184,11 @@ fun AddAlertBottomSheet(
             HorizontalDivider(color = Color.White.copy(alpha = 0.08f))
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(text = "DURATION", style = typography.labelSmall, color = colors.primary)
+            Text(
+                text = stringResource(R.string.alert_sheet_duration_label),
+                style = typography.labelSmall,
+                color = colors.primary
+            )
             Spacer(modifier = Modifier.height(12.dp))
 
             DateTimePickerRow(
@@ -202,7 +212,11 @@ fun AddAlertBottomSheet(
             Spacer(modifier = Modifier.height(20.dp))
 
             // Alert type section
-            Text(text = "ALERT TYPE", style = typography.labelSmall, color = colors.primary)
+            Text(
+                text = stringResource(R.string.alert_sheet_type_label),
+                style = typography.labelSmall,
+                color = colors.primary
+            )
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(

@@ -125,7 +125,7 @@ fun SplashScreen(
             )
         }
         Text(
-            text = "V 1.0",
+            text = stringResource(R.string.splash_version),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 24.dp),

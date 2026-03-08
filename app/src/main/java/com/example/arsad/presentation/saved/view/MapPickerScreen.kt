@@ -33,9 +33,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.arsad.R
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -85,7 +87,7 @@ fun MapPickerScreen(
                             val marker = Marker(mapView).apply {
                                 position = geo
                                 setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                                title = "Selected Location"
+                                title = ctx.getString(R.string.map_selected_location)
                             }
                             mapView.overlays.add(marker)
                             markerRef = marker
@@ -115,7 +117,7 @@ fun MapPickerScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = stringResource(R.string.map_back),
                         tint = colors.onSurface
                     )
                 }
@@ -126,7 +128,7 @@ fun MapPickerScreen(
                     onValueChange = { searchQuery = it },
                     placeholder = {
                         Text(
-                            "Search for a city…",
+                            stringResource(R.string.map_search_placeholder),
                             style = typography.bodyMedium,
                             color = colors.onSurface.copy(alpha = 0.5f)
                         )
@@ -156,7 +158,7 @@ fun MapPickerScreen(
             if (selectedLat == null) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Tap anywhere on the map to pick a location",
+                    text = stringResource(R.string.map_tap_hint),
                     style = typography.labelMedium,
                     color = Color.White,
                     modifier = Modifier
@@ -196,7 +198,7 @@ fun MapPickerScreen(
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 Text(
-                    text = "Save this location",
+                    text = stringResource(R.string.map_save_location),
                     style = typography.titleSmall,
                     fontWeight = FontWeight.Bold
                 )

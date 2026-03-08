@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -58,6 +59,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material3)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

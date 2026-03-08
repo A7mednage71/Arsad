@@ -19,7 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.arsad.R
 import com.example.arsad.presentation.home.view.components.DailyForecast
 import com.example.arsad.presentation.home.view.components.FiveDayForecastSection
 import com.example.arsad.presentation.home.view.components.HourlyForecast
@@ -34,15 +36,15 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
     // Dummy weather details
     val weatherDetails = listOf(
-        WeatherDetail("Humidity", "65%", Icons.Default.WaterDrop),
-        WeatherDetail("Pressure", "1013 hPa", Icons.Default.Compress),
-        WeatherDetail("Clouds", "40%", Icons.Default.Cloud),
-        WeatherDetail("Wind", "12 km/h", Icons.Default.Air)
+        WeatherDetail(stringResource(R.string.label_humidity), "65%", Icons.Default.WaterDrop),
+        WeatherDetail(stringResource(R.string.label_pressure), "1013 hPa", Icons.Default.Compress),
+        WeatherDetail(stringResource(R.string.label_clouds), "40%", Icons.Default.Cloud),
+        WeatherDetail(stringResource(R.string.label_wind), "12 km/h", Icons.Default.Air)
     )
 
     // Dummy hourly forecast
     val hourlyData = listOf(
-        HourlyForecast("Now", "23°", Icons.Default.WbSunny),
+        HourlyForecast(stringResource(R.string.time_now), "23°", Icons.Default.WbSunny),
         HourlyForecast("1 PM", "24°", Icons.Default.WbSunny),
         HourlyForecast("2 PM", "25°", Icons.Default.WbCloudy),
         HourlyForecast("3 PM", "24°", Icons.Default.WbCloudy),
@@ -54,11 +56,41 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
     // Dummy 5-day forecast
     val dailyData = listOf(
-        DailyForecast("Saturday", "25°", "18°", Icons.Default.WbSunny, "Sunny"),
-        DailyForecast("Sunday", "23°", "17°", Icons.Default.WbCloudy, "Cloudy"),
-        DailyForecast("Monday", "20°", "15°", Icons.Default.Cloud, "Overcast"),
-        DailyForecast("Tuesday", "22°", "16°", Icons.Default.WbSunny, "Clear"),
-        DailyForecast("Wednesday", "24°", "17°", Icons.Default.WbCloudy, "Partly Cloudy")
+        DailyForecast(
+            stringResource(R.string.day_saturday),
+            "25°",
+            "18°",
+            Icons.Default.WbSunny,
+            stringResource(R.string.weather_sunny)
+        ),
+        DailyForecast(
+            stringResource(R.string.day_sunday),
+            "23°",
+            "17°",
+            Icons.Default.WbCloudy,
+            stringResource(R.string.weather_cloudy)
+        ),
+        DailyForecast(
+            stringResource(R.string.day_monday),
+            "20°",
+            "15°",
+            Icons.Default.Cloud,
+            stringResource(R.string.weather_overcast)
+        ),
+        DailyForecast(
+            stringResource(R.string.day_tuesday),
+            "22°",
+            "16°",
+            Icons.Default.WbSunny,
+            stringResource(R.string.weather_clear)
+        ),
+        DailyForecast(
+            stringResource(R.string.day_wednesday),
+            "24°",
+            "17°",
+            Icons.Default.WbCloudy,
+            stringResource(R.string.weather_partly_cloudy)
+        )
     )
 
     LazyColumn(
@@ -70,12 +102,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         item {
             Spacer(modifier = Modifier.height(30.dp))
             Text(
-                text = "Cairo, Egypt",
+                text = stringResource(R.string.home_location_placeholder),
                 style = typography.headlineMedium,
                 color = colors.onBackground
             )
             Text(
-                text = "Thursday, March 6",
+                text = stringResource(R.string.home_date_placeholder),
                 style = typography.bodyMedium,
                 color = colors.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp)
@@ -86,8 +118,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         item {
             MainWeatherCard(
                 temp = "23°",
-                status = "Partly Cloudy",
-                feelsLike = "Feels like clear sky"
+                status = stringResource(R.string.weather_partly_cloudy),
+                feelsLike = stringResource(R.string.label_feels_like)
             )
             Spacer(modifier = Modifier.height(20.dp))
         }

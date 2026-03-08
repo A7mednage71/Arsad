@@ -8,11 +8,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
 import com.example.arsad.presentation.settings.viewModel.AppLanguage
-import com.example.arsad.presentation.settings.viewModel.SettingsUiState
 
 @Composable
 fun LanguageSection(
-    state: SettingsUiState,
+    selectedLanguage: AppLanguage,
     onLanguageSelected: (AppLanguage) -> Unit
 ) {
     SettingsSectionHeader(
@@ -27,7 +26,7 @@ fun LanguageSection(
                 stringResource(R.string.settings_lang_english),
                 stringResource(R.string.settings_lang_arabic)
             ),
-            selectedIndex = when (state.language) {
+            selectedIndex = when (selectedLanguage) {
                 AppLanguage.ENGLISH -> 0
                 AppLanguage.ARABIC -> 1
             },
@@ -36,4 +35,3 @@ fun LanguageSection(
     }
     Spacer(modifier = Modifier.height(24.dp))
 }
-

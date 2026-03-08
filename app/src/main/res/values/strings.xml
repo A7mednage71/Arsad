@@ -63,4 +63,64 @@
     <string name="alert_active">Active</string>
     <string name="alert_expired">Expired</string>
     <string name="alert_stop">Stop</string>
+
+    <!-- Weather Details Section -->
+    <string name="section_weather_details">Weather Details</string>
+    <string name="label_feels_like">Feels like clear sky</string>
+
+    <!-- Home dummy / placeholder data labels -->
+    <string name="home_location_placeholder">Cairo, Egypt</string>
+    <string name="home_date_placeholder">Thursday, March 6</string>
+
+    <!-- Weather status labels -->
+    <string name="weather_sunny">Sunny</string>
+    <string name="weather_cloudy">Cloudy</string>
+    <string name="weather_overcast">Overcast</string>
+    <string name="weather_clear">Clear</string>
+    <string name="weather_partly_cloudy">Partly Cloudy</string>
+
+    <!-- Day names -->
+    <string name="day_saturday">Saturday</string>
+    <string name="day_sunday">Sunday</string>
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+
+    <!-- Time -->
+    <string name="time_now">Now</string>
+
+    <!-- Bottom Navigation Titles -->
+    <string name="nav_home">Home</string>
+    <string name="nav_saved">Saved</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Map Picker Screen -->
+    <string name="map_search_placeholder">Search for a city…</string>
+    <string name="map_tap_hint">Tap anywhere on the map to pick a location</string>
+    <string name="map_save_location">Save this location</string>
+    <string name="map_back">Back</string>
+    <string name="map_selected_location">Selected Location</string>
+
+    <!-- Alert Bottom Sheet inline strings -->
+    <string name="alert_sheet_subtitle">Set the duration and alert type</string>
+    <string name="alert_sheet_duration_label">DURATION</string>
+    <string name="alert_sheet_type_label">ALERT TYPE</string>
+
+    <!-- Date / Time Picker dialogs -->
+    <string name="picker_ok">OK</string>
+    <string name="picker_cancel">Cancel</string>
+    <string name="time_picker_title">Select Time</string>
+
+    <!-- Saved City Card -->
+    <string name="saved_delete_description">Delete</string>
+
+    <!-- Placeholder Screen -->
+    <string name="placeholder_coming_soon">Coming soon…</string>
+
+    <!-- Snackbar -->
+    <string name="snackbar_dismiss">Dismiss</string>
+
+    <!-- Splash -->
+    <string name="splash_version">V 1.0</string>
 </resources>

@@ -22,7 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.arsad.R
 
 data class WeatherDetail(
     val label: String,
@@ -39,7 +41,7 @@ fun WeatherDetailsGrid(
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = "Weather Details",
+            text = stringResource(R.string.section_weather_details),
             style = typography.headlineSmall,
             color = colors.onBackground,
             modifier = Modifier.padding(bottom = 14.dp)

@@ -1,5 +1,7 @@
 package com.example.arsad.presentation.settings.view
 
+import android.app.Activity
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,12 +24,19 @@ import com.example.arsad.presentation.settings.view.components.LanguageSection
 import com.example.arsad.presentation.settings.view.components.LocationSection
 import com.example.arsad.presentation.settings.view.components.UnitsSection
 import com.example.arsad.presentation.settings.viewModel.SettingsViewModel
+import com.example.arsad.presentation.settings.viewModel.SettingsViewModelFactory
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    val viewModel: SettingsViewModel = viewModel(
+        factory = SettingsViewModelFactory(context.applicationContext as Application)
+    )
+
+    val scope = rememberCoroutineScope()
     val state by viewModel.uiState.collectAsState()
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
@@ -57,7 +68,8 @@ fun SettingsScreen(
         // Units Section
         item {
             UnitsSection(
-                state = state,
+                selectedTempUnit = state.temperatureUnit,
+                selectedWindUnit = state.windSpeedUnit,
                 onTemperatureUnitSelected = { viewModel.setTemperatureUnit(it) },
                 onWindSpeedUnitSelected = { viewModel.setWindSpeedUnit(it) }
             )
@@ -66,15 +78,22 @@ fun SettingsScreen(
         // Language Section
         item {
             LanguageSection(
-                state = state,
-                onLanguageSelected = { viewModel.setLanguage(it) }
+                selectedLanguage = state.language,
+                onLanguageSelected = { selectedLanguage ->
+                    scope.launch {
+                        // suspend — awaits until DataStore finishes writing
+                        viewModel.setLanguage(selectedLanguage)
+                        // only THEN recreate so attachBaseContext reads the new value
+                        (context as? Activity)?.recreate()
+                    }
+                }
             )
         }
 
         // Location Section
         item {
             LocationSection(
-                state = state,
+                selectedLocationMethod = state.locationMethod,
                 onLocationMethodSelected = { viewModel.setLocationMethod(it) }
             )
         }

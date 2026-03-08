@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">أرصاد</string>
+
+    <string name="splash_logo_content_description">شعار تطبيق أرصاد</string>
+    <string name="splash_title">أرصاد</string>
+    <string name="splash_subtitle">توقعات الطقس، الآن وفي أي وقت.</string>
+    <string name="splash_loading">جارٍ تحضير بيانات الطقس…</string>
+
+    <string name="home_title">مرحباً بك في أرصاد</string>
+    <string name="home_subtitle">الشاشة الرئيسية جاهزة لعرض بيانات الطقس.</string>
+
+    <string name="section_today_hourly">اليوم</string>
+    <string name="section_five_day">توقعات 5 أيام</string>
+    <string name="label_humidity">الرطوبة</string>
+    <string name="label_pressure">الضغط الجوي</string>
+    <string name="label_clouds">السحب</string>
+    <string name="label_wind">الرياح</string>
+
+    <string name="saved_title">المواقع المحفوظة</string>
+    <string name="saved_empty_title">لا توجد مواقع محفوظة بعد</string>
+    <string name="saved_empty_subtitle">اضغط + لإضافة أماكنك المفضلة</string>
+    <string name="saved_add_location">إضافة موقع</string>
+    <string name="saved_delete">حذف</string>
+    <string name="saved_swipe_hint">اسحب يساراً للحذف</string>
+
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_subtitle">خصّص تجربتك</string>
+
+    <string name="settings_section_units">وحدات القياس</string>
+    <string name="settings_temp_unit">وحدة الحرارة</string>
+    <string name="settings_temp_celsius">سيلزيوس (°C)</string>
+    <string name="settings_temp_fahrenheit">فهرنهايت (°F)</string>
+    <string name="settings_temp_kelvin">كلفن (K)</string>
+    <string name="settings_wind_unit">وحدة سرعة الرياح</string>
+    <string name="settings_wind_ms">متر/ثانية (m/s)</string>
+    <string name="settings_wind_mph">ميل/ساعة (mph)</string>
+
+    <string name="settings_section_language">اللغة</string>
+    <string name="settings_language">لغة التطبيق</string>
+    <string name="settings_lang_english">English</string>
+    <string name="settings_lang_arabic">العربية</string>
+
+    <string name="settings_section_location">الموقع</string>
+    <string name="settings_location_method">طريقة تحديد الموقع</string>
+    <string name="settings_location_gps">GPS</string>
+    <string name="settings_location_map">الخريطة</string>
+
+    <string name="alerts_title">تنبيهات الطقس</string>
+    <string name="alerts_subtitle">احصل على إشعارات عند الطقس القاسي</string>
+    <string name="alerts_add">إضافة تنبيه</string>
+    <string name="alerts_empty_title">لا توجد تنبيهات مضبوطة</string>
+    <string name="alerts_empty_subtitle">اضغط + لجدولة تنبيه طقس</string>
+    <string name="alerts_delete">حذف التنبيه</string>
+
+    <string name="alert_sheet_title">تنبيه طقس جديد</string>
+    <string name="alert_sheet_from">من</string>
+    <string name="alert_sheet_to">إلى</string>
+    <string name="alert_sheet_type">نوع التنبيه</string>
+    <string name="alert_type_notification">إشعار</string>
+    <string name="alert_type_alarm">صوت المنبّه</string>
+    <string name="alert_sheet_save">حفظ التنبيه</string>
+    <string name="alert_sheet_cancel">إلغاء</string>
+    <string name="alert_active">نشط</string>
+    <string name="alert_expired">منتهي</string>
+    <string name="alert_stop">إيقاف</string>
+
+    <!-- قسم تفاصيل الطقس -->
+    <string name="section_weather_details">تفاصيل الطقس</string>
+    <string name="label_feels_like">الإحساس الحراري صافٍ</string>
+
+    <!-- بيانات مؤقتة للشاشة الرئيسية -->
+    <string name="home_location_placeholder">القاهرة، مصر</string>
+    <string name="home_date_placeholder">الخميس، 6 مارس</string>
+
+    <!-- حالات الطقس -->
+    <string name="weather_sunny">مشمس</string>
+    <string name="weather_cloudy">غائم</string>
+    <string name="weather_overcast">ملبّد بالغيوم</string>
+    <string name="weather_clear">صافٍ</string>
+    <string name="weather_partly_cloudy">غائم جزئياً</string>
+
+    <!-- أيام الأسبوع -->
+    <string name="day_saturday">السبت</string>
+    <string name="day_sunday">الأحد</string>
+    <string name="day_monday">الاثنين</string>
+    <string name="day_tuesday">الثلاثاء</string>
+    <string name="day_wednesday">الأربعاء</string>
+
+    <!-- الوقت -->
+    <string name="time_now">الآن</string>
+
+    <!-- عناوين شريط التنقل السفلي -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_saved">المحفوظات</string>
+    <string name="nav_alerts">التنبيهات</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <!-- شاشة اختيار الموقع على الخريطة -->
+    <string name="map_search_placeholder">ابحث عن مدينة…</string>
+    <string name="map_tap_hint">اضغط على أي مكان في الخريطة لتحديد موقع</string>
+    <string name="map_save_location">حفظ هذا الموقع</string>
+    <string name="map_back">رجوع</string>
+    <string name="map_selected_location">الموقع المحدد</string>
+
+    <!-- نافذة إضافة التنبيه -->
+    <string name="alert_sheet_subtitle">حدد المدة ونوع التنبيه</string>
+    <string name="alert_sheet_duration_label">المدة</string>
+    <string name="alert_sheet_type_label">نوع التنبيه</string>
+
+    <!-- منتقي التاريخ والوقت -->
+    <string name="picker_ok">موافق</string>
+    <string name="picker_cancel">إلغاء</string>
+    <string name="time_picker_title">اختر الوقت</string>
+
+    <!-- بطاقة المدينة المحفوظة -->
+    <string name="saved_delete_description">حذف</string>
+
+    <!-- شاشة مؤقتة -->
+    <string name="placeholder_coming_soon">قريباً…</string>
+
+    <!-- شريط الإشعارات -->
+    <string name="snackbar_dismiss">إغلاق</string>
+
+    <!-- شاشة البداية -->
+    <string name="splash_version">الإصدار 1.0</string>
+</resources>
