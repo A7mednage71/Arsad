@@ -1,7 +1,7 @@
 package com.example.arsad.presentation.settings.view
 
 import android.app.Activity
-import android.app.Application
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -18,28 +19,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import com.example.arsad.R
 import com.example.arsad.presentation.settings.view.components.LanguageSection
 import com.example.arsad.presentation.settings.view.components.LocationSection
 import com.example.arsad.presentation.settings.view.components.UnitsSection
 import com.example.arsad.presentation.settings.viewModel.SettingsViewModel
-import com.example.arsad.presentation.settings.viewModel.SettingsViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
+    settingsViewModel: SettingsViewModel,
+    onOpenMapPicker: () -> Unit = {},
+    navBackStackEntry: NavBackStackEntry? = null,
 ) {
     val context = LocalContext.current
-    val viewModel: SettingsViewModel = viewModel(
-        factory = SettingsViewModelFactory(context.applicationContext as Application)
-    )
 
     val scope = rememberCoroutineScope()
-    val state by viewModel.uiState.collectAsState()
+    val state by settingsViewModel.uiState.collectAsState()
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
+
+    // Receive map result from MapPickerScreen
+    LaunchedEffect(navBackStackEntry) {
+        navBackStackEntry?.savedStateHandle?.let { handle ->
+            val lat = handle.get<Double>("map_lat")
+            val lon = handle.get<Double>("map_lon")
+            val name = handle.get<String>("map_name")
+            if (lat != null && lon != null && name != null) {
+                settingsViewModel.saveLocation(lat, lon, name)
+                handle.remove<Double>("map_lat")
+                handle.remove<Double>("map_lon")
+                handle.remove<String>("map_name")
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        settingsViewModel.toastMessage.collect { message ->
+            Toast.makeText(
+                context, message, Toast.LENGTH_SHORT,
+            ).show()
+        }
+    }
 
     LazyColumn(
         modifier = modifier
@@ -70,8 +93,8 @@ fun SettingsScreen(
             UnitsSection(
                 selectedTempUnit = state.temperatureUnit,
                 selectedWindUnit = state.windSpeedUnit,
-                onTemperatureUnitSelected = { viewModel.setTemperatureUnit(it) },
-                onWindSpeedUnitSelected = { viewModel.setWindSpeedUnit(it) }
+                onTemperatureUnitSelected = { settingsViewModel.setTemperatureUnit(it) },
+                onWindSpeedUnitSelected = { settingsViewModel.setWindSpeedUnit(it) }
             )
         }
 
@@ -81,8 +104,8 @@ fun SettingsScreen(
                 selectedLanguage = state.language,
                 onLanguageSelected = { selectedLanguage ->
                     scope.launch {
-                        // suspend — awaits until DataStore finishes writing
-                        viewModel.setLanguage(selectedLanguage)
+                        // suspend — waits until DataStore finishes writing
+                        settingsViewModel.setLanguage(selectedLanguage)
                         // only THEN recreate so attachBaseContext reads the new value
                         (context as? Activity)?.recreate()
                     }
@@ -94,7 +117,10 @@ fun SettingsScreen(
         item {
             LocationSection(
                 selectedLocationMethod = state.locationMethod,
-                onLocationMethodSelected = { viewModel.setLocationMethod(it) }
+                locationName = state.locationName,
+                onLocationMethodSelected = { settingsViewModel.setLocationMethod(it) },
+                onGpsRequested = { settingsViewModel.fetchGpsLocation() },
+                onMapRequested = onOpenMapPicker,
             )
         }
     }

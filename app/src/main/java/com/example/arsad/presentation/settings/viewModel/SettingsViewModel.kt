@@ -3,8 +3,13 @@ package com.example.arsad.presentation.settings.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arsad.data.local.SettingsManager
+import com.example.arsad.data.location.LocationProvider
+import com.example.arsad.data.location.LocationResult
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -36,23 +41,43 @@ data class SettingsUiState(
     val temperatureUnit: TemperatureUnit = TemperatureUnit.CELSIUS,
     val windSpeedUnit: WindSpeedUnit = WindSpeedUnit.METER_PER_SEC,
     val language: AppLanguage = AppLanguage.ENGLISH,
-    val locationMethod: LocationMethod = LocationMethod.GPS
+    val locationMethod: LocationMethod = LocationMethod.GPS,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val locationName: String? = null
 )
 
 
-class SettingsViewModel(private val settingsManager: SettingsManager) : ViewModel() {
+class SettingsViewModel(
+    private val settingsManager: SettingsManager,
+    private val locationProvider: LocationProvider
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
+    private val _toastMessage = MutableSharedFlow<String>(extraBufferCapacity = 1)
+    val toastMessage: SharedFlow<String> = _toastMessage.asSharedFlow()
+
     init {
         viewModelScope.launch {
-            combine(
+            combine<Any?, SettingsUiState>(
                 settingsManager.languageFlow,
                 settingsManager.tempUnitFlow,
                 settingsManager.windUnitFlow,
-                settingsManager.locationMethodFlow
-            ) { lang, tempUnit, windUnit, locationMethod ->
+                settingsManager.locationMethodFlow,
+                settingsManager.latitudeFlow,
+                settingsManager.longitudeFlow,
+                settingsManager.locationNameFlow
+            ) { args ->
+                val lang = args[0] as String
+                val tempUnit = args[1] as String
+                val windUnit = args[2] as String
+                val locationMethod = args[3] as String
+                val lat = args[4] as? Double
+                val lon = args[5] as? Double
+                val locName = args[6] as? String
+
                 SettingsUiState(
                     language = if (lang == "ar") AppLanguage.ARABIC else AppLanguage.ENGLISH,
                     temperatureUnit = when (tempUnit) {
@@ -61,10 +86,13 @@ class SettingsViewModel(private val settingsManager: SettingsManager) : ViewMode
                         else -> TemperatureUnit.CELSIUS
                     },
                     windSpeedUnit = if (windUnit == "MPH") WindSpeedUnit.MILE_PER_HOUR else WindSpeedUnit.METER_PER_SEC,
-                    locationMethod = if (locationMethod == "MAP") LocationMethod.MAP else LocationMethod.GPS
+                    locationMethod = if (locationMethod == "MAP") LocationMethod.MAP else LocationMethod.GPS,
+                    latitude = lat,
+                    longitude = lon,
+                    locationName = locName
                 )
-            }.collect { loadedState ->
-                _uiState.value = loadedState
+            }.collect { newState ->
+                _uiState.value = newState
             }
         }
     }
@@ -91,5 +119,21 @@ class SettingsViewModel(private val settingsManager: SettingsManager) : ViewMode
     fun setLocationMethod(method: LocationMethod) {
         val code = if (method == LocationMethod.MAP) "MAP" else "GPS"
         viewModelScope.launch { settingsManager.saveLocationMethod(code) }
+    }
+
+    fun fetchGpsLocation() {
+        viewModelScope.launch {
+            val result = locationProvider.getCurrentLocation()
+            if (result is LocationResult.Success) {
+                saveLocation(result.lat, result.lon, result.name)
+                _toastMessage.emit("Location has been successfully saved! ✅")
+            } else {
+                _toastMessage.emit("Could not get location. Try again. ❌")
+            }
+        }
+    }
+
+    fun saveLocation(lat: Double, lon: Double, name: String) {
+        viewModelScope.launch { settingsManager.saveLocation(lat, lon, name) }
     }
 }

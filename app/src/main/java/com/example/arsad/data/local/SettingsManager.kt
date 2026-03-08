@@ -2,6 +2,7 @@ package com.example.arsad.data.local
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -18,6 +19,9 @@ class SettingsManager(private val context: Context) {
         val WIND_UNIT_KEY = stringPreferencesKey("wind_unit")
         val LOCATION_METHOD_KEY = stringPreferencesKey("location_method")
         val IS_DARK_MODE = booleanPreferencesKey("is_dark_mode")
+        val LATITUDE_KEY = doublePreferencesKey("latitude")
+        val LONGITUDE_KEY = doublePreferencesKey("longitude")
+        val LOCATION_NAME_KEY = stringPreferencesKey("location_name")
     }
 
 
@@ -41,6 +45,14 @@ class SettingsManager(private val context: Context) {
         context.dataStore.edit { it[IS_DARK_MODE] = isDark }
     }
 
+    suspend fun saveLocation(lat: Double, lon: Double, name: String) {
+        context.dataStore.edit {
+            it[LATITUDE_KEY] = lat
+            it[LONGITUDE_KEY] = lon
+            it[LOCATION_NAME_KEY] = name
+        }
+    }
+
 
     val languageFlow: Flow<String> = context.dataStore.data.map {
         it[LANGUAGE_KEY] ?: "en"
@@ -60,5 +72,17 @@ class SettingsManager(private val context: Context) {
 
     val isDarkModeFlow: Flow<Boolean> = context.dataStore.data.map {
         it[IS_DARK_MODE] ?: false
+    }
+
+    val latitudeFlow: Flow<Double?> = context.dataStore.data.map {
+        it[LATITUDE_KEY]
+    }
+
+    val longitudeFlow: Flow<Double?> = context.dataStore.data.map {
+        it[LONGITUDE_KEY]
+    }
+
+    val locationNameFlow: Flow<String?> = context.dataStore.data.map {
+        it[LOCATION_NAME_KEY]
     }
 }
