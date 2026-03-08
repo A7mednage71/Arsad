@@ -9,35 +9,35 @@ sealed class Screen(val route: String) {
 
     sealed class BottomBar(
         val baseRoute: String,
-        val title: String,
+        val titleRes: Int,
         val activeIcon: Int,
         val inactiveIcon: Int
     ) : Screen(baseRoute) {
 
         object Home : BottomBar(
             baseRoute = "home",
-            title = "Home",
+            titleRes = R.string.nav_home,
             activeIcon = R.drawable.ic_home_bold,
             inactiveIcon = R.drawable.ic_home_light
         )
 
         object Saved : BottomBar(
             baseRoute = "saved",
-            title = "Saved",
+            titleRes = R.string.nav_saved,
             activeIcon = R.drawable.ic_bookmark_bold,
             inactiveIcon = R.drawable.ic_bookmark_light
         )
 
         object Alerts : BottomBar(
             baseRoute = "alerts",
-            title = "Alerts",
+            titleRes = R.string.nav_alerts,
             activeIcon = R.drawable.ic_notification_bold,
             inactiveIcon = R.drawable.ic_notification_light
         )
 
         object Settings : BottomBar(
             baseRoute = "settings",
-            title = "Settings",
+            titleRes = R.string.nav_settings,
             activeIcon = R.drawable.ic_setting_bold,
             inactiveIcon = R.drawable.ic_setting_light
         )

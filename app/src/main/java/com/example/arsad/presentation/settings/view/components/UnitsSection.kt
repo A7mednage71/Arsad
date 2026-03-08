@@ -7,13 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
-import com.example.arsad.presentation.settings.viewModel.SettingsUiState
 import com.example.arsad.presentation.settings.viewModel.TemperatureUnit
 import com.example.arsad.presentation.settings.viewModel.WindSpeedUnit
 
 @Composable
 fun UnitsSection(
-    state: SettingsUiState,
+    selectedTempUnit: TemperatureUnit,
+    selectedWindUnit: WindSpeedUnit,
     onTemperatureUnitSelected: (TemperatureUnit) -> Unit,
     onWindSpeedUnitSelected: (WindSpeedUnit) -> Unit
 ) {
@@ -30,7 +30,7 @@ fun UnitsSection(
                 stringResource(R.string.settings_temp_fahrenheit),
                 stringResource(R.string.settings_temp_kelvin)
             ),
-            selectedIndex = when (state.temperatureUnit) {
+            selectedIndex = when (selectedTempUnit) {
                 TemperatureUnit.CELSIUS -> 0
                 TemperatureUnit.FAHRENHEIT -> 1
                 TemperatureUnit.KELVIN -> 2
@@ -43,7 +43,7 @@ fun UnitsSection(
                 stringResource(R.string.settings_wind_ms),
                 stringResource(R.string.settings_wind_mph)
             ),
-            selectedIndex = when (state.windSpeedUnit) {
+            selectedIndex = when (selectedWindUnit) {
                 WindSpeedUnit.METER_PER_SEC -> 0
                 WindSpeedUnit.MILE_PER_HOUR -> 1
             },
@@ -52,4 +52,3 @@ fun UnitsSection(
     }
     Spacer(modifier = Modifier.height(24.dp))
 }
-

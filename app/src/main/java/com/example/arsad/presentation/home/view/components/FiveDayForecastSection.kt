@@ -169,17 +169,17 @@ private fun DailyRow(
                 ) {
                     DetailChip(
                         icon = Icons.Default.WaterDrop,
-                        label = "Humidity",
+                        label = stringResource(R.string.label_humidity),
                         value = "62%"
                     )
                     DetailChip(
                         icon = Icons.Default.Air,
-                        label = "Wind",
+                        label = stringResource(R.string.label_wind),
                         value = "14 km/h"
                     )
                     DetailChip(
                         icon = Icons.Default.Compress,
-                        label = "Pressure",
+                        label = stringResource(R.string.label_pressure),
                         value = "1015 hPa"
                     )
                 }

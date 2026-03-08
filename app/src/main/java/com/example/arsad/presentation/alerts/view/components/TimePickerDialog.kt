@@ -15,8 +15,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.arsad.R
 
 
 @Composable
@@ -37,7 +39,7 @@ internal fun TimePickerDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Select Time",
+                    text = stringResource(R.string.time_picker_title),
                     style = MaterialTheme.typography.labelLarge,
                     color = colors.onSurfaceVariant,
                     modifier = Modifier
@@ -50,8 +52,8 @@ internal fun TimePickerDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = onDismiss) { Text("Cancel") }
-                    TextButton(onClick = onConfirm) { Text("OK") }
+                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.picker_cancel)) }
+                    TextButton(onClick = onConfirm) { Text(stringResource(R.string.picker_ok)) }
                 }
             }
         }

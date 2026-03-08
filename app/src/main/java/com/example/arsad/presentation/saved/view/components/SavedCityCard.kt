@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
 import com.example.arsad.presentation.saved.view.SavedLocation
@@ -64,7 +65,7 @@ fun SavedCityCard(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_delete_2),
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(R.string.saved_delete_description),
                     modifier = Modifier.size(24.dp),
                     colorFilter = ColorFilter.tint(Color.White)
                 )

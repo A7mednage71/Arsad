@@ -8,11 +8,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
 import com.example.arsad.presentation.settings.viewModel.LocationMethod
-import com.example.arsad.presentation.settings.viewModel.SettingsUiState
 
 @Composable
 fun LocationSection(
-    state: SettingsUiState,
+    selectedLocationMethod: LocationMethod,
     onLocationMethodSelected: (LocationMethod) -> Unit
 ) {
     SettingsSectionHeader(
@@ -25,7 +24,7 @@ fun LocationSection(
             label = stringResource(R.string.settings_location_method),
             optionA = stringResource(R.string.settings_location_gps),
             optionB = stringResource(R.string.settings_location_map),
-            selectedA = state.locationMethod == LocationMethod.GPS,
+            selectedA = selectedLocationMethod == LocationMethod.GPS,
             iconResA = R.drawable.ic_pick_gps,
             iconResB = R.drawable.ic_map,
             onSelectA = { onLocationMethodSelected(LocationMethod.GPS) },
@@ -34,4 +33,3 @@ fun LocationSection(
     }
     Spacer(modifier = Modifier.height(24.dp))
 }
-

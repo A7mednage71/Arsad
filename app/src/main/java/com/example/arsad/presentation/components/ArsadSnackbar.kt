@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
 
@@ -65,7 +66,7 @@ fun ArsadSnackbar(
 
             Icon(
                 painter = painterResource(id = R.drawable.ic_close),
-                contentDescription = "Dismiss",
+                contentDescription = stringResource(R.string.snackbar_dismiss),
                 modifier = Modifier
                     .size(20.dp)
                     .clickable { onDismiss() },

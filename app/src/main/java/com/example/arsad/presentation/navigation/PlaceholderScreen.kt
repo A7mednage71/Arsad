@@ -8,6 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.arsad.R
 
 @Composable
 fun PlaceholderScreen(
@@ -28,7 +30,7 @@ fun PlaceholderScreen(
             color = colors.onBackground
         )
         Text(
-            text = "Coming soon...",
+            text = stringResource(R.string.placeholder_coming_soon),
             style = MaterialTheme.typography.bodyMedium,
             color = colors.onSurfaceVariant
         )
