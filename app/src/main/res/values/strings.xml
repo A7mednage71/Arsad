@@ -44,6 +44,13 @@
     <string name="settings_location_method">Location Method</string>
     <string name="settings_location_gps">GPS</string>
     <string name="settings_location_map">Map</string>
+    <string name="settings_location_get_gps">Get My Location</string>
+    <string name="settings_location_update_gps">Update GPS Location</string>
+    <string name="settings_location_pick_map">Pick from Map</string>
+    <string name="settings_location_update_map">Update Map Location</string>
+    <string name="settings_location_saved">Lat: %1$s  Lon: %2$s</string>
+    <string name="settings_location_success">Location set to %1$s</string>
+    <string name="settings_location_failure">Could not get location. Try again.</string>
 
     <string name="alerts_title">Weather Alerts</string>
     <string name="alerts_subtitle">Get notified about severe weather</string>

@@ -45,6 +45,13 @@
     <string name="settings_location_method">طريقة تحديد الموقع</string>
     <string name="settings_location_gps">GPS</string>
     <string name="settings_location_map">الخريطة</string>
+    <string name="settings_location_get_gps">تحديد موقعي</string>
+    <string name="settings_location_update_gps">تحديث موقع GPS</string>
+    <string name="settings_location_pick_map">اختر من الخريطة</string>
+    <string name="settings_location_update_map">تحديث موقع الخريطة</string>
+    <string name="settings_location_saved">خط العرض: %1$s  خط الطول: %2$s</string>
+    <string name="settings_location_success">تم تحديد الموقع: %1$s</string>
+    <string name="settings_location_failure">تعذّر تحديد الموقع. حاول مرة أخرى.</string>
 
     <string name="alerts_title">تنبيهات الطقس</string>
     <string name="alerts_subtitle">احصل على إشعارات عند الطقس القاسي</string>

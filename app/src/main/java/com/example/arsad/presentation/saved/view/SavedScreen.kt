@@ -18,16 +18,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
 import com.example.arsad.R
 import com.example.arsad.presentation.saved.view.components.SavedLocationsEmptyState
 import com.example.arsad.presentation.saved.view.components.SavedLocationsList
+import kotlinx.coroutines.launch
 
 data class SavedLocation(
     val id: Int,
@@ -42,10 +46,30 @@ data class SavedLocation(
 fun SavedScreen(
     modifier: Modifier = Modifier,
     onOpenMapPicker: () -> Unit = {},
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    navBackStackEntry: NavBackStackEntry? = null,
 ) {
+    val scope = rememberCoroutineScope()
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
+
+    // Receive map result from MapPickerScreen
+    LaunchedEffect(navBackStackEntry) {
+        navBackStackEntry?.savedStateHandle?.let { handle ->
+            val lat = handle.get<Double>("map_lat")
+            val lon = handle.get<Double>("map_lon")
+            val name = handle.get<String>("map_name")
+            if (lat != null && lon != null && name != null) {
+                // TODO: pass to SavedViewModel to save in DB
+                scope.launch {
+                    snackbarHostState.showSnackbar("Added: $name")
+                }
+                handle.remove<Double>("map_lat")
+                handle.remove<Double>("map_lon")
+                handle.remove<String>("map_name")
+            }
+        }
+    }
 
     // Dummy data
     val savedLocations = remember {
@@ -102,4 +126,3 @@ fun SavedScreen(
         }
     }
 }
-
