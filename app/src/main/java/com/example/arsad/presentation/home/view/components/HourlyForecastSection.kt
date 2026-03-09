@@ -1,6 +1,7 @@
 package com.example.arsad.presentation.home.view.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,28 +14,28 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
-
-data class HourlyForecast(
-    val time: String,
-    val temp: String,
-    val icon: ImageVector
-)
+import com.example.arsad.data.models.ForecastItem
+import com.example.arsad.util.formatTo12Hour
+import com.example.arsad.util.getTempSymbol
+import com.example.arsad.util.getWeatherIcon
+import com.example.arsad.util.localize
 
 @Composable
 fun HourlyForecastSection(
-    hourlyData: List<HourlyForecast>,
-    modifier: Modifier = Modifier
+    hourlyData: List<ForecastItem>,
+    modifier: Modifier = Modifier,
+    tempUnit: String
 ) {
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
@@ -51,8 +52,8 @@ fun HourlyForecastSection(
             contentPadding = PaddingValues(horizontal = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(hourlyData) { hour ->
-                HourlyCard(hour = hour)
+            items(hourlyData) { item ->
+                HourlyCard(forecastItem = item, tempUnit)
             }
         }
     }
@@ -60,11 +61,13 @@ fun HourlyForecastSection(
 
 @Composable
 private fun HourlyCard(
-    hour: HourlyForecast,
+    forecastItem: ForecastItem,
+    tempUnit: String,
     modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
+    val tempSymbol = getTempSymbol(tempUnit)
 
     Surface(
         modifier = modifier
@@ -81,28 +84,27 @@ private fun HourlyCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = hour.time,
+                text = formatTo12Hour(forecastItem.dtTxt),
                 style = typography.labelSmall,
                 color = colors.onSurfaceVariant
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Icon(
-                imageVector = hour.icon,
+            Image(
+                painter = painterResource(id = getWeatherIcon(forecastItem.weather.firstOrNull()?.icon)),
                 contentDescription = null,
-                tint = colors.primary,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(36.dp),
+                contentScale = ContentScale.Fit
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = hour.temp,
+                text = "${forecastItem.main.temp.toInt().localize()} $tempSymbol",
                 style = typography.labelLarge,
                 color = colors.onSurface
             )
         }
     }
 }
-

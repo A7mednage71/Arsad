@@ -1,0 +1,62 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Stars — different sizes for depth -->
+    <!-- Big star top-left -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M10,10 L11.8,15.5 L17.5,15.5 L12.8,18.8 L14.6,24.3 L10,21 L5.4,24.3 L7.2,18.8 L2.5,15.5 L8.2,15.5 Z" />
+    <!-- Small star top-right -->
+    <path
+        android:fillColor="#FFF9C4"
+        android:pathData="M52,6 L52.9,8.8 L55.8,8.8 L53.5,10.4 L54.4,13.2 L52,11.6 L49.6,13.2 L50.5,10.4 L48.2,8.8 L51.1,8.8 Z" />
+    <!-- Tiny dot star -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,4 C22,2.9 22.9,2 24,2 C25.1,2 26,2.9 26,4 C26,5.1 25.1,6 24,6 C22.9,6 22,5.1 22,4 Z" />
+    <!-- Tiny dot star 2 -->
+    <path
+        android:fillColor="#FFF59D"
+        android:pathData="M58,20 C58,19.4 58.4,19 59,19 C59.6,19 60,19.4 60,20 C60,20.6 59.6,21 59,21 C58.4,21 58,20.6 58,20 Z" />
+
+    <!-- Moon crescent — drawn as a single path -->
+    <!-- Technique: outer arc clockwise, inner arc counter-clockwise -->
+    <path
+        android:fillColor="#FDD835"
+        android:pathData="
+        M 36,16
+        C 26,16 18,24 18,34
+        C 18,44 26,52 36,52
+        C 30,48 26,42 26,34
+        C 26,26 30,20 36,16
+        Z" />
+    <!-- Moon warm glow layer -->
+    <path
+        android:fillAlpha="0.5"
+        android:fillColor="#FFEE58"
+        android:pathData="
+        M 32,20
+        C 27,24 24,29 24,34
+        C 24,39 27,44 32,48
+        C 28,44 25,39 25,34
+        C 25,29 28,24 32,20
+        Z" />
+    <!-- Moon crater 1 -->
+    <path
+        android:fillAlpha="0.4"
+        android:fillColor="#F9A825"
+        android:pathData="M24,30 C24,28.3 25.3,27 27,27 C28.7,27 30,28.3 30,30 C30,31.7 28.7,33 27,33 C25.3,33 24,31.7 24,30 Z" />
+    <!-- Moon crater 2 -->
+    <path
+        android:fillAlpha="0.3"
+        android:fillColor="#F9A825"
+        android:pathData="M22,40 C22,39.2 22.7,38.5 23.5,38.5 C24.3,38.5 25,39.2 25,40 C25,40.8 24.3,41.5 23.5,41.5 C22.7,41.5 22,40.8 22,40 Z" />
+    <!-- Moon highlight shimmer -->
+    <path
+        android:fillAlpha="0.35"
+        android:fillColor="#FFFFFF"
+        android:pathData="M29,19 C30.5,17.5 32.5,16.5 36,16 C33,17.5 30.5,20 29,23 C28.5,22 28.5,20.5 29,19 Z" />
+</vector>

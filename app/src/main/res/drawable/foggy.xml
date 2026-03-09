@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Cloud on top -->
+    <path
+        android:fillColor="#B0BEC5"
+        android:pathData="M50,28 L22,28 C17.6,28 14,24.4 14,20 C14,15.6 17.6,12 22,12 C22.2,12 22.4,12 22.6,12 C23.2,7.2 27.2,4 32,4 C36.4,4 40.2,6.8 41.4,11 C42.2,10.8 43,10.6 43.8,10.6 C46.2,10.6 48.4,11.6 50,13.2 C51.6,14.8 52.4,17 52.2,19.2 C51.6,24.4 54,28 50,28 Z" />
+    <path
+        android:fillAlpha="0.4"
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,14 C26.5,11.5 29.5,10.5 32,11 C29.5,12.2 27,14.5 25.8,17.5 C24.8,16 24,14.8 24,14 Z" />
+
+    <!-- Fog bands below cloud — rounded, varying length -->
+    <path
+        android:pathData="M8,36 L56,36"
+        android:strokeWidth="4.5"
+        android:strokeColor="#78909C"
+        android:strokeLineCap="round" />
+
+    <path
+        android:pathData="M14,45 L50,45"
+        android:strokeWidth="4"
+        android:strokeColor="#90A4AE"
+        android:strokeLineCap="round" />
+
+    <path
+        android:pathData="M8,54 L44,54"
+        android:strokeWidth="4.5"
+        android:strokeColor="#78909C"
+        android:strokeLineCap="round" />
+
+</vector>

@@ -1,0 +1,42 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Storm cloud — dark dramatic -->
+    <path
+        android:fillColor="#263238"
+        android:pathData="M52,38 L18,38 C12.5,38 8,33.5 8,28 C8,22.5 12.5,18 18,18 C18.3,18 18.6,18 18.9,18 C19.6,11.4 25.2,6 32,6 C38.2,6 43.4,10.5 44.7,16.5 C45.8,16.2 47,16 48.2,16 C51.4,16 54.3,17.3 56.4,19.5 C58.5,21.7 59.5,24.7 59,27.8 C58,34 54,38 52,38 Z" />
+    <path
+        android:fillAlpha="0.08"
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,20 C25,17 29,15.5 32,16 C29,17.5 26,20.5 24.5,24 C23,22 22,20.8 22,20 Z" />
+
+    <!-- Lightning bolt — sharp jagged -->
+    <path
+        android:fillColor="#FFD600"
+        android:pathData="M38,36 L28,52 L35,52 L29,64 L46,44 L38,44 Z" />
+    <!-- Lightning glow core -->
+    <path
+        android:fillColor="#FFFF8D"
+        android:pathData="M37,38 L30.5,50 L35.5,50 L31,60 L43,46 L37.5,46 Z" />
+
+    <!-- Rain drops on sides -->
+    <path
+        android:pathData="M15,42 L12,52"
+        android:strokeWidth="2.5"
+        android:strokeColor="#64B5F6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M52,42 L49,52"
+        android:strokeWidth="2.5"
+        android:strokeColor="#64B5F6"
+        android:strokeLineCap="round" />
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M11,52 C11,50 12,48.5 13,48.5 C14,48.5 14.5,49.8 14.5,51 C14.5,53.2 13,55 11.5,55 C10.5,55 11,53.2 11,52 Z" />
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M48,52 C48,50 49,48.5 50,48.5 C51,48.5 51.5,49.8 51.5,51 C51.5,53.2 50,55 48.5,55 C47.5,55 48,53.2 48,52 Z" />
+</vector>

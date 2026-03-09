@@ -14,8 +14,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.arsad.data.remote.network.RetrofitHelper
+import com.example.arsad.data.repository.WeatherRepositoryImpl
 import com.example.arsad.presentation.alerts.view.AlertsScreen
 import com.example.arsad.presentation.home.view.HomeScreen
+import com.example.arsad.presentation.home.viewModel.HomeViewModel
+import com.example.arsad.presentation.home.viewModel.HomeViewModelFactory
 import com.example.arsad.presentation.map_picker.view.MapPickerScreen
 import com.example.arsad.presentation.saved.view.SavedScreen
 import com.example.arsad.presentation.settings.view.SettingsScreen
@@ -50,7 +54,15 @@ fun AppNavGraph(
         }
 
         // Bottom Bar Screens
-        composable(Screen.BottomBar.Home.route) { HomeScreen() }
+        composable(Screen.BottomBar.Home.route) {
+            val homeViewModel: HomeViewModel = viewModel(
+                factory = HomeViewModelFactory(
+                    WeatherRepositoryImpl(RetrofitHelper.service),
+                    application
+                )
+            )
+            HomeScreen(homeViewModel = homeViewModel)
+        }
 
         composable(Screen.BottomBar.Saved.route) { backStackEntry ->
             SavedScreen(

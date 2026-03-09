@@ -8,6 +8,8 @@
 
     <string name="home_title">Welcome to Arsad</string>
     <string name="home_subtitle">Home screen is ready for your weather content.</string>
+    <string name="error_title">Something went wrong</string>
+    <string name="action_retry">Try Again</string>
 
     <string name="section_today_hourly">Today</string>
     <string name="section_five_day">5-Day Forecast</string>
@@ -73,7 +75,15 @@
 
     <!-- Weather Details Section -->
     <string name="section_weather_details">Weather Details</string>
-    <string name="label_feels_like">Feels like clear sky</string>
+    <string name="label_feels_like">Feels like</string>
+
+    <!-- Units -->
+    <string name="temp_celsius">°C</string>
+    <string name="temp_fahrenheit">°F</string>
+    <string name="temp_kelvin">K</string>
+    <string name="wind_ms">m/s</string>
+    <string name="wind_mph">mph</string>
+    <string name="pressure_unit">hPa</string>
 
     <!-- Home dummy / placeholder data labels -->
     <string name="home_location_placeholder">Cairo, Egypt</string>
@@ -130,4 +140,7 @@
 
     <!-- Splash -->
     <string name="splash_version">V 1.0</string>
+
+    <string name="label_today">Today</string>
+    <string name="label_tomorrow">Tomorrow</string>
 </resources>
