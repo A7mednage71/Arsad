@@ -28,13 +28,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
-import com.example.arsad.data.remote.responses.WeatherResponse
+import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.util.getWindSymbol
 import com.example.arsad.util.localize
 
 
 @Composable
-fun WeatherDetailsGrid(weather: WeatherResponse, windUnit: String, modifier: Modifier = Modifier) {
+fun WeatherDetailsGrid(data: WeatherModel, windUnit: String, modifier: Modifier = Modifier) {
     val colors = MaterialTheme.colorScheme
     val windSymbol = getWindSymbol(windUnit)
 
@@ -54,13 +54,13 @@ fun WeatherDetailsGrid(weather: WeatherResponse, windUnit: String, modifier: Mod
                 Modifier.weight(1f),
                 Icons.Default.WaterDrop,
                 stringResource(R.string.label_humidity),
-                "${weather.weatherMain.humidity.localize()}%"
+                "${data.humidity.localize()}%"
             )
             DetailCard(
                 Modifier.weight(1f),
                 Icons.Default.Compress,
                 stringResource(R.string.label_pressure),
-                "${weather.weatherMain.pressure.localize()} ${stringResource(R.string.pressure_unit)}"
+                "${data.pressure.localize()} ${stringResource(R.string.pressure_unit)}"
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -72,13 +72,13 @@ fun WeatherDetailsGrid(weather: WeatherResponse, windUnit: String, modifier: Mod
                 Modifier.weight(1f),
                 Icons.Default.Cloud,
                 stringResource(R.string.label_clouds),
-                "${weather.clouds.all.localize()}%"
+                "${data.cloudiness.localize()}%"
             )
             DetailCard(
                 Modifier.weight(1f),
                 Icons.Default.Air,
                 stringResource(R.string.label_wind),
-                "${weather.wind.speed.localize()} $windSymbol"
+                "${data.windSpeed.localize()} $windSymbol"
             )
         }
     }

@@ -35,7 +35,7 @@ fun getTempSymbol(unit: String): String {
 @Composable
 fun getWindSymbol(unit: String): String {
     return when (unit) {
-        "mph" -> stringResource(R.string.wind_mph)
+        "MPH" -> stringResource(R.string.wind_mph)
         else -> stringResource(R.string.wind_ms)
     }
 }

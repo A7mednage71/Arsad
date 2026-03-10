@@ -39,7 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
-import com.example.arsad.data.models.ForecastItem
+import com.example.arsad.data.models.DailyWeatherModel
 import com.example.arsad.util.formatToOnlyDayName
 import com.example.arsad.util.getTempSymbol
 import com.example.arsad.util.getWeatherIcon
@@ -48,7 +48,7 @@ import com.example.arsad.util.localize
 
 @Composable
 fun FiveDayForecastSection(
-    dailyData: List<ForecastItem>,
+    dailyData: List<DailyWeatherModel>,
     tempUnit: String,
     windUnit: String,
     modifier: Modifier = Modifier
@@ -77,7 +77,7 @@ fun FiveDayForecastSection(
                     .animateContentSize(animationSpec = tween(300))
             ) {
                 dailyData.forEachIndexed { index, item ->
-                    DailyRow(forecastItem = item, tempUnit = tempUnit, windUnit = windUnit)
+                    DailyRow(item = item, tempUnit = tempUnit, windUnit = windUnit)
                     if (index < dailyData.lastIndex) {
                         HorizontalDivider(
                             modifier = Modifier.padding(vertical = 10.dp),
@@ -93,7 +93,7 @@ fun FiveDayForecastSection(
 
 @Composable
 private fun DailyRow(
-    forecastItem: ForecastItem,
+    item: DailyWeatherModel,
     tempUnit: String,
     windUnit: String,
     modifier: Modifier = Modifier
@@ -116,7 +116,7 @@ private fun DailyRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = forecastItem.dt.formatToOnlyDayName(),
+                text = item.dt.formatToOnlyDayName(),
                 style = typography.bodyLarge,
                 color = colors.onSurface,
                 modifier = Modifier.width(100.dp)
@@ -128,23 +128,23 @@ private fun DailyRow(
                 modifier = Modifier.weight(1f)
             ) {
                 Image(
-                    painter = painterResource(id = getWeatherIcon(forecastItem.weather.firstOrNull()?.icon)),
+                    painter = painterResource(id = getWeatherIcon(item.iconCode)),
                     contentDescription = null,
                     modifier = Modifier.size(26.dp),
                     contentScale = ContentScale.Fit
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = forecastItem.weather.firstOrNull()?.description ?: "",
+                    text = item.description,
                     style = typography.bodyMedium,
                     color = colors.onSurfaceVariant
                 )
             }
 
             Text(
-                text = "${
-                    forecastItem.main.tempMax.toInt().localize()
-                }/ ${forecastItem.main.tempMin.toInt().localize()} $tempSymbol",
+                text = "${item.tempMax.toInt().localize()}/ ${
+                    item.tempMin.toInt().localize()
+                } $tempSymbol",
                 style = typography.labelLarge,
                 color = colors.onSurface
             )
@@ -177,17 +177,17 @@ private fun DailyRow(
                     DetailChip(
                         icon = Icons.Default.WaterDrop,
                         label = stringResource(R.string.label_humidity),
-                        value = "${forecastItem.main.humidity.localize()}%"
+                        value = "${item.humidity.localize()}%"
                     )
                     DetailChip(
                         icon = Icons.Default.Air,
                         label = stringResource(R.string.label_wind),
-                        value = "${forecastItem.wind.speed.localize()} $windSymbol"
+                        value = "${item.windSpeed.localize()} $windSymbol"
                     )
                     DetailChip(
                         icon = Icons.Default.Compress,
                         label = stringResource(R.string.label_pressure),
-                        value = forecastItem.main.pressure.localize() + " " + stringResource(R.string.pressure_unit)
+                        value = item.pressure.localize() + " " + stringResource(R.string.pressure_unit)
                     )
                 }
             }

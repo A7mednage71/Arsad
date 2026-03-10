@@ -12,13 +12,11 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.arsad.data.remote.responses.ForecastResponse
-import com.example.arsad.data.remote.responses.WeatherResponse
+import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.presentation.home.view.components.FiveDayForecastSection
 import com.example.arsad.presentation.home.view.components.HomeErrorState
 import com.example.arsad.presentation.home.view.components.HomeShimmerLoading
@@ -35,42 +33,19 @@ fun HomeScreen(modifier: Modifier = Modifier, homeViewModel: HomeViewModel) {
 
     Box(modifier = modifier.fillMaxSize()) {
         when (val state = uiState) {
-            is HomeUiState.Loading -> {
-                HomeShimmerLoading()
-            }
+            is HomeUiState.Loading -> HomeShimmerLoading()
+            is HomeUiState.Error -> HomeErrorState(
+                message = state.message,
+                onRetry = { homeViewModel.refresh() }
+            )
 
-            is HomeUiState.Error -> {
-                HomeErrorState(
-                    message = state.message,
-                    onRetry = { homeViewModel.refresh() }
-                )
-            }
-
-            is HomeUiState.Success -> {
-                HomeSuccessContent(
-                    weather = state.weather,
-                    forecast = state.forecast,
-                    tempUnit = state.tempUnit,
-                    windUnit = state.windUnit
-                )
-            }
+            is HomeUiState.Success -> HomeSuccessContent(data = state.data)
         }
     }
 }
 
-
 @Composable
-private fun HomeSuccessContent(
-    weather: WeatherResponse,
-    forecast: ForecastResponse,
-    tempUnit: String,
-    windUnit: String,
-    modifier: Modifier = Modifier
-) {
-
-    val hourlyData = remember(forecast) { forecast.list.take(8) }
-    val dailyData = remember(forecast) { forecast.list.filter { it.dtTxt.contains("12:00:00") } }
-
+private fun HomeSuccessContent(data: WeatherModel, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -78,26 +53,26 @@ private fun HomeSuccessContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            HeaderSection(weather.name, weather.dt)
+            HeaderSection(cityName = data.cityName, timestamp = data.timestamp)
         }
-
         item {
-            MainWeatherCard(weather = weather, tempUnit = tempUnit)
+            MainWeatherCard(data = data, tempUnit = data.tempUnit)
             Spacer(modifier = Modifier.height(20.dp))
         }
-
         item {
-            WeatherDetailsGrid(weather = weather, windUnit = windUnit)
+            WeatherDetailsGrid(data = data, windUnit = data.windUnit)
             Spacer(modifier = Modifier.height(28.dp))
         }
-
         item {
-            HourlyForecastSection(hourlyData = hourlyData, tempUnit = tempUnit)
+            HourlyForecastSection(hourlyData = data.hourlyForecast, tempUnit = data.tempUnit)
             Spacer(modifier = Modifier.height(28.dp))
         }
-
         item {
-            FiveDayForecastSection(dailyData = dailyData, tempUnit, windUnit)
+            FiveDayForecastSection(
+                dailyData = data.dailyForecast,
+                tempUnit = data.tempUnit,
+                windUnit = data.windUnit
+            )
             Spacer(modifier = Modifier.height(150.dp))
         }
     }

@@ -1,7 +1,8 @@
-package com.example.arsad.data.models
+package com.example.arsad.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Clouds(
+data class CloudsDto(
     @SerializedName("all") val all: Int
 )
+

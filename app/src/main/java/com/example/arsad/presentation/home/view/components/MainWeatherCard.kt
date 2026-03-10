@@ -31,22 +31,20 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.arsad.R
-import com.example.arsad.data.remote.responses.WeatherResponse
+import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.util.getTempSymbol
 import com.example.arsad.util.getWeatherIcon
 import com.example.arsad.util.localize
 
 @Composable
 fun MainWeatherCard(
-    weather: WeatherResponse,
+    data: WeatherModel,
     tempUnit: String,
     modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.colorScheme
-    val iconResId = getWeatherIcon(weather.weather.firstOrNull()?.icon)
+    val iconResId = getWeatherIcon(data.iconCode)
     val tempSymbol = getTempSymbol(tempUnit)
-    val description = weather.weather.firstOrNull()?.description
-        ?.replaceFirstChar { it.uppercase() } ?: ""
 
     Column(
         modifier = modifier
@@ -57,7 +55,7 @@ fun MainWeatherCard(
     ) {
         Image(
             painter = painterResource(id = iconResId),
-            contentDescription = description,
+            contentDescription = data.description,
             modifier = Modifier.size(150.dp),
             contentScale = ContentScale.Fit
         )
@@ -67,7 +65,7 @@ fun MainWeatherCard(
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
             Text(
                 text = buildAnnotatedString {
-                    append(weather.weatherMain.temp.toInt().localize())
+                    append(data.temp.toInt().localize())
                     withStyle(
                         SpanStyle(
                             fontSize = 36.sp,
@@ -89,7 +87,7 @@ fun MainWeatherCard(
         Spacer(modifier = Modifier.height(6.dp))
 
         Text(
-            text = description,
+            text = data.description,
             style = typography.titleMedium.copy(fontWeight = FontWeight.Medium),
             color = colors.onBackground.copy(alpha = 0.8f)
         )
@@ -103,7 +101,7 @@ fun MainWeatherCard(
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                 Text(
                     text = "${stringResource(R.string.label_feels_like)}  ${
-                        weather.weatherMain.feelsLike.toInt().localize()
+                        data.feelsLike.toInt().localize()
                     }$tempSymbol",
                     modifier = Modifier.padding(horizontal = 18.dp, vertical = 7.dp),
                     style = typography.bodyMedium.copy(fontWeight = FontWeight.Medium),

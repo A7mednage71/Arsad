@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
-import com.example.arsad.data.models.ForecastItem
+import com.example.arsad.data.models.HourlyWeatherModel
 import com.example.arsad.util.formatTo12Hour
 import com.example.arsad.util.getTempSymbol
 import com.example.arsad.util.getWeatherIcon
@@ -33,7 +33,7 @@ import com.example.arsad.util.localize
 
 @Composable
 fun HourlyForecastSection(
-    hourlyData: List<ForecastItem>,
+    hourlyData: List<HourlyWeatherModel>,
     modifier: Modifier = Modifier,
     tempUnit: String
 ) {
@@ -53,7 +53,7 @@ fun HourlyForecastSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(hourlyData) { item ->
-                HourlyCard(forecastItem = item, tempUnit)
+                HourlyCard(item = item, tempUnit)
             }
         }
     }
@@ -61,7 +61,7 @@ fun HourlyForecastSection(
 
 @Composable
 private fun HourlyCard(
-    forecastItem: ForecastItem,
+    item: HourlyWeatherModel,
     tempUnit: String,
     modifier: Modifier = Modifier
 ) {
@@ -84,7 +84,7 @@ private fun HourlyCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = formatTo12Hour(forecastItem.dtTxt),
+                text = formatTo12Hour(item.dtTxt),
                 style = typography.labelSmall,
                 color = colors.onSurfaceVariant
             )
@@ -92,7 +92,7 @@ private fun HourlyCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Image(
-                painter = painterResource(id = getWeatherIcon(forecastItem.weather.firstOrNull()?.icon)),
+                painter = painterResource(id = getWeatherIcon(item.iconCode)),
                 contentDescription = null,
                 modifier = Modifier.size(36.dp),
                 contentScale = ContentScale.Fit
@@ -101,7 +101,7 @@ private fun HourlyCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "${forecastItem.main.temp.toInt().localize()} $tempSymbol",
+                text = "${item.temp.toInt().localize()} $tempSymbol",
                 style = typography.labelLarge,
                 color = colors.onSurface
             )

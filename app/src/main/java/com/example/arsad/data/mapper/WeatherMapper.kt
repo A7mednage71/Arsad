@@ -1,35 +1,29 @@
 package com.example.arsad.data.mapper
 
-import com.example.arsad.data.remote.responses.ForecastResponse
-import com.example.arsad.data.remote.responses.WeatherResponse
+import com.example.arsad.data.models.DailyWeatherModel
+import com.example.arsad.data.models.HourlyWeatherModel
+import com.example.arsad.data.models.WeatherModel
 
-fun WeatherResponse.applyUnitConversion(tempUnit: String, windUnit: String): WeatherResponse {
-    return this.copy(
-        weatherMain = this.weatherMain.copy(
-            temp = WeatherUnitsConverter.convertTemp(this.weatherMain.temp, tempUnit),
-            tempMin = WeatherUnitsConverter.convertTemp(this.weatherMain.tempMin, tempUnit),
-            feelsLike = WeatherUnitsConverter.convertTemp(this.weatherMain.feelsLike, tempUnit),
-            tempMax = WeatherUnitsConverter.convertTemp(this.weatherMain.tempMax, tempUnit)
-        ),
-        wind = this.wind.copy(
-            speed = WeatherUnitsConverter.convertWindSpeed(this.wind.speed, windUnit)
-        )
-    )
-}
+fun WeatherModel.applyUnitConversion(): WeatherModel = this.copy(
+    temp = WeatherUnitsConverter.convertTemp(temp, tempUnit),
+    feelsLike = WeatherUnitsConverter.convertTemp(feelsLike, tempUnit),
+    tempMin = WeatherUnitsConverter.convertTemp(tempMin, tempUnit),
+    tempMax = WeatherUnitsConverter.convertTemp(tempMax, tempUnit),
+    windSpeed = WeatherUnitsConverter.convertWindSpeed(windSpeed, windUnit),
+    hourlyForecast = hourlyForecast.map { it.applyUnitConversion(tempUnit) },
+    dailyForecast = dailyForecast.map { it.applyUnitConversion(tempUnit, windUnit) }
+)
 
-fun ForecastResponse.applyUnitConversion(tempUnit: String, windUnit: String): ForecastResponse {
-    return this.copy(
-        list = this.list.map { item ->
-            item.copy(
-                main = item.main.copy(
-                    temp = WeatherUnitsConverter.convertTemp(item.main.temp, tempUnit),
-                    tempMin = WeatherUnitsConverter.convertTemp(item.main.tempMin, tempUnit),
-                    tempMax = WeatherUnitsConverter.convertTemp(item.main.tempMax, tempUnit)
-                ),
-                wind = item.wind.copy(
-                    speed = WeatherUnitsConverter.convertWindSpeed(item.wind.speed, windUnit)
-                )
-            )
-        }
+private fun HourlyWeatherModel.applyUnitConversion(tempUnit: String): HourlyWeatherModel =
+    this.copy(
+        temp = WeatherUnitsConverter.convertTemp(temp, tempUnit)
     )
-}
+
+private fun DailyWeatherModel.applyUnitConversion(
+    tempUnit: String,
+    windUnit: String
+): DailyWeatherModel = this.copy(
+    tempMin = WeatherUnitsConverter.convertTemp(tempMin, tempUnit),
+    tempMax = WeatherUnitsConverter.convertTemp(tempMax, tempUnit),
+    windSpeed = WeatherUnitsConverter.convertWindSpeed(windSpeed, windUnit)
+)

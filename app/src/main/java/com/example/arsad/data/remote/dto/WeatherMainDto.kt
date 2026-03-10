@@ -1,8 +1,8 @@
-package com.example.arsad.data.models
+package com.example.arsad.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class WeatherMain(
+data class WeatherMainDto(
     @SerializedName("temp") val temp: Double,
     @SerializedName("feels_like") val feelsLike: Double,
     @SerializedName("temp_min") val tempMin: Double,
@@ -10,3 +10,4 @@ data class WeatherMain(
     @SerializedName("pressure") val pressure: Int,
     @SerializedName("humidity") val humidity: Int
 )
+

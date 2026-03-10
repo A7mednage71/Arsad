@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.arsad.data.local.SettingsManager
 import com.example.arsad.data.mapper.applyUnitConversion
 import com.example.arsad.data.models.GetWeatherParams
-import com.example.arsad.data.remote.responses.ForecastResponse
-import com.example.arsad.data.remote.responses.WeatherResponse
+import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.data.repository.IWeatherRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,13 +16,7 @@ import kotlinx.coroutines.launch
 
 sealed class HomeUiState {
     object Loading : HomeUiState()
-    data class Success(
-        val weather: WeatherResponse,
-        val forecast: ForecastResponse,
-        val tempUnit: String,
-        val windUnit: String
-    ) : HomeUiState()
-
+    data class Success(val data: WeatherModel) : HomeUiState()
     data class Error(val message: String) : HomeUiState()
 }
 
@@ -71,13 +64,14 @@ class HomeViewModel(
                 val forecastResult = forecastDeferred.await()
 
                 if (weatherResult.isSuccess && forecastResult.isSuccess) {
-                    _uiState.value = HomeUiState.Success(
-                        weather = weatherResult.getOrThrow()
-                            .applyUnitConversion(params.tempUnit, params.windUnit),
-                        forecast = forecastResult.getOrThrow()
-                            .applyUnitConversion(params.tempUnit, params.windUnit),
+                    val raw = WeatherModel.from(
+                        weather = weatherResult.getOrThrow(),
+                        forecast = forecastResult.getOrThrow(),
                         tempUnit = params.tempUnit,
                         windUnit = params.windUnit
+                    )
+                    _uiState.value = HomeUiState.Success(
+                        data = raw.applyUnitConversion()
                     )
                 } else {
                     _uiState.value = HomeUiState.Error("Failed to fetch weather data from server")
