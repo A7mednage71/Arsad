@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.presentation.home.view.components.FiveDayForecastSection
 import com.example.arsad.presentation.home.view.components.HomeErrorState
+import com.example.arsad.presentation.home.view.components.HomeNoLocationState
 import com.example.arsad.presentation.home.view.components.HomeShimmerLoading
 import com.example.arsad.presentation.home.view.components.HourlyForecastSection
 import com.example.arsad.presentation.home.view.components.MainWeatherCard
@@ -39,7 +40,8 @@ import com.example.arsad.util.formatTimestamp
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    onGoToSettings: () -> Unit = {}
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val isRefreshing by homeViewModel.isRefreshing.collectAsStateWithLifecycle()
@@ -72,6 +74,7 @@ fun HomeScreen(
     ) {
         when (val state = uiState) {
             is HomeUiState.Loading -> HomeShimmerLoading()
+            is HomeUiState.NoLocation -> HomeNoLocationState(onGoToSettings = onGoToSettings)
             is HomeUiState.Error -> HomeErrorState(
                 message = state.message,
                 onRetry = { homeViewModel.refresh() }

@@ -24,11 +24,10 @@ data class WeatherModel(
     val dailyForecast: List<DailyWeatherModel>
 ) {
     companion object {
+        // API always returns metric → values are always raw Celsius + m/s
         fun from(
             weather: WeatherResponse,
-            forecast: ForecastResponse,
-            tempUnit: String,
-            windUnit: String
+            forecast: ForecastResponse
         ): WeatherModel = WeatherModel(
             cityName = weather.name,
             timestamp = weather.dt,
@@ -43,8 +42,8 @@ data class WeatherModel(
             pressure = weather.weatherMain.pressure,
             cloudiness = weather.clouds.all,
             windSpeed = weather.wind.speed,
-            tempUnit = tempUnit,
-            windUnit = windUnit,
+            tempUnit = "C",  // raw — always Celsius from API (units=metric)
+            windUnit = "MS", // raw — always m/s from API (units=metric)
             hourlyForecast = forecast.list.take(8).map { HourlyWeatherModel.from(it) },
             dailyForecast = forecast.list
                 .filter { it.dtTxt.contains("12:00:00") }

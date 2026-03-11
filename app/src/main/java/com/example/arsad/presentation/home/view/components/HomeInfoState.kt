@@ -24,11 +24,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
 
-
 @Composable
-fun HomeErrorState(
-    message: String,
-    onRetry: () -> Unit,
+fun HomeInfoState(
+    title: String,
+    subtitle: String,
+    buttonLabel: String,
+    onButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.colorScheme
@@ -51,7 +52,7 @@ fun HomeErrorState(
         Spacer(modifier = Modifier.height(28.dp))
 
         Text(
-            text = stringResource(R.string.error_title),
+            text = title,
             style = typography.headlineSmall,
             color = colors.onBackground,
             textAlign = TextAlign.Center
@@ -60,7 +61,7 @@ fun HomeErrorState(
         Spacer(modifier = Modifier.height(10.dp))
 
         Text(
-            text = message,
+            text = subtitle,
             style = typography.bodyMedium,
             color = colors.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -69,21 +70,42 @@ fun HomeErrorState(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = onRetry,
+            onClick = onButtonClick,
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
-                .fillMaxWidth(0.55f)
+                .fillMaxWidth(0.65f)
                 .height(50.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = colors.primary,
                 contentColor = colors.onPrimary
             )
         ) {
-            Text(
-                text = stringResource(R.string.action_retry),
-                style = typography.labelLarge
-            )
+            Text(text = buttonLabel, style = typography.labelLarge)
         }
     }
 }
 
+@Composable
+fun HomeErrorState(
+    message: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
+) = HomeInfoState(
+    title = stringResource(R.string.error_title),
+    subtitle = message,
+    buttonLabel = stringResource(R.string.action_retry),
+    onButtonClick = onRetry,
+    modifier = modifier
+)
+
+@Composable
+fun HomeNoLocationState(
+    onGoToSettings: () -> Unit,
+    modifier: Modifier = Modifier
+) = HomeInfoState(
+    title = stringResource(R.string.no_location_title),
+    subtitle = stringResource(R.string.no_location_subtitle),
+    buttonLabel = stringResource(R.string.action_go_to_settings),
+    onButtonClick = onGoToSettings,
+    modifier = modifier
+)

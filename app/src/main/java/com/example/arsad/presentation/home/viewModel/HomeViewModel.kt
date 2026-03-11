@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 
 sealed class HomeUiState {
     object Loading : HomeUiState()
+    object NoLocation : HomeUiState()
     data class Success(val data: WeatherModel) : HomeUiState()
     data class Error(val message: String) : HomeUiState()
 }
@@ -53,12 +54,15 @@ class HomeViewModel(
                 settingsManager.languageFlow
             ) { lat, lon, temp, wind, lang ->
                 if (lat != null && lon != null) {
-                    GetWeatherParams(lat, lon, "standard", lang, temp, wind)
+                    GetWeatherParams(lat, lon, "metric", lang, temp, wind)
                 } else null
             }.collect { params ->
-                params?.let {
-                    lastParams = it
-                    fetchWeatherData(it)
+                if (params != null) {
+                    lastParams = params
+                    fetchWeatherData(params)
+                } else {
+                    // No location saved yet — stop shimmer
+                    _uiState.value = HomeUiState.NoLocation
                 }
             }
         }
@@ -82,7 +86,10 @@ class HomeViewModel(
             when (val result = repository.getFullWeatherData(params)) {
                 is ApiResult.Success -> {
                     _uiState.value = HomeUiState.Success(
-                        data = result.data.applyUnitConversion()
+                        data = result.data.applyUnitConversion(
+                            targetTempUnit = params.tempUnit,
+                            targetWindUnit = params.windUnit
+                        )
                     )
                 }
 

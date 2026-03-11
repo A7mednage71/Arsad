@@ -74,7 +74,12 @@ fun AppNavGraph(
             )
             HomeScreen(
                 homeViewModel = homeViewModel,
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                onGoToSettings = {
+                    navController.navigate(Screen.BottomBar.Settings.route) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 

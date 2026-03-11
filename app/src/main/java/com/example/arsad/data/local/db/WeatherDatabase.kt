@@ -9,7 +9,7 @@ import com.example.arsad.data.local.converters.WeatherTypeConverters
 import com.example.arsad.data.local.dao.WeatherDao
 import com.example.arsad.data.local.entity.WeatherEntity
 
-@Database(entities = [WeatherEntity::class], version = 1, exportSchema = false)
+@Database(entities = [WeatherEntity::class], version = 2, exportSchema = false)
 @TypeConverters(WeatherTypeConverters::class)
 abstract class WeatherDatabase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDao

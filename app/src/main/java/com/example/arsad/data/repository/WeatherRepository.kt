@@ -29,9 +29,7 @@ class WeatherRepositoryImpl(
 
                     val weatherModel = WeatherModel.from(
                         weather = weatherRes.data,
-                        forecast = forecastRes.data,
-                        tempUnit = params.units,
-                        windUnit = "m/s"
+                        forecast = forecastRes.data
                     )
 
                     // Cache the latest weather snapshot in Room
