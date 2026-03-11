@@ -1,5 +1,6 @@
 package com.example.arsad.data.mapper
 
+import com.example.arsad.data.local.entity.WeatherEntity
 import com.example.arsad.data.models.DailyWeatherModel
 import com.example.arsad.data.models.HourlyWeatherModel
 import com.example.arsad.data.models.WeatherModel
@@ -26,4 +27,24 @@ private fun DailyWeatherModel.applyUnitConversion(
     tempMin = WeatherUnitsConverter.convertTemp(tempMin, tempUnit),
     tempMax = WeatherUnitsConverter.convertTemp(tempMax, tempUnit),
     windSpeed = WeatherUnitsConverter.convertWindSpeed(windSpeed, windUnit)
+)
+
+
+// for local data source (Room)
+fun WeatherModel.toEntity(): WeatherEntity = WeatherEntity(
+    cityName = cityName, timestamp = timestamp, temp = temp,
+    feelsLike = feelsLike, tempMin = tempMin, tempMax = tempMax,
+    description = description, iconCode = iconCode, humidity = humidity,
+    pressure = pressure, cloudiness = cloudiness, windSpeed = windSpeed,
+    tempUnit = tempUnit, windUnit = windUnit,
+    hourlyForecast = hourlyForecast, dailyForecast = dailyForecast
+)
+
+fun WeatherEntity.toUIModel(): WeatherModel = WeatherModel(
+    cityName = cityName, timestamp = timestamp, temp = temp,
+    feelsLike = feelsLike, tempMin = tempMin, tempMax = tempMax,
+    description = description, iconCode = iconCode, humidity = humidity,
+    pressure = pressure, cloudiness = cloudiness, windSpeed = windSpeed,
+    tempUnit = tempUnit, windUnit = windUnit,
+    hourlyForecast = hourlyForecast, dailyForecast = dailyForecast
 )

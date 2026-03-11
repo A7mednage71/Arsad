@@ -8,12 +8,16 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.arsad.data.local.datasource.WeatherLocalDataSourceImpl
+import com.example.arsad.data.local.db.WeatherDatabase
+import com.example.arsad.data.remote.datasource.WeatherRemoteDataSourceImpl
 import com.example.arsad.data.remote.network.RetrofitHelper
 import com.example.arsad.data.repository.WeatherRepositoryImpl
 import com.example.arsad.presentation.alerts.view.AlertsScreen
@@ -34,6 +38,13 @@ fun AppNavGraph(
 ) {
     val context = LocalContext.current
     val application = context.applicationContext as Application
+
+    val repository = remember {
+        val dao = WeatherDatabase.getInstance(context).weatherDao()
+        val localDataSource = WeatherLocalDataSourceImpl(dao)
+        val remoteDataSource = WeatherRemoteDataSourceImpl(RetrofitHelper.service)
+        WeatherRepositoryImpl(remoteDataSource, localDataSource)
+    }
 
     NavHost(
         navController = navController,
@@ -57,11 +68,14 @@ fun AppNavGraph(
         composable(Screen.BottomBar.Home.route) {
             val homeViewModel: HomeViewModel = viewModel(
                 factory = HomeViewModelFactory(
-                    WeatherRepositoryImpl(RetrofitHelper.service),
-                    application
+                    repository = repository,
+                    application = application
                 )
             )
-            HomeScreen(homeViewModel = homeViewModel)
+            HomeScreen(
+                homeViewModel = homeViewModel,
+                snackbarHostState = snackbarHostState
+            )
         }
 
         composable(Screen.BottomBar.Saved.route) { backStackEntry ->

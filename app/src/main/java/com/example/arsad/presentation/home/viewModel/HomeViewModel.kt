@@ -2,17 +2,19 @@ package com.example.arsad.presentation.home.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.arsad.data.local.SettingsManager
+import com.example.arsad.data.local.ds.SettingsManager
 import com.example.arsad.data.mapper.applyUnitConversion
 import com.example.arsad.data.models.GetWeatherParams
 import com.example.arsad.data.models.WeatherModel
+import com.example.arsad.data.remote.datasource.ApiResult
 import com.example.arsad.data.repository.IWeatherRepository
-import kotlinx.coroutines.async
+import com.example.arsad.util.NetworkManager
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-
 
 sealed class HomeUiState {
     object Loading : HomeUiState()
@@ -22,15 +24,26 @@ sealed class HomeUiState {
 
 class HomeViewModel(
     private val repository: IWeatherRepository,
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
+    private val networkManager: NetworkManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
+    private val _showOfflineEvent = MutableSharedFlow<String>()
+    val showOfflineEvent = _showOfflineEvent.asSharedFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     private var lastParams: GetWeatherParams? = null
 
     init {
+        observeSettings()
+    }
+
+    private fun observeSettings() {
         viewModelScope.launch {
             combine(
                 settingsManager.latitudeFlow,
@@ -51,39 +64,47 @@ class HomeViewModel(
         }
     }
 
-    private fun fetchWeatherData(params: GetWeatherParams) {
+    private fun fetchWeatherData(params: GetWeatherParams, isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _uiState.value = HomeUiState.Loading
-            try {
-                //  Parallel API calls using async/await
-                val weatherDeferred = async { repository.getCurrentWeather(params) }
-                val forecastDeferred = async { repository.getForecast(params) }
-
-                // Waiting for both results
-                val weatherResult = weatherDeferred.await()
-                val forecastResult = forecastDeferred.await()
-
-                if (weatherResult.isSuccess && forecastResult.isSuccess) {
-                    val raw = WeatherModel.from(
-                        weather = weatherResult.getOrThrow(),
-                        forecast = forecastResult.getOrThrow(),
-                        tempUnit = params.tempUnit,
-                        windUnit = params.windUnit
-                    )
-                    _uiState.value = HomeUiState.Success(
-                        data = raw.applyUnitConversion()
-                    )
-                } else {
-                    _uiState.value = HomeUiState.Error("Failed to fetch weather data from server")
-                }
-            } catch (e: Exception) {
-                // English error message for unexpected exceptions
-                _uiState.value = HomeUiState.Error(e.message ?: "An unexpected error occurred")
+            // Initial State Handling
+            if (isRefresh) {
+                _isRefreshing.value = true
+            } else {
+                _uiState.value = HomeUiState.Loading
             }
+
+            // Pre-fetch Connectivity Check
+            if (!networkManager.hasInternet()) {
+                _showOfflineEvent.emit("No internet connection. Showing offline data.")
+            }
+
+            // Data Fetching
+            when (val result = repository.getFullWeatherData(params)) {
+                is ApiResult.Success -> {
+                    _uiState.value = HomeUiState.Success(
+                        data = result.data.applyUnitConversion()
+                    )
+                }
+
+                is ApiResult.Failure -> {
+                    if (!isRefresh || _uiState.value !is HomeUiState.Success) {
+                        _uiState.value = HomeUiState.Error(result.message)
+                    } else {
+                        // Just notify the user that refresh failed
+                        _showOfflineEvent.emit("Update failed. Please check your connection.")
+                    }
+                }
+
+                is ApiResult.Loading -> {}
+            }
+
+            _isRefreshing.value = false
         }
     }
 
     fun refresh() {
-        lastParams?.let { fetchWeatherData(it) }
+        lastParams?.let {
+            fetchWeatherData(it, isRefresh = true)
+        }
     }
 }

@@ -2,7 +2,7 @@ package com.example.arsad.presentation.settings.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.arsad.data.local.SettingsManager
+import com.example.arsad.data.local.ds.SettingsManager
 import com.example.arsad.data.location.LocationProvider
 import com.example.arsad.data.location.LocationResult
 import kotlinx.coroutines.flow.MutableSharedFlow

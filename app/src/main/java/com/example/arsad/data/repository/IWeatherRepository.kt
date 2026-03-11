@@ -1,10 +1,9 @@
 package com.example.arsad.data.repository
 
 import com.example.arsad.data.models.GetWeatherParams
-import com.example.arsad.data.remote.responses.ForecastResponse
-import com.example.arsad.data.remote.responses.WeatherResponse
+import com.example.arsad.data.models.WeatherModel
+import com.example.arsad.data.remote.datasource.ApiResult
 
 interface IWeatherRepository {
-    suspend fun getCurrentWeather(params: GetWeatherParams): Result<WeatherResponse>
-    suspend fun getForecast(params: GetWeatherParams): Result<ForecastResponse>
+    suspend fun getFullWeatherData(params: GetWeatherParams): ApiResult<WeatherModel>
 }
