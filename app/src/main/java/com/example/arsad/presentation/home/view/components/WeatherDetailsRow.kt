@@ -3,16 +3,19 @@ package com.example.arsad.presentation.home.view.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Air
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.Compress
+import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
@@ -25,19 +28,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
+import com.example.arsad.data.models.WeatherModel
+import com.example.arsad.util.getWindSymbol
+import com.example.arsad.util.localize
 
-data class WeatherDetail(
-    val label: String,
-    val value: String,
-    val icon: ImageVector
-)
 
 @Composable
-fun WeatherDetailsGrid(
-    details: List<WeatherDetail>,
-    modifier: Modifier = Modifier
-) {
+fun WeatherDetailsGrid(data: WeatherModel, windUnit: String, modifier: Modifier = Modifier) {
     val colors = MaterialTheme.colorScheme
+    val windSymbol = getWindSymbol(windUnit)
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
@@ -47,63 +46,71 @@ fun WeatherDetailsGrid(
             modifier = Modifier.padding(bottom = 14.dp)
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(360.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(details) { detail ->
-                WeatherDetailCard(detail = detail)
-            }
+            DetailCard(
+                Modifier.weight(1f),
+                Icons.Default.WaterDrop,
+                stringResource(R.string.label_humidity),
+                "${data.humidity.localize()}%"
+            )
+            DetailCard(
+                Modifier.weight(1f),
+                Icons.Default.Compress,
+                stringResource(R.string.label_pressure),
+                "${data.pressure.localize()} ${stringResource(R.string.pressure_unit)}"
+            )
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            DetailCard(
+                Modifier.weight(1f),
+                Icons.Default.Cloud,
+                stringResource(R.string.label_clouds),
+                "${data.cloudiness.localize()}%"
+            )
+            DetailCard(
+                Modifier.weight(1f),
+                Icons.Default.Air,
+                stringResource(R.string.label_wind),
+                "${data.windSpeed.localize()} $windSymbol"
+            )
         }
     }
 }
 
 @Composable
-private fun WeatherDetailCard(
-    detail: WeatherDetail,
-    modifier: Modifier = Modifier
-) {
+private fun DetailCard(modifier: Modifier, icon: ImageVector, label: String, value: String) {
     val colors = MaterialTheme.colorScheme
-
     Surface(
         modifier = modifier.aspectRatio(1.15f),
         shape = RoundedCornerShape(20.dp),
-        color = colors.surface.copy(alpha = 0.45f),
-        tonalElevation = 2.dp,
-        border = BorderStroke(0.5.dp, colors.onSurface.copy(alpha = 0.06f))
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.45f),
+        border = BorderStroke(1.dp, colors.onSurface.copy(alpha = 0.08f))
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                imageVector = detail.icon,
-                contentDescription = detail.label,
-                tint = colors.secondary,
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.size(40.dp)
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
             Text(
-                text = detail.label,
+                text = label,
                 style = typography.bodyMedium,
-                color = colors.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
             Text(
-                text = detail.value,
-                style = typography.headlineSmall,
-                color = colors.onSurface
+                text = value, style = typography.headlineSmall, color = colors.onSurface
             )
         }
     }
 }
-

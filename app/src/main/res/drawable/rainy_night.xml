@@ -1,0 +1,72 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Small crescent moon — top-right, proper path no cutout -->
+    <path
+        android:fillColor="#FDD835"
+        android:pathData="M 50,4 C 43,4 38,9 38,16 C 38,23 43,28 50,28 C 46,25 43,21 43,16 C 43,11 46,7 50,4 Z" />
+    <path
+        android:fillAlpha="0.45"
+        android:fillColor="#FFEE58"
+        android:pathData="M 47,7 C 43,10 41,13 41,16 C 41,19 43,22 47,25 C 44,22 42,19 42,16 C 42,13 44,10 47,7 Z" />
+    <!-- Moon shimmer -->
+    <path
+        android:fillAlpha="0.35"
+        android:fillColor="#FFFFFF"
+        android:pathData="M 46,6 C 47,4.5 48.5,4 50,4 C 48,5.5 46.5,7.5 46,10 C 45.5,9 45.5,7.5 46,6 Z" />
+    <!-- Moon crater -->
+    <path
+        android:fillAlpha="0.35"
+        android:fillColor="#F9A825"
+        android:pathData="M43,14 C43,12.9 43.9,12 45,12 C46.1,12 47,12.9 47,14 C47,15.1 46.1,16 45,16 C43.9,16 43,15.1 43,14 Z" />
+
+    <!-- Tiny dot stars -->
+    <path
+        android:fillColor="#FFF9C4"
+        android:pathData="M8,8 L8.7,10.2 L11,10.2 L9.2,11.5 L9.9,13.7 L8,12.4 L6.1,13.7 L6.8,11.5 L5,10.2 L7.3,10.2 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,4 C22,3.4 22.4,3 23,3 C23.6,3 24,3.4 24,4 C24,4.6 23.6,5 23,5 C22.4,5 22,4.6 22,4 Z" />
+    <path
+        android:fillColor="#FFF59D"
+        android:pathData="M30,10 C30,9.4 30.4,9 31,9 C31.6,9 32,9.4 32,10 C32,10.6 31.6,11 31,11 C30.4,11 30,10.6 30,10 Z" />
+
+    <!-- Storm cloud — dark, bezier -->
+    <path
+        android:fillColor="#37474F"
+        android:pathData="M52,50 L18,50 C12.5,50 8,45.5 8,40 C8,34.5 12.5,30 18,30 C18.3,30 18.6,30 18.9,30 C19.6,23.4 25.2,18 32,18 C38.2,18 43.4,22.5 44.7,28.5 C45.8,28.2 47,28 48.2,28 C51.4,28 54.3,29.3 56.4,31.5 C58.5,33.7 59.5,36.7 59,39.8 C58,46 54,50 52,50 Z" />
+    <path
+        android:fillAlpha="0.1"
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,32 C25,29 29,27.5 32,28 C29,29.5 26,32.5 24.5,36 C23,34 22,32.8 22,32 Z" />
+
+    <!-- Cyan rain drops — angled -->
+    <path
+        android:pathData="M20,54 L17,62"
+        android:strokeWidth="3"
+        android:strokeColor="#29B6F6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M32,54 L29,62"
+        android:strokeWidth="3"
+        android:strokeColor="#29B6F6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M44,54 L41,62"
+        android:strokeWidth="3"
+        android:strokeColor="#29B6F6"
+        android:strokeLineCap="round" />
+    <!-- Teardrop tips -->
+    <path
+        android:fillColor="#0288D1"
+        android:pathData="M16,62 C16,60.3 17,59 18,59 C19,59 19.5,60.2 19.5,61.2 C19.5,63.2 18,64.8 16.5,64.8 C15.5,64.8 16,63.2 16,62 Z" />
+    <path
+        android:fillColor="#0288D1"
+        android:pathData="M28,62 C28,60.3 29,59 30,59 C31,59 31.5,60.2 31.5,61.2 C31.5,63.2 30,64.8 28.5,64.8 C27.5,64.8 28,63.2 28,62 Z" />
+    <path
+        android:fillColor="#0288D1"
+        android:pathData="M40,62 C40,60.3 41,59 42,59 C43,59 43.5,60.2 43.5,61.2 C43.5,63.2 42,64.8 40.5,64.8 C39.5,64.8 40,63.2 40,62 Z" />
+</vector>

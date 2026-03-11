@@ -1,4 +1,4 @@
-package com.example.arsad.data.local
+package com.example.arsad.data.local.ds
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey

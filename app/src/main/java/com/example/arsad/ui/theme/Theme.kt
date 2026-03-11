@@ -56,7 +56,7 @@ fun ArsadTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = getAppTypography(),
         content = content
     )
 }

@@ -3,6 +3,7 @@ package com.example.arsad.presentation.home.view.components
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,21 +34,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
-
-data class DailyForecast(
-    val dayName: String,
-    val highTemp: String,
-    val lowTemp: String,
-    val icon: ImageVector,
-    val status: String
-)
+import com.example.arsad.data.models.DailyWeatherModel
+import com.example.arsad.util.formatToOnlyDayName
+import com.example.arsad.util.getTempSymbol
+import com.example.arsad.util.getWeatherIcon
+import com.example.arsad.util.getWindSymbol
+import com.example.arsad.util.localize
 
 @Composable
 fun FiveDayForecastSection(
-    dailyData: List<DailyForecast>,
+    dailyData: List<DailyWeatherModel>,
+    tempUnit: String,
+    windUnit: String,
     modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.colorScheme
@@ -73,8 +76,8 @@ fun FiveDayForecastSection(
                     .padding(16.dp)
                     .animateContentSize(animationSpec = tween(300))
             ) {
-                dailyData.forEachIndexed { index, day ->
-                    DailyRow(day = day)
+                dailyData.forEachIndexed { index, item ->
+                    DailyRow(item = item, tempUnit = tempUnit, windUnit = windUnit)
                     if (index < dailyData.lastIndex) {
                         HorizontalDivider(
                             modifier = Modifier.padding(vertical = 10.dp),
@@ -90,9 +93,14 @@ fun FiveDayForecastSection(
 
 @Composable
 private fun DailyRow(
-    day: DailyForecast,
+    item: DailyWeatherModel,
+    tempUnit: String,
+    windUnit: String,
     modifier: Modifier = Modifier
 ) {
+    val windSymbol = getWindSymbol(windUnit)
+    val tempSymbol = getTempSymbol(tempUnit)
+
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
     var expanded by remember { mutableStateOf(false) }
@@ -101,16 +109,14 @@ private fun DailyRow(
         modifier = modifier
             .fillMaxWidth()
             .clickable { expanded = !expanded }
-            .animateContentSize(animationSpec = tween(300))
-    ) {
-        // Main row
+            .animateContentSize(animationSpec = tween(300))) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = day.dayName,
+                text = item.dt.formatToOnlyDayName(),
                 style = typography.bodyLarge,
                 color = colors.onSurface,
                 modifier = Modifier.width(100.dp)
@@ -121,22 +127,24 @@ private fun DailyRow(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.weight(1f)
             ) {
-                Icon(
-                    imageVector = day.icon,
-                    contentDescription = day.status,
-                    tint = colors.primary,
-                    modifier = Modifier.size(22.dp)
+                Image(
+                    painter = painterResource(id = getWeatherIcon(item.iconCode)),
+                    contentDescription = null,
+                    modifier = Modifier.size(26.dp),
+                    contentScale = ContentScale.Fit
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = day.status,
+                    text = item.description,
                     style = typography.bodyMedium,
                     color = colors.onSurfaceVariant
                 )
             }
 
             Text(
-                text = "${day.highTemp} / ${day.lowTemp}",
+                text = "${item.tempMax.toInt().localize()}/ ${
+                    item.tempMin.toInt().localize()
+                } $tempSymbol",
                 style = typography.labelLarge,
                 color = colors.onSurface
             )
@@ -152,7 +160,6 @@ private fun DailyRow(
             )
         }
 
-        // Expanded details
         if (expanded) {
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -170,17 +177,17 @@ private fun DailyRow(
                     DetailChip(
                         icon = Icons.Default.WaterDrop,
                         label = stringResource(R.string.label_humidity),
-                        value = "62%"
+                        value = "${item.humidity.localize()}%"
                     )
                     DetailChip(
                         icon = Icons.Default.Air,
                         label = stringResource(R.string.label_wind),
-                        value = "14 km/h"
+                        value = "${item.windSpeed.localize()} $windSymbol"
                     )
                     DetailChip(
                         icon = Icons.Default.Compress,
                         label = stringResource(R.string.label_pressure),
-                        value = "1015 hPa"
+                        value = item.pressure.localize() + " " + stringResource(R.string.pressure_unit)
                     )
                 }
             }
@@ -190,17 +197,13 @@ private fun DailyRow(
 
 @Composable
 private fun DetailChip(
-    icon: ImageVector,
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier
+    icon: ImageVector, label: String, value: String, modifier: Modifier = Modifier
 ) {
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
 
     Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
             imageVector = icon,
@@ -210,15 +213,10 @@ private fun DetailChip(
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = value,
-            style = typography.labelLarge,
-            color = colors.onSurface
+            text = value, style = typography.labelLarge, color = colors.onSurface
         )
         Text(
-            text = label,
-            style = typography.labelSmall,
-            color = colors.onSurfaceVariant
+            text = label, style = typography.labelSmall, color = colors.onSurfaceVariant
         )
     }
 }
-

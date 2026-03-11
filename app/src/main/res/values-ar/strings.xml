@@ -8,6 +8,8 @@
     <string name="splash_loading">جارٍ تحضير بيانات الطقس…</string>
 
     <string name="home_title">مرحباً بك في أرصاد</string>
+    <string name="error_title">حدث خطأ ما</string>
+    <string name="action_retry">حاول مجدداً</string>
     <string name="home_subtitle">الشاشة الرئيسية جاهزة لعرض بيانات الطقس.</string>
 
     <string name="section_today_hourly">اليوم</string>
@@ -74,7 +76,15 @@
 
     <!-- قسم تفاصيل الطقس -->
     <string name="section_weather_details">تفاصيل الطقس</string>
-    <string name="label_feels_like">الإحساس الحراري صافٍ</string>
+    <string name="label_feels_like">الإحساس الحراري</string>
+
+    <!-- وحدات القياس -->
+    <string name="temp_celsius">°م</string>
+    <string name="temp_fahrenheit">°ف</string>
+    <string name="temp_kelvin">ك</string>
+    <string name="wind_ms">م/ث</string>
+    <string name="wind_mph">ميل/س</string>
+    <string name="pressure_unit">هـ.با</string>
 
     <!-- بيانات مؤقتة للشاشة الرئيسية -->
     <string name="home_location_placeholder">القاهرة، مصر</string>
@@ -131,4 +141,7 @@
 
     <!-- شاشة البداية -->
     <string name="splash_version">الإصدار 1.0</string>
+
+    <string name="label_today">اليوم</string>
+    <string name="label_tomorrow">غداً</string>
 </resources>

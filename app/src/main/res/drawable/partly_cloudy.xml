@@ -1,0 +1,48 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Small sun top-left -->
+    <path
+        android:pathData="M13,6 L13,2"
+        android:strokeWidth="2.5"
+        android:strokeColor="#FF8F00"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M5,14 L1,14"
+        android:strokeWidth="2.5"
+        android:strokeColor="#FF8F00"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M7.8,8.8 L5,6"
+        android:strokeWidth="2.5"
+        android:strokeColor="#FF8F00"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M18,8.8 L21,6"
+        android:strokeWidth="2.5"
+        android:strokeColor="#FF8F00"
+        android:strokeLineCap="round" />
+    <path
+        android:fillColor="#FFCA28"
+        android:pathData="M13,8 C17.4,8 21,11.6 21,16 C21,20.4 17.4,24 13,24 C8.6,24 5,20.4 5,16 C5,11.6 8.6,8 13,8 Z" />
+    <path
+        android:fillColor="#FFE57F"
+        android:pathData="M13,11 C15.8,11 18,13.2 18,16 C18,18.8 15.8,21 13,21 C10.2,21 8,18.8 8,16 C8,13.2 10.2,11 13,11 Z" />
+    <path
+        android:fillAlpha="0.4"
+        android:fillColor="#FFFFFF"
+        android:pathData="M9,12 C10,10.5 11.5,10 13,11 C11.5,11.5 10,13 9.5,15 C9,13.5 8.8,12.5 9,12 Z" />
+
+    <!-- Cloud — proper bezier shape -->
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M52,56 L16,56 C10.5,56 6,51.5 6,46 C6,40.5 10.5,36 16,36 C16.3,36 16.6,36 16.9,36 C17.6,29.4 23.2,24 30,24 C36.2,24 41.4,28.5 42.7,34.5 C43.8,34.2 45,34 46.2,34 C49.4,34 52.3,35.3 54.4,37.5 C56.5,39.7 57.5,42.7 57,45.8 C56.3,51.5 54,56 52,56 Z" />
+    <!-- Cloud highlight -->
+    <path
+        android:fillAlpha="0.5"
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,38 C23,35 27,33.5 30,34 C27,35.5 24,38.5 22.5,42 C21,40 20,38.8 20,38 Z" />
+</vector>
