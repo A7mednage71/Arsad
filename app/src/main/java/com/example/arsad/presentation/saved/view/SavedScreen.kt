@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import com.example.arsad.R
 import com.example.arsad.data.models.Coordinates
+import com.example.arsad.presentation.saved.view.components.SavedListShimmer
 import com.example.arsad.presentation.saved.view.components.SavedLocationsEmptyState
 import com.example.arsad.presentation.saved.view.components.SavedLocationsList
 import com.example.arsad.presentation.saved.viewModel.SavedViewModel
@@ -46,6 +47,7 @@ fun SavedScreen(
     val typography = MaterialTheme.typography
 
     val savedLocations by viewModel.savedLocations.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
 
     // Receive map result from MapPickerScreen
@@ -88,7 +90,9 @@ fun SavedScreen(
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            if (savedLocations.isEmpty()) {
+            if (isLoading) {
+                SavedListShimmer()
+            } else if (savedLocations.isEmpty()) {
                 SavedLocationsEmptyState(modifier = Modifier.weight(1f))
             } else {
                 SavedLocationsList(

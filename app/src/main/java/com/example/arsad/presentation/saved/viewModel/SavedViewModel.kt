@@ -9,6 +9,7 @@ import com.example.arsad.data.mapper.toUIModel
 import com.example.arsad.data.models.Coordinates
 import com.example.arsad.data.models.SavedLocationModel
 import com.example.arsad.data.repository.IWeatherRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -19,8 +20,10 @@ class SavedViewModel(
 ) : ViewModel() {
 
     private val _savedLocations = MutableStateFlow<List<SavedLocationModel>>(emptyList())
-
     val savedLocations = _savedLocations.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
 
     init {
@@ -29,6 +32,7 @@ class SavedViewModel(
 
     private fun observeSavedLocations() {
         viewModelScope.launch {
+            _isLoading.value = true
             combine(
                 weatherRepository.getAllSavedLocations(),
                 settingsManager.tempUnitFlow,
@@ -47,6 +51,8 @@ class SavedViewModel(
                 }
             }.collect { mappedList ->
                 _savedLocations.value = mappedList
+                delay(500)
+                _isLoading.value = false
             }
         }
     }
