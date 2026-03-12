@@ -1,6 +1,8 @@
 package com.example.arsad.util
 
 
+import android.text.format.DateUtils
+import android.text.format.DateUtils.getRelativeTimeSpanString
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -74,5 +76,13 @@ fun Number.localize(): String {
     } else {
         numberStr
     }
+}
+
+fun Long.toRelativeTime(): String {
+    return getRelativeTimeSpanString(
+        this,
+        System.currentTimeMillis(),
+        DateUtils.MINUTE_IN_MILLIS
+    ).toString()
 }
 

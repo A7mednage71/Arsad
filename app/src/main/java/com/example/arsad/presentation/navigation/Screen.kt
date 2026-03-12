@@ -6,6 +6,7 @@ sealed class Screen(val route: String) {
     object Splash : Screen("splash_screen")
     object MainContainer : Screen("main_container")
     object MapPicker : Screen("map_picker")
+    object WeatherDetails : Screen("weather_details/{id}/{lat}/{lon}")
 
     sealed class BottomBar(
         val baseRoute: String,

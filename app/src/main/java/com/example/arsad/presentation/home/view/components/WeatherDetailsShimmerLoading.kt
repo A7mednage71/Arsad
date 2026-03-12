@@ -83,7 +83,7 @@ fun ShimmerCircle(size: Dp) {
 
 
 @Composable
-fun HomeShimmerLoading(modifier: Modifier = Modifier) {
+fun WeatherDetailsShimmerLoading(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()

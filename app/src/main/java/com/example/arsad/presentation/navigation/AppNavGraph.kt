@@ -13,8 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.arsad.data.local.datasource.WeatherLocalDataSourceImpl
 import com.example.arsad.data.local.db.WeatherDatabase
 import com.example.arsad.data.remote.datasource.WeatherRemoteDataSourceImpl
@@ -26,10 +28,15 @@ import com.example.arsad.presentation.home.viewModel.HomeViewModel
 import com.example.arsad.presentation.home.viewModel.HomeViewModelFactory
 import com.example.arsad.presentation.map_picker.view.MapPickerScreen
 import com.example.arsad.presentation.saved.view.SavedScreen
+import com.example.arsad.presentation.saved.viewModel.SavedViewModel
+import com.example.arsad.presentation.saved.viewModel.SavedViewModelFactory
 import com.example.arsad.presentation.settings.view.SettingsScreen
 import com.example.arsad.presentation.settings.viewModel.SettingsViewModel
 import com.example.arsad.presentation.settings.viewModel.SettingsViewModelFactory
 import com.example.arsad.presentation.splash.view.SplashScreen
+import com.example.arsad.presentation.weather_details.view.WeatherDetailScreen
+import com.example.arsad.presentation.weather_details.viewModel.WeatherDetailViewModel
+import com.example.arsad.presentation.weather_details.viewModel.WeatherDetailViewModelFactory
 
 @Composable
 fun AppNavGraph(
@@ -40,8 +47,9 @@ fun AppNavGraph(
     val application = context.applicationContext as Application
 
     val repository = remember {
-        val dao = WeatherDatabase.getInstance(context).weatherDao()
-        val localDataSource = WeatherLocalDataSourceImpl(dao)
+        val weatherDao = WeatherDatabase.getInstance(context).weatherDao()
+        val savedLocationDao = WeatherDatabase.getInstance(context).savedLocationDao()
+        val localDataSource = WeatherLocalDataSourceImpl(weatherDao, savedLocationDao)
         val remoteDataSource = WeatherRemoteDataSourceImpl(RetrofitHelper.service)
         WeatherRepositoryImpl(remoteDataSource, localDataSource)
     }
@@ -84,10 +92,22 @@ fun AppNavGraph(
         }
 
         composable(Screen.BottomBar.Saved.route) { backStackEntry ->
+            val viewModel: SavedViewModel = viewModel(
+                factory = SavedViewModelFactory(application, repository)
+            )
             SavedScreen(
                 snackbarHostState = snackbarHostState,
                 onOpenMapPicker = { navController.navigate(Screen.MapPicker.route) },
-                navBackStackEntry = backStackEntry
+                navBackStackEntry = backStackEntry,
+                viewModel = viewModel,
+                onLocationClicked = { id, lat, lon ->
+                    navController.navigate(
+                        Screen.WeatherDetails.route
+                            .replace("{lat}", lat.toFloat().toString())
+                            .replace("{lon}", lon.toFloat().toString())
+                            .replace("{id}", id.toString())
+                    )
+                }
             )
         }
 
@@ -117,6 +137,33 @@ fun AppNavGraph(
                     }
                     navController.popBackStack()
                 }
+            )
+        }
+
+        composable(
+            route = Screen.WeatherDetails.route,
+            arguments = listOf(
+                navArgument("lat") { type = NavType.FloatType },
+                navArgument("lon") { type = NavType.FloatType },
+                navArgument("id") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+
+            val weatherDetailViewModel: WeatherDetailViewModel = viewModel(
+                factory = WeatherDetailViewModelFactory(repository, application)
+            )
+
+            val lat = backStackEntry.arguments?.getFloat("lat")?.toDouble() ?: 0.0
+            val lon = backStackEntry.arguments?.getFloat("lon")?.toDouble() ?: 0.0
+            val id = backStackEntry.arguments?.getInt("id") ?: 0
+
+
+            WeatherDetailScreen(
+                lat = lat,
+                lon = lon,
+                id = id,
+                viewModel = weatherDetailViewModel,
+                onBack = { navController.popBackStack() }
             )
         }
     }

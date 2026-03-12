@@ -9,14 +9,14 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.unit.dp
-import com.example.arsad.presentation.saved.view.SavedLocation
+import com.example.arsad.data.models.SavedLocationModel
 
 @Composable
 fun SavedLocationsList(
-    savedLocations: SnapshotStateList<SavedLocation>,
-    onCityClick: (SavedLocation) -> Unit
+    savedLocations: List<SavedLocationModel>,
+    onCityClick: (SavedLocationModel) -> Unit,
+    onCityDelete: (SavedLocationModel) -> Unit
 ) {
 
     LazyColumn(
@@ -24,21 +24,13 @@ fun SavedLocationsList(
         contentPadding = PaddingValues(bottom = 120.dp)
     ) {
         items(
-            items = savedLocations,
-            key = { it.id }
-        ) { location ->
+            items = savedLocations, key = { it.id }) { location ->
             AnimatedVisibility(
-                visible = true,
-                enter = fadeIn(),
-                exit = shrinkVertically() + fadeOut()
+                visible = true, enter = fadeIn(), exit = shrinkVertically() + fadeOut()
             ) {
-                SavedCityCard(
-                    location,
-                    onDelete = {
-                        savedLocations.remove(location)
-                    },
-                    onClick = { onCityClick(location) }
-                )
+                SavedCityCard(location, onDelete = {
+                    onCityDelete(location)
+                }, onClick = { onCityClick(location) })
             }
         }
     }

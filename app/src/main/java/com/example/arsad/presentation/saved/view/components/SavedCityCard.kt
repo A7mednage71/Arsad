@@ -30,20 +30,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
-import com.example.arsad.presentation.saved.view.SavedLocation
+import com.example.arsad.data.models.SavedLocationModel
+import com.example.arsad.util.getTempSymbol
+import com.example.arsad.util.getWeatherIcon
+import com.example.arsad.util.toRelativeTime
 
 @Composable
 fun SavedCityCard(
-    location: SavedLocation,
+    location: SavedLocationModel,
     onDelete: () -> Unit,
     onClick: () -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
     val dismissState = rememberSwipeToDismissBoxState()
+    val icon = getWeatherIcon(location.iconCode)
+    val tempSymbol = getTempSymbol(location.tempUnit)
 
     LaunchedEffect(dismissState.currentValue) {
         if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart) {
@@ -92,33 +98,42 @@ fun SavedCityCard(
                         style = MaterialTheme.typography.titleLarge,
                         color = colors.onSurface
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Spacer(modifier = Modifier.height(2.dp))
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = null,
                             tint = colors.primary,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(14.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = location.country,
+                            text = location.country ?: "",
                             style = MaterialTheme.typography.bodyMedium,
                             color = colors.onSurfaceVariant
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Updated ${location.timestamp.toRelativeTime()}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = colors.onSurfaceVariant.copy(alpha = 0.6f)
+                    )
                 }
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = location.weatherIcon,
+                    Image(
+                        painter = painterResource(id = icon),
                         contentDescription = null,
-                        tint = colors.primary,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(40.dp),
+                        contentScale = ContentScale.Fit
                     )
                     Text(
-                        text = location.temp,
+                        text = "${location.lastTemp.toInt()} $tempSymbol",
                         style = MaterialTheme.typography.titleMedium,
                         color = colors.onSurface
                     )
