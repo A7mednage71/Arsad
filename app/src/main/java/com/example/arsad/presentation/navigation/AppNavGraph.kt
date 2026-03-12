@@ -23,6 +23,7 @@ import com.example.arsad.data.remote.datasource.WeatherRemoteDataSourceImpl
 import com.example.arsad.data.remote.network.RetrofitHelper
 import com.example.arsad.data.repository.WeatherRepositoryImpl
 import com.example.arsad.presentation.alerts.view.AlertsScreen
+import com.example.arsad.presentation.alerts.viewModel.AlertViewModelFactory
 import com.example.arsad.presentation.home.view.HomeScreen
 import com.example.arsad.presentation.home.viewModel.HomeViewModel
 import com.example.arsad.presentation.home.viewModel.HomeViewModelFactory
@@ -49,7 +50,9 @@ fun AppNavGraph(
     val repository = remember {
         val weatherDao = WeatherDatabase.getInstance(context).weatherDao()
         val savedLocationDao = WeatherDatabase.getInstance(context).savedLocationDao()
-        val localDataSource = WeatherLocalDataSourceImpl(weatherDao, savedLocationDao)
+        val weatherAlertDao = WeatherDatabase.getInstance(context).weatherAlertDao()
+        val localDataSource =
+            WeatherLocalDataSourceImpl(weatherDao, savedLocationDao, weatherAlertDao)
         val remoteDataSource = WeatherRemoteDataSourceImpl(RetrofitHelper.service)
         WeatherRepositoryImpl(remoteDataSource, localDataSource)
     }
@@ -111,7 +114,16 @@ fun AppNavGraph(
             )
         }
 
-        composable(Screen.BottomBar.Alerts.route) { AlertsScreen() }
+        composable(Screen.BottomBar.Alerts.route) {
+            AlertsScreen(
+                viewModel = viewModel(
+                    factory = AlertViewModelFactory(
+                        repository = repository,
+                        application = application
+                    )
+                )
+            )
+        }
 
         composable(Screen.BottomBar.Settings.route) { backStackEntry ->
             val settingsViewModel: SettingsViewModel = viewModel(

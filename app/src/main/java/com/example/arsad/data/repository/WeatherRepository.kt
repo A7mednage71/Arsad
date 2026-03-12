@@ -2,6 +2,7 @@ package com.example.arsad.data.repository
 
 import com.example.arsad.data.local.datasource.IWeatherLocalDataSource
 import com.example.arsad.data.local.entity.SavedLocationEntity
+import com.example.arsad.data.local.entity.WeatherAlertEntity
 import com.example.arsad.data.mapper.toEntity
 import com.example.arsad.data.mapper.toUIModel
 import com.example.arsad.data.models.GetWeatherParams
@@ -100,6 +101,22 @@ class WeatherRepositoryImpl(
 
     override suspend fun updateSavedLocationById(id: Int, temp: Double, icon: String) {
         localDataSource.updateSavedLocation(id, temp, icon, System.currentTimeMillis())
+    }
+
+    override fun getAllAlerts(): Flow<List<WeatherAlertEntity>> {
+        return localDataSource.getAllAlerts()
+    }
+
+    override suspend fun insertAlert(alert: WeatherAlertEntity) {
+        localDataSource.insertAlert(alert)
+    }
+
+    override suspend fun deleteAlert(alertId: Int) {
+        localDataSource.deleteAlert(alertId)
+    }
+
+    override suspend fun updateAlertStatus(alertId: Int, isEnabled: Boolean) {
+        localDataSource.updateAlertStatus(alertId, isEnabled)
     }
 
     private suspend fun fetchFromLocal(errorMessage: String): ApiResult<WeatherModel> {

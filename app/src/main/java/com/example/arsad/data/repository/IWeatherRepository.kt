@@ -1,6 +1,7 @@
 package com.example.arsad.data.repository
 
 import com.example.arsad.data.local.entity.SavedLocationEntity
+import com.example.arsad.data.local.entity.WeatherAlertEntity
 import com.example.arsad.data.models.GetWeatherParams
 import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.data.remote.datasource.ApiResult
@@ -22,4 +23,9 @@ interface IWeatherRepository {
         temp: Double,
         icon: String
     )
+
+    fun getAllAlerts(): Flow<List<WeatherAlertEntity>>
+    suspend fun insertAlert(alert: WeatherAlertEntity)
+    suspend fun deleteAlert(alertId: Int)
+    suspend fun updateAlertStatus(alertId: Int, isEnabled: Boolean)
 }

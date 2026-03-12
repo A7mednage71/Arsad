@@ -1,14 +1,16 @@
-package com.example.arsad.presentation.alerts.model
+package com.example.arsad.data.models
 
 enum class AlertType { NOTIFICATION, ALARM }
 
-data class WeatherAlert(
+data class WeatherAlertModel(
     val id: Int,
+    val locationName: String,
     val fromTime: String,
     val toTime: String,
     val fromDate: String,
     val toDate: String,
     val alertType: AlertType,
-    val isActive: Boolean
+    val isActive: Boolean,
+    val endTimeMillis: Long
 )
 

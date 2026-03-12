@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,61 +27,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.arsad.R
-import com.example.arsad.presentation.alerts.model.AlertType
-import com.example.arsad.presentation.alerts.model.WeatherAlert
 import com.example.arsad.presentation.alerts.view.components.AddAlertBottomSheet
 import com.example.arsad.presentation.alerts.view.components.AlertItem
 import com.example.arsad.presentation.alerts.view.components.AlertsEmptyState
+import com.example.arsad.presentation.alerts.viewModel.AlertViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlertsScreen(modifier: Modifier = Modifier) {
+fun AlertsScreen(modifier: Modifier = Modifier, viewModel: AlertViewModel) {
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
 
-    val alerts = remember {
-        mutableStateListOf(
-            WeatherAlert(
-                1,
-                "08:00 AM",
-                "06:00 PM",
-                "Mar 7, 2026",
-                "Mar 7, 2026",
-                AlertType.NOTIFICATION,
-                true
-            ),
-            WeatherAlert(
-                2,
-                "09:00 PM",
-                "11:59 PM",
-                "Mar 6, 2026",
-                "Mar 6, 2026",
-                AlertType.ALARM,
-                false
-            ), WeatherAlert(
-                3,
-                "08:00 AM",
-                "06:00 PM",
-                "Mar 7, 2026",
-                "Mar 7, 2026",
-                AlertType.NOTIFICATION,
-                false
-            ),
-            WeatherAlert(
-                4,
-                "09:00 PM",
-                "11:59 PM",
-                "Mar 6, 2026",
-                "Mar 6, 2026",
-                AlertType.ALARM,
-                true
-            )
-        )
-    }
 
+    val alerts by viewModel.alerts.collectAsStateWithLifecycle()
     var showSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
 
     Box(modifier = modifier.fillMaxSize()) {
 
@@ -110,10 +72,11 @@ fun AlertsScreen(modifier: Modifier = Modifier) {
             items(alerts, key = { it.id }) { alert ->
                 AlertItem(
                     alert = alert,
-                    onDelete = { alerts.remove(alert) },
-                    onStop = {
-                        val index = alerts.indexOf(alert)
-                        if (index >= 0) alerts[index] = alert.copy(isActive = false)
+                    onDelete = {
+                        viewModel.deleteAlert(alert.id)
+                    },
+                    onToggle = { status ->
+                        viewModel.toggleAlertStatus(alert.id, status)
                     }
                 )
             }
@@ -150,18 +113,8 @@ fun AlertsScreen(modifier: Modifier = Modifier) {
         AddAlertBottomSheet(
             sheetState = sheetState,
             onDismiss = { showSheet = false },
-            onSave = { fromDate, fromTime, toDate, toTime, alertType ->
-                alerts.add(
-                    WeatherAlert(
-                        id = (alerts.maxOfOrNull { it.id } ?: 0) + 1,
-                        fromTime = fromTime,
-                        toTime = toTime,
-                        fromDate = fromDate,
-                        toDate = toDate,
-                        alertType = alertType,
-                        isActive = true
-                    )
-                )
+            onSave = { startTime, endTime, alertType ->
+                viewModel.saveAlert(startTime, endTime, alertType.name)
                 showSheet = false
             }
         )

@@ -17,6 +17,8 @@ val SunYellow = Color(0xFFFDB750)
 val SkyBlue = Color(0xFF71C8FF)
 val Turquoise = Color(0xFF82E6D7)
 
+val MutedTurquoise = Color(0xFF38A3A5)
+
 // Text Colors - Dark Theme
 val TextOnDarkPrimary = Color(0xFFFFFFFF)
 val TextOnDarkSecondary = Color(0xFFE0E9F5)

@@ -75,7 +75,14 @@
     <string name="alert_sheet_cancel">إلغاء</string>
     <string name="alert_active">نشط</string>
     <string name="alert_expired">منتهي</string>
-    <string name="alert_stop">إيقاف</string>
+    <string name="alert_Inactive">غير نشط</string>
+    <string name="delete_dialog_title">حذف التنبيه؟</string>
+    <string name="delete_dialog_message">هل أنت متأكد من رغبتك في حذف تنبيه الطقس هذا؟ لن تتمكن من استعادته مرة أخرى.</string>
+    <string name="delete_confirm">حذف</string>
+    <string name="delete_cancel">إلغاء</string>
+
+    <string name="alert_deleted">تم حذف التنبيه بنجاح</string>
+    <string name="undo">تراجع</string>
 
     <!-- قسم تفاصيل الطقس -->
     <string name="section_weather_details">تفاصيل الطقس</string>
