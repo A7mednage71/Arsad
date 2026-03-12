@@ -6,13 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.arsad.data.local.converters.WeatherTypeConverters
+import com.example.arsad.data.local.dao.SavedLocationDao
 import com.example.arsad.data.local.dao.WeatherDao
+import com.example.arsad.data.local.entity.SavedLocationEntity
 import com.example.arsad.data.local.entity.WeatherEntity
 
-@Database(entities = [WeatherEntity::class], version = 2, exportSchema = false)
+@Database(
+    entities = [WeatherEntity::class, SavedLocationEntity::class],
+    version = 2,
+    exportSchema = false
+)
 @TypeConverters(WeatherTypeConverters::class)
 abstract class WeatherDatabase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDao
+    abstract fun savedLocationDao(): SavedLocationDao
 
     companion object {
         @Volatile

@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Cloud
-import androidx.compose.material.icons.filled.WbCloudy
-import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,39 +16,37 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import com.example.arsad.R
+import com.example.arsad.data.models.Coordinates
 import com.example.arsad.presentation.saved.view.components.SavedLocationsEmptyState
 import com.example.arsad.presentation.saved.view.components.SavedLocationsList
+import com.example.arsad.presentation.saved.viewModel.SavedViewModel
 import kotlinx.coroutines.launch
 
-data class SavedLocation(
-    val id: Int,
-    val cityName: String,
-    val country: String,
-    val temp: String,
-    val weatherIcon: ImageVector,
-    val weatherStatus: String
-)
 
 @Composable
 fun SavedScreen(
     modifier: Modifier = Modifier,
+    viewModel: SavedViewModel,
     onOpenMapPicker: () -> Unit = {},
+    onLocationClicked: (id: Int, lat: Double, lon: Double) -> Unit,
     snackbarHostState: SnackbarHostState,
     navBackStackEntry: NavBackStackEntry? = null,
 ) {
     val scope = rememberCoroutineScope()
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
+
+    val savedLocations by viewModel.savedLocations.collectAsStateWithLifecycle()
+
 
     // Receive map result from MapPickerScreen
     LaunchedEffect(navBackStackEntry) {
@@ -60,7 +55,7 @@ fun SavedScreen(
             val lon = handle.get<Double>("map_lon")
             val name = handle.get<String>("map_name")
             if (lat != null && lon != null && name != null) {
-                // TODO: pass to SavedViewModel to save in DB
+                viewModel.addSavedLocation(Coordinates(lat, lon))
                 scope.launch {
                     snackbarHostState.showSnackbar("Added: $name")
                 }
@@ -72,16 +67,6 @@ fun SavedScreen(
     }
 
     // Dummy data
-    val savedLocations = remember {
-        mutableStateListOf(
-            SavedLocation(1, "Sohag", "Egypt", "35°", Icons.Default.WbSunny, "Sunny"),
-            SavedLocation(2, "Cairo", "Egypt", "23°", Icons.Default.WbCloudy, "Cloudy"),
-            SavedLocation(3, "Alexandria", "Egypt", "20°", Icons.Default.Cloud, "Overcast"),
-            SavedLocation(4, "London", "UK", "12°", Icons.Default.Cloud, "Rainy"),
-            SavedLocation(5, "Dubai", "UAE", "38°", Icons.Default.WbSunny, "Clear")
-        )
-    }
-
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -106,7 +91,13 @@ fun SavedScreen(
             if (savedLocations.isEmpty()) {
                 SavedLocationsEmptyState(modifier = Modifier.weight(1f))
             } else {
-                SavedLocationsList(savedLocations, onCityClick = { })
+                SavedLocationsList(
+                    savedLocations, onCityClick = {
+                        onLocationClicked(it.id, it.lat, it.lon)
+                    },
+                    onCityDelete = {
+                        viewModel.deleteSavedLocation(it.id)
+                    })
             }
         }
 

@@ -24,13 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.arsad.data.models.WeatherModel
+import com.example.arsad.presentation.home.view.components.FailureDisplay
 import com.example.arsad.presentation.home.view.components.FiveDayForecastSection
-import com.example.arsad.presentation.home.view.components.HomeErrorState
 import com.example.arsad.presentation.home.view.components.HomeNoLocationState
-import com.example.arsad.presentation.home.view.components.HomeShimmerLoading
 import com.example.arsad.presentation.home.view.components.HourlyForecastSection
 import com.example.arsad.presentation.home.view.components.MainWeatherCard
 import com.example.arsad.presentation.home.view.components.WeatherDetailsGrid
+import com.example.arsad.presentation.home.view.components.WeatherDetailsShimmerLoading
 import com.example.arsad.presentation.home.viewModel.HomeUiState
 import com.example.arsad.presentation.home.viewModel.HomeViewModel
 import com.example.arsad.util.formatTimestamp
@@ -73,20 +73,20 @@ fun HomeScreen(
         }
     ) {
         when (val state = uiState) {
-            is HomeUiState.Loading -> HomeShimmerLoading()
+            is HomeUiState.Loading -> WeatherDetailsShimmerLoading()
             is HomeUiState.NoLocation -> HomeNoLocationState(onGoToSettings = onGoToSettings)
-            is HomeUiState.Error -> HomeErrorState(
+            is HomeUiState.Error -> FailureDisplay(
                 message = state.message,
                 onRetry = { homeViewModel.refresh() }
             )
 
-            is HomeUiState.Success -> HomeSuccessContent(data = state.data)
+            is HomeUiState.Success -> WeatherDetailsContent(data = state.data)
         }
     }
 }
 
 @Composable
-private fun HomeSuccessContent(data: WeatherModel, modifier: Modifier = Modifier) {
+fun WeatherDetailsContent(data: WeatherModel, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()

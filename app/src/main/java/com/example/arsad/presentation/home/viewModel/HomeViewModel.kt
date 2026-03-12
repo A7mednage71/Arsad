@@ -83,7 +83,7 @@ class HomeViewModel(
             }
 
             // Data Fetching
-            when (val result = repository.getFullWeatherData(params)) {
+            when (val result = repository.getFullWeatherData(params, true)) {
                 is ApiResult.Success -> {
                     _uiState.value = HomeUiState.Success(
                         data = result.data.applyUnitConversion(

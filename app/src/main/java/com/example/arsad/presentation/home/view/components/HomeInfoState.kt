@@ -86,7 +86,7 @@ fun HomeInfoState(
 }
 
 @Composable
-fun HomeErrorState(
+fun FailureDisplay(
     message: String,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
