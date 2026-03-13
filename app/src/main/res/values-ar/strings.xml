@@ -28,6 +28,15 @@
     <string name="saved_add_location">إضافة موقع</string>
     <string name="saved_delete">حذف</string>
     <string name="saved_swipe_hint">اسحب يساراً للحذف</string>
+    <string name="updated">تم التحديث</string>
+
+    <string name="weather_alert_title"> تحذير جوي طارئ</string>
+    <string name="weather_notification_title">إشعار بحالة الطقس</string>
+    <string name="weather_message_format">في %1$s: %2$s</string>
+
+    <string name="alarm_weather_emergency">طوارئ الطقس</string>
+    <string name="alarm_view_report">عرض التقرير الكامل</string>
+    <string name="alarm_dismiss">تجاهل</string>
 
     <string name="settings_title">الإعدادات</string>
     <string name="settings_subtitle">خصّص تجربتك</string>

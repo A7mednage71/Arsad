@@ -55,5 +55,5 @@ val appModule = module {
     viewModel { AlertViewModel(get(), get(), get()) }
 
     // 7. Worker
-    worker { WeatherWorker(get(), get(), get()) }
+    worker { WeatherWorker(get(), get(), get(), get()) }
 }

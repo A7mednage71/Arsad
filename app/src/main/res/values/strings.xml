@@ -27,6 +27,15 @@
     <string name="saved_add_location">Add Location</string>
     <string name="saved_delete">Delete</string>
     <string name="saved_swipe_hint">Swipe left to remove</string>
+    <string name="updated">Updated</string>
+
+    <string name="weather_alert_title">Weather Alert</string>
+    <string name="weather_notification_title">Weather Notification</string>
+    <string name="weather_message_format">In %1$s: %2$s</string>
+
+    <string name="alarm_weather_emergency">WEATHER EMERGENCY</string>
+    <string name="alarm_view_report">VIEW FULL REPORT</string>
+    <string name="alarm_dismiss">DISMISS</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_subtitle">Customize your experience</string>

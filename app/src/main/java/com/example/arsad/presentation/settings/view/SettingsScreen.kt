@@ -3,6 +3,7 @@ package com.example.arsad.presentation.settings.view
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -68,7 +69,8 @@ fun SettingsScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(0.dp)
+        verticalArrangement = Arrangement.spacedBy(0.dp),
+        contentPadding = PaddingValues(bottom = 100.dp)
     ) {
 
         // Header

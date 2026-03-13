@@ -13,7 +13,7 @@ interface IWeatherRepository {
         params: GetWeatherParams, caching: Boolean
     ): ApiResult<WeatherModel>
 
-    suspend fun getWeather(lat: Double, lon: Double): ApiResult<WeatherResponse>
+    suspend fun getWeather(lat: Double, lon: Double, lang: String): ApiResult<WeatherResponse>
 
     suspend fun fetchAndSaveLocation(lat: Double, lon: Double): Result<Unit>
 

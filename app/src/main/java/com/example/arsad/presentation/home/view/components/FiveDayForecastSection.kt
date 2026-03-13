@@ -140,7 +140,7 @@ private fun DailyRow(
                     color = colors.onSurfaceVariant
                 )
             }
-
+            Spacer(modifier = Modifier.width(5.dp))
             Text(
                 text = "${item.tempMax.toInt().localize()}/ ${
                     item.tempMin.toInt().localize()

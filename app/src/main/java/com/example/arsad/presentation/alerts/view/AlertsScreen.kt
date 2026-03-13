@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,7 @@ import com.example.arsad.R
 import com.example.arsad.presentation.alerts.view.components.AddAlertBottomSheet
 import com.example.arsad.presentation.alerts.view.components.AlertItem
 import com.example.arsad.presentation.alerts.view.components.AlertsEmptyState
+import com.example.arsad.presentation.alerts.view.components.alertsListShimmer
 import com.example.arsad.presentation.alerts.viewModel.AlertViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,6 +44,7 @@ fun AlertsScreen(modifier: Modifier = Modifier, viewModel: AlertViewModel) {
 
 
     val alerts by viewModel.alerts.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsState()
     var showSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -69,22 +72,26 @@ fun AlertsScreen(modifier: Modifier = Modifier, viewModel: AlertViewModel) {
                 Spacer(modifier = Modifier.height(20.dp))
             }
 
-            items(alerts, key = { it.id }) { alert ->
-                AlertItem(
-                    alert = alert,
-                    onDelete = {
-                        viewModel.deleteAlert(alert.id)
-                    },
-                    onToggle = { status ->
-                        viewModel.toggleAlertStatus(alert.id, status)
-                    }
-                )
+            if (isLoading) {
+                alertsListShimmer()
+            } else {
+                items(alerts, key = { it.id }) { alert ->
+                    AlertItem(
+                        alert = alert,
+                        onDelete = {
+                            viewModel.deleteAlert(alert.id)
+                        },
+                        onToggle = { status ->
+                            viewModel.toggleAlertStatus(alert.id, status)
+                        }
+                    )
+                }
             }
 
             item { Spacer(modifier = Modifier.height(100.dp)) }
         }
 
-        if (alerts.isEmpty()) {
+        if (alerts.isEmpty() && !isLoading) {
             AlertsEmptyState(
                 modifier = Modifier
                     .fillMaxSize()

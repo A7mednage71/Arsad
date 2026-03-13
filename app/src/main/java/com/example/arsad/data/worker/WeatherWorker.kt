@@ -1,5 +1,6 @@
 package com.example.arsad.data.worker
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -10,7 +11,6 @@ import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
@@ -19,20 +19,24 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.example.arsad.MainActivity
 import com.example.arsad.R
+import com.example.arsad.data.local.ds.SettingsManager
 import com.example.arsad.data.models.AlertType
 import com.example.arsad.data.remote.datasource.ApiResult
 import com.example.arsad.data.repository.IWeatherRepository
+import com.example.arsad.presentation.alerts.view.AlarmActivity
+import kotlinx.coroutines.flow.first
 import java.util.concurrent.TimeUnit
 
 class WeatherWorker(
     context: Context,
     workerParams: WorkerParameters,
-    private val repository: IWeatherRepository
+    private val repository: IWeatherRepository,
+    private val settingsManager: SettingsManager
 ) : CoroutineWorker(context, workerParams) {
 
     companion object {
-        private const val CHANNEL_ID_NOTIFICATION = "weather_notifications_channel"
-        private const val CHANNEL_ID_ALARM = "weather_alarms_channel"
+        private const val CHANNEL_ID_NOTIFICATION = "weather_notifications_v2"
+        private const val CHANNEL_ID_ALARM = "weather_alarms_v2"
 
         private const val KEY_ALERT_ID = "ALERT_ID"
         private const val KEY_ALERT_TYPE = "ALERT_TYPE"
@@ -46,6 +50,7 @@ class WeatherWorker(
 
         return try {
             val alert = repository.getAlertById(alertId) ?: return Result.success()
+            val isAlarm = alertTypeStr == AlertType.ALARM.name
             val currentTime = System.currentTimeMillis()
 
             if (currentTime > alert.endTime) {
@@ -53,20 +58,35 @@ class WeatherWorker(
                 return Result.success()
             }
 
-            val weatherResponse = repository.getWeather(alert.lat, alert.lon)
+            // getting the Localized Context so the Title
+            // can be translated into the language we extracted.
+
+            val selectedLang = settingsManager.languageFlow.first()
+            val localizedContext = getLocalizedContext(applicationContext, selectedLang)
+            val titleRes =
+                if (isAlarm) R.string.weather_alert_title else R.string.weather_notification_title
+            val notificationTitle = localizedContext.getString(titleRes)
+
+            val weatherResponse = repository.getWeather(alert.lat, alert.lon, selectedLang)
 
             if (weatherResponse is ApiResult.Success) {
                 val description = weatherResponse.data.weather.firstOrNull()?.description ?: ""
+                val location = weatherResponse.data.name
 
                 if (isWeatherDangerous(description)) {
                     val formattedDescription = description.split(" ").joinToString(" ") {
                         it.replaceFirstChar { char -> char.uppercase() }
                     }
+                    val messageText = localizedContext.getString(
+                        R.string.weather_message_format,
+                        location,
+                        formattedDescription
+                    )
                     showNotification(
                         id = alertId,
-                        title = "Weather Alert",
-                        message = "In ${alert.locationName}: $formattedDescription",
-                        isAlarm = alertTypeStr == AlertType.ALARM.name
+                        title = notificationTitle,
+                        message = messageText,
+                        isAlarm = isAlarm
                     )
                 }
                 reScheduleNextCheck(alertId, alertTypeStr)
@@ -100,41 +120,64 @@ class WeatherWorker(
         return dangerousKeywords.any { description.contains(it, ignoreCase = true) }
     }
 
+    @SuppressLint("FullScreenIntentPolicy")
     private fun showNotification(id: Int, title: String, message: String, isAlarm: Boolean) {
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = if (isAlarm) CHANNEL_ID_ALARM else CHANNEL_ID_NOTIFICATION
         createNotificationChannel(notificationManager, isAlarm)
 
-        val intent = Intent(applicationContext, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val targetActivity = if (isAlarm) AlarmActivity::class.java else MainActivity::class.java
+        val smallIconRes = if (isAlarm) {
+            R.drawable.ic_alarm_clock
+        } else {
+            R.drawable.ic_notification_bold
         }
+
+        val intent = Intent(applicationContext, targetActivity).apply {
+            putExtra("LOCATION", title)
+            putExtra("DESC", message)
+            putExtra("ID", id)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+
         val pendingIntent = PendingIntent.getActivity(
-            applicationContext, 0, intent,
+            applicationContext,
+            id,
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val largeIcon =
-            BitmapFactory.decodeResource(applicationContext.resources, R.drawable.app_icon)
+        if (isAlarm) {
+            try {
+                applicationContext.startActivity(intent)
+            } catch (e: Exception) {
+                android.util.Log.e("WeatherWorker", "Direct launch failed: ${e.message}")
+            }
+        }
 
         val builder = NotificationCompat.Builder(applicationContext, channelId)
-            .setSmallIcon(R.drawable.ic_notification_bold)
-            .setLargeIcon(largeIcon)
-            .setColor(ContextCompat.getColor(applicationContext, R.color.purple_500))
+            .setSmallIcon(smallIconRes)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    applicationContext.resources,
+                    R.drawable.app_icon
+                )
+            )
             .setContentTitle(title)
             .setContentText(message)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setPriority(if (isAlarm) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(if (isAlarm) NotificationCompat.CATEGORY_ALARM else NotificationCompat.CATEGORY_MESSAGE)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
 
         if (isAlarm) {
-            builder.setOngoing(true) //  (Un-swipeable)
+            builder.setOngoing(true)
                 .setFullScreenIntent(pendingIntent, true)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
-                .setTimeoutAfter(2 * 60 * 1000)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         }
 
         val notification = builder.build()
@@ -148,14 +191,15 @@ class WeatherWorker(
     private fun createNotificationChannel(manager: NotificationManager, isAlarm: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = if (isAlarm) CHANNEL_ID_ALARM else CHANNEL_ID_NOTIFICATION
-            val channelName =
-                if (isAlarm) "Weather Alarms (High Priority)" else "Weather Notifications"
+            val channelName = if (isAlarm) "Weather Alarms Emergency" else "Weather Notifications"
             val importance =
                 if (isAlarm) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT
 
             val channel = NotificationChannel(channelId, channelName, importance).apply {
-                description = "Weather alerts channel"
+                description = "Channel for weather emergency alerts"
                 enableVibration(true)
+                enableLights(true)
+                lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
                 if (isAlarm) {
                     val audioAttributes = AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -169,5 +213,13 @@ class WeatherWorker(
             }
             manager.createNotificationChannel(channel)
         }
+    }
+
+    private fun getLocalizedContext(context: Context, lang: String): Context {
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = android.content.res.Configuration(context.resources.configuration)
+        config.setLocale(locale)
+        return context.createConfigurationContext(config)
     }
 }

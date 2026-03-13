@@ -38,6 +38,7 @@ import com.example.arsad.R
 import com.example.arsad.data.models.SavedLocationModel
 import com.example.arsad.util.getTempSymbol
 import com.example.arsad.util.getWeatherIcon
+import com.example.arsad.util.localize
 import com.example.arsad.util.toRelativeTime
 
 @Composable
@@ -119,7 +120,7 @@ fun SavedCityCard(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Updated ${location.timestamp.toRelativeTime()}",
+                        text = "${stringResource(R.string.updated)} ${location.timestamp.toRelativeTime()}",
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.onSurfaceVariant.copy(alpha = 0.6f)
                     )
@@ -133,7 +134,7 @@ fun SavedCityCard(
                         contentScale = ContentScale.Fit
                     )
                     Text(
-                        text = "${location.lastTemp.toInt()} $tempSymbol",
+                        text = "${location.lastTemp.toInt().localize()} $tempSymbol",
                         style = MaterialTheme.typography.titleMedium,
                         color = colors.onSurface
                     )

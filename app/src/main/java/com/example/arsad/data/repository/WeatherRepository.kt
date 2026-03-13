@@ -63,11 +63,12 @@ class WeatherRepositoryImpl(
 
     override suspend fun getWeather(
         lat: Double,
-        lon: Double
+        lon: Double,
+        lang: String
     ): ApiResult<WeatherResponse> {
         val params = GetWeatherParams(
             lat = lat, lon = lon,
-            units = "metric", lang = "en",
+            units = "metric", lang = lang,
             tempUnit = "C", windUnit = "MS"
         )
         return remoteDataSource.getCurrentWeather(params)

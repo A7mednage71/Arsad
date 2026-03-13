@@ -12,8 +12,11 @@ import com.example.arsad.data.mapper.toUIModel
 import com.example.arsad.data.models.WeatherAlertModel
 import com.example.arsad.data.repository.IWeatherRepository
 import com.example.arsad.data.worker.WeatherWorker
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -26,9 +29,15 @@ class AlertViewModel(
     private val workManager: WorkManager
 ) : ViewModel() {
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     val alerts: StateFlow<List<WeatherAlertModel>> = repository.getAllAlerts()
         .map { entities ->
-            entities.map { it.toUIModel() }
+            val list = entities.map { it.toUIModel() }
+            delay(500)
+            _isLoading.value = false
+            list
         }
         .stateIn(
             scope = viewModelScope,
