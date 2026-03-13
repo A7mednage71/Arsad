@@ -23,7 +23,7 @@ import com.example.arsad.data.remote.datasource.WeatherRemoteDataSourceImpl
 import com.example.arsad.data.remote.network.RetrofitHelper
 import com.example.arsad.data.repository.WeatherRepositoryImpl
 import com.example.arsad.presentation.alerts.view.AlertsScreen
-import com.example.arsad.presentation.alerts.viewModel.AlertViewModelFactory
+import com.example.arsad.presentation.alerts.viewModel.AlertViewModel
 import com.example.arsad.presentation.home.view.HomeScreen
 import com.example.arsad.presentation.home.viewModel.HomeViewModel
 import com.example.arsad.presentation.home.viewModel.HomeViewModelFactory
@@ -38,6 +38,7 @@ import com.example.arsad.presentation.splash.view.SplashScreen
 import com.example.arsad.presentation.weather_details.view.WeatherDetailScreen
 import com.example.arsad.presentation.weather_details.viewModel.WeatherDetailViewModel
 import com.example.arsad.presentation.weather_details.viewModel.WeatherDetailViewModelFactory
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AppNavGraph(
@@ -115,13 +116,9 @@ fun AppNavGraph(
         }
 
         composable(Screen.BottomBar.Alerts.route) {
+            val alertViewModel: AlertViewModel = koinViewModel()
             AlertsScreen(
-                viewModel = viewModel(
-                    factory = AlertViewModelFactory(
-                        repository = repository,
-                        application = application
-                    )
-                )
+                viewModel = alertViewModel
             )
         }
 

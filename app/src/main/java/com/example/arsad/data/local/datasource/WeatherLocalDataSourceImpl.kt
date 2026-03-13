@@ -47,8 +47,8 @@ class WeatherLocalDataSourceImpl(
         return weatherAlertDao.getAllAlerts()
     }
 
-    override suspend fun insertAlert(alert: WeatherAlertEntity) {
-        weatherAlertDao.insertAlert(alert)
+    override suspend fun insertAlert(alert: WeatherAlertEntity): Long {
+        return weatherAlertDao.insertAlert(alert)
     }
 
     override suspend fun deleteAlert(alertId: Int) {
@@ -57,5 +57,9 @@ class WeatherLocalDataSourceImpl(
 
     override suspend fun updateAlertStatus(alertId: Int, isEnabled: Boolean) {
         weatherAlertDao.updateAlertStatus(alertId, isEnabled)
+    }
+
+    override suspend fun getAlertById(alertId: Int): WeatherAlertEntity? {
+        return weatherAlertDao.getAlertById(alertId)
     }
 }

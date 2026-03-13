@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WeatherAlertDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAlert(alert: WeatherAlertEntity)
+    suspend fun insertAlert(alert: WeatherAlertEntity): Long
 
     @Query("DELETE FROM weather_alerts WHERE id = :alertId")
     suspend fun deleteAlertById(alertId: Int)

@@ -20,6 +20,7 @@ fun WeatherAlertEntity.toUIModel(): WeatherAlertModel {
         toTime = timeFormatter.format(Date(this.endTime)),
         alertType = if (this.alertType == "ALARM") AlertType.ALARM else AlertType.NOTIFICATION,
         isActive = this.isEnabled,
+        startTimeMillis = this.startTime,
         endTimeMillis = this.endTime,
         locationName = this.locationName
     )

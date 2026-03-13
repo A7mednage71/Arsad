@@ -9,6 +9,7 @@ import com.example.arsad.data.models.GetWeatherParams
 import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.data.remote.datasource.ApiResult
 import com.example.arsad.data.remote.datasource.IWeatherRemoteDataSource
+import com.example.arsad.data.remote.responses.WeatherResponse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -60,6 +61,18 @@ class WeatherRepositoryImpl(
         }
     }
 
+    override suspend fun getWeather(
+        lat: Double,
+        lon: Double
+    ): ApiResult<WeatherResponse> {
+        val params = GetWeatherParams(
+            lat = lat, lon = lon,
+            units = "metric", lang = "en",
+            tempUnit = "C", windUnit = "MS"
+        )
+        return remoteDataSource.getCurrentWeather(params)
+    }
+
     override suspend fun fetchAndSaveLocation(lat: Double, lon: Double): Result<Unit> {
         return try {
             val params = GetWeatherParams(
@@ -107,8 +120,8 @@ class WeatherRepositoryImpl(
         return localDataSource.getAllAlerts()
     }
 
-    override suspend fun insertAlert(alert: WeatherAlertEntity) {
-        localDataSource.insertAlert(alert)
+    override suspend fun insertAlert(alert: WeatherAlertEntity): Long {
+        return localDataSource.insertAlert(alert)
     }
 
     override suspend fun deleteAlert(alertId: Int) {
@@ -117,6 +130,10 @@ class WeatherRepositoryImpl(
 
     override suspend fun updateAlertStatus(alertId: Int, isEnabled: Boolean) {
         localDataSource.updateAlertStatus(alertId, isEnabled)
+    }
+
+    override suspend fun getAlertById(alertId: Int): WeatherAlertEntity? {
+        return localDataSource.getAlertById(alertId)
     }
 
     private suspend fun fetchFromLocal(errorMessage: String): ApiResult<WeatherModel> {

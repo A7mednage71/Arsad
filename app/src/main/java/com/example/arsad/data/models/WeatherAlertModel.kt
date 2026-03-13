@@ -11,6 +11,7 @@ data class WeatherAlertModel(
     val toDate: String,
     val alertType: AlertType,
     val isActive: Boolean,
+    val startTimeMillis: Long,
     val endTimeMillis: Long
 )
 

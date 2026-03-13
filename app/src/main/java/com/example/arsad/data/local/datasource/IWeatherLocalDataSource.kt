@@ -19,8 +19,10 @@ interface IWeatherLocalDataSource {
 
     // alert screen
     fun getAllAlerts(): Flow<List<WeatherAlertEntity>>
-    suspend fun insertAlert(alert: WeatherAlertEntity)
+    suspend fun insertAlert(alert: WeatherAlertEntity): Long
     suspend fun deleteAlert(alertId: Int)
     suspend fun updateAlertStatus(alertId: Int, isEnabled: Boolean)
+
+    suspend fun getAlertById(alertId: Int): WeatherAlertEntity?
 
 }

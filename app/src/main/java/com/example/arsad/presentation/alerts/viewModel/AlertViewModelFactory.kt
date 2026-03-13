@@ -15,6 +15,7 @@ class AlertViewModelFactory(
         return if (modelClass.isAssignableFrom(AlertViewModel::class.java)) {
             AlertViewModel(
                 repository, settingsManager = SettingsManager(application),
+                workManager = TODO(),
             ) as T
         } else {
             throw IllegalArgumentException("ViewModel Class not found")
