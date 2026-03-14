@@ -1,5 +1,7 @@
 package com.example.arsad.presentation.alerts.view
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,11 +40,13 @@ import com.example.arsad.presentation.alerts.view.components.AlertsEmptyState
 import com.example.arsad.presentation.alerts.view.components.alertsListShimmer
 import com.example.arsad.presentation.alerts.viewModel.AlertViewModel
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlertsScreen(modifier: Modifier = Modifier, viewModel: AlertViewModel) {
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
+    val context = LocalContext.current
 
 
     val alerts by viewModel.alerts.collectAsStateWithLifecycle()
@@ -48,6 +54,16 @@ fun AlertsScreen(modifier: Modifier = Modifier, viewModel: AlertViewModel) {
     var showSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
+    LaunchedEffect(Unit) {
+        viewModel.errorEvent.collect { messageResId ->
+            val msg = context.getString(messageResId.toInt())
+            Toast.makeText(
+                context,
+                "$msg ❌",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
 

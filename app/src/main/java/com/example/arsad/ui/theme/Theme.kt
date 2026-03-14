@@ -67,7 +67,7 @@ object ArsadGradient {
         @ReadOnlyComposable
         get() {
             val isDark = MaterialTheme.colorScheme.background == NightModeBackground
-            return if (isDark) {
+            return if (!isDark) {
                 Brush.verticalGradient(listOf(GradientDarkTop, GradientDarkMid, GradientDarkBottom))
             } else {
                 Brush.verticalGradient(

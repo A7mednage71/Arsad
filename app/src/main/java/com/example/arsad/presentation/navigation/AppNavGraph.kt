@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -43,7 +44,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    onSplashFinished: () -> Unit,
+    shouldNavigateNow: Boolean,
 ) {
     val context = LocalContext.current
     val application = context.applicationContext as Application
@@ -58,6 +61,14 @@ fun AppNavGraph(
         WeatherRepositoryImpl(remoteDataSource, localDataSource)
     }
 
+    LaunchedEffect(shouldNavigateNow) {
+        if (shouldNavigateNow) {
+            navController.navigate(Screen.BottomBar.Home.route) {
+                popUpTo(Screen.Splash.route) { inclusive = true }
+            }
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = Screen.Splash.route,
@@ -70,9 +81,7 @@ fun AppNavGraph(
         // splash screen
         composable(Screen.Splash.route) {
             SplashScreen(onFinished = {
-                navController.navigate(Screen.BottomBar.Home.route) {
-                    popUpTo(Screen.Splash.route) { inclusive = true }
-                }
+                onSplashFinished()
             })
         }
 

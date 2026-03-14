@@ -18,7 +18,10 @@ class LocationProvider(private val context: Context) {
     suspend fun getCurrentLocation(lang: String): LocationResult {
         val location = withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { continuation ->
-                fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
+                fusedLocationClient.getCurrentLocation(
+                    com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY,
+                    com.google.android.gms.tasks.CancellationTokenSource().token
+                ).addOnSuccessListener { loc ->
                     continuation.resume(loc)
                 }.addOnFailureListener {
                     continuation.resume(null)

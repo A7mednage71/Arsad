@@ -2,19 +2,24 @@ package com.example.arsad.presentation.alerts.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.example.arsad.R
 import com.example.arsad.data.local.ds.SettingsManager
 import com.example.arsad.data.local.entity.WeatherAlertEntity
 import com.example.arsad.data.mapper.toUIModel
 import com.example.arsad.data.models.WeatherAlertModel
 import com.example.arsad.data.repository.IWeatherRepository
 import com.example.arsad.data.worker.WeatherWorker
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -31,6 +36,9 @@ class AlertViewModel(
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    private val _errorEvent = MutableSharedFlow<String>()
+    val errorEvent = _errorEvent.asSharedFlow()
+
     val alerts: StateFlow<List<WeatherAlertModel>> = combine(
         repository.getAllAlerts(), settingsManager.languageFlow
     ) { entities, lang ->
@@ -45,9 +53,14 @@ class AlertViewModel(
 
     fun saveAlert(startTime: Long, endTime: Long, alertType: String) {
         viewModelScope.launch {
-            val lat = settingsManager.latitudeFlow.first() ?: 0.0
-            val lon = settingsManager.longitudeFlow.first() ?: 0.0
+            val lat = settingsManager.latitudeFlow.first()
+            val lon = settingsManager.longitudeFlow.first()
             val locationName = settingsManager.locationNameFlow.first() ?: ""
+
+            if (lat == null || lon == null) {
+                _errorEvent.emit(R.string.location_required_error.toString())
+                return@launch
+            }
 
             val newAlertEntity = WeatherAlertEntity(
                 lat = lat,
@@ -112,9 +125,13 @@ class AlertViewModel(
                 "ALERT_TYPE" to alertType
             )
 
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
             val workRequest = OneTimeWorkRequestBuilder<WeatherWorker>()
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-                .setInputData(data)
+                .setInputData(data).setConstraints(constraints)
                 .addTag("weather_alert_$alertId")
                 .build()
 

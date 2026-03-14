@@ -26,7 +26,7 @@ import com.example.arsad.ui.theme.ArsadGradient
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreenContainer() {
+fun MainScreenContainer(onSplashFinished: () -> Unit, shouldNavigateNow: Boolean) {
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -60,7 +60,9 @@ fun MainScreenContainer() {
         ) {
             AppNavGraph(
                 navController = navController,
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                onSplashFinished = onSplashFinished,
+                shouldNavigateNow = shouldNavigateNow,
             )
 
             AnimatedVisibility(

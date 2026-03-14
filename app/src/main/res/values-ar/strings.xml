@@ -94,6 +94,7 @@
     <string name="delete_dialog_message">هل أنت متأكد من رغبتك في حذف تنبيه الطقس هذا؟ لن تتمكن من استعادته مرة أخرى.</string>
     <string name="delete_confirm">حذف</string>
     <string name="delete_cancel">إلغاء</string>
+    <string name="location_required_error">لا يمكن ضبط تنبيه بدون تحديد موقعك أولاً.</string>
 
     <string name="alert_deleted">تم حذف التنبيه بنجاح</string>
     <string name="undo">تراجع</string>
@@ -165,6 +166,8 @@
 
     <!-- شاشة البداية -->
     <string name="splash_version">الإصدار 1.0</string>
+    <string name="overlay_permission_msg">يرجى تفعيل "الظهور فوق التطبيقات" لضمان عمل منبه الطقس بشكل صحيح.</string>
+    <string name="unknown_location">موقع غير معروف</string>
 
     <string name="label_today">اليوم</string>
     <string name="label_tomorrow">غداً</string>
