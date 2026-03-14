@@ -171,4 +171,9 @@
 
     <string name="label_today">اليوم</string>
     <string name="label_tomorrow">غداً</string>
+
+    <string name="settings_section_theme">السمة</string>
+    <string name="settings_theme">سمة التطبيق</string>
+    <string name="settings_theme_light">فاتح</string>
+    <string name="settings_theme_dark">داكن</string>
 </resources>

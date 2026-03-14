@@ -171,4 +171,9 @@
 
     <string name="label_today">Today</string>
     <string name="label_tomorrow">Tomorrow</string>
+
+    <string name="settings_section_theme">Theme</string>
+    <string name="settings_theme">App Theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
 </resources>

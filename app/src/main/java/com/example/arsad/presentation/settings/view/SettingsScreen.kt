@@ -24,6 +24,7 @@ import androidx.navigation.NavBackStackEntry
 import com.example.arsad.R
 import com.example.arsad.presentation.settings.view.components.LanguageSection
 import com.example.arsad.presentation.settings.view.components.LocationSection
+import com.example.arsad.presentation.settings.view.components.ThemeSection
 import com.example.arsad.presentation.settings.view.components.UnitsSection
 import com.example.arsad.presentation.settings.viewModel.SettingsViewModel
 import kotlinx.coroutines.launch
@@ -112,6 +113,14 @@ fun SettingsScreen(
                         (context as? Activity)?.recreate()
                     }
                 }
+            )
+        }
+
+        // Theme Section
+        item {
+            ThemeSection(
+                selectedTheme = state.theme,
+                onThemeSelected = { settingsViewModel.setTheme(it) }
             )
         }
 
