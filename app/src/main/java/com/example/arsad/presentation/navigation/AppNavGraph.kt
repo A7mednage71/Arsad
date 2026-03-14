@@ -1,6 +1,5 @@
 package com.example.arsad.presentation.navigation
 
-import android.app.Application
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -9,36 +8,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.arsad.data.local.datasource.WeatherLocalDataSourceImpl
-import com.example.arsad.data.local.db.WeatherDatabase
-import com.example.arsad.data.remote.datasource.WeatherRemoteDataSourceImpl
-import com.example.arsad.data.remote.network.RetrofitHelper
-import com.example.arsad.data.repository.WeatherRepositoryImpl
 import com.example.arsad.presentation.alerts.view.AlertsScreen
 import com.example.arsad.presentation.alerts.viewModel.AlertViewModel
 import com.example.arsad.presentation.home.view.HomeScreen
 import com.example.arsad.presentation.home.viewModel.HomeViewModel
-import com.example.arsad.presentation.home.viewModel.HomeViewModelFactory
 import com.example.arsad.presentation.map_picker.view.MapPickerScreen
+import com.example.arsad.presentation.map_picker.viewModel.MapPickerViewModel
 import com.example.arsad.presentation.saved.view.SavedScreen
 import com.example.arsad.presentation.saved.viewModel.SavedViewModel
-import com.example.arsad.presentation.saved.viewModel.SavedViewModelFactory
 import com.example.arsad.presentation.settings.view.SettingsScreen
 import com.example.arsad.presentation.settings.viewModel.SettingsViewModel
-import com.example.arsad.presentation.settings.viewModel.SettingsViewModelFactory
 import com.example.arsad.presentation.splash.view.SplashScreen
 import com.example.arsad.presentation.weather_details.view.WeatherDetailScreen
 import com.example.arsad.presentation.weather_details.viewModel.WeatherDetailViewModel
-import com.example.arsad.presentation.weather_details.viewModel.WeatherDetailViewModelFactory
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -48,18 +36,6 @@ fun AppNavGraph(
     onSplashFinished: () -> Unit,
     shouldNavigateNow: Boolean,
 ) {
-    val context = LocalContext.current
-    val application = context.applicationContext as Application
-
-    val repository = remember {
-        val weatherDao = WeatherDatabase.getInstance(context).weatherDao()
-        val savedLocationDao = WeatherDatabase.getInstance(context).savedLocationDao()
-        val weatherAlertDao = WeatherDatabase.getInstance(context).weatherAlertDao()
-        val localDataSource =
-            WeatherLocalDataSourceImpl(weatherDao, savedLocationDao, weatherAlertDao)
-        val remoteDataSource = WeatherRemoteDataSourceImpl(RetrofitHelper.service)
-        WeatherRepositoryImpl(remoteDataSource, localDataSource)
-    }
 
     LaunchedEffect(shouldNavigateNow) {
         if (shouldNavigateNow) {
@@ -78,21 +54,14 @@ fun AppNavGraph(
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },
         popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
     ) {
-        // splash screen
+        // --- Splash Screen ---
         composable(Screen.Splash.route) {
-            SplashScreen(onFinished = {
-                onSplashFinished()
-            })
+            SplashScreen(onFinished = { onSplashFinished() })
         }
 
-        // Bottom Bar Screens
+        // --- Home Screen ---
         composable(Screen.BottomBar.Home.route) {
-            val homeViewModel: HomeViewModel = viewModel(
-                factory = HomeViewModelFactory(
-                    repository = repository,
-                    application = application
-                )
-            )
+            val homeViewModel: HomeViewModel = koinViewModel()
             HomeScreen(
                 homeViewModel = homeViewModel,
                 snackbarHostState = snackbarHostState,
@@ -104,37 +73,34 @@ fun AppNavGraph(
             )
         }
 
+        // --- Saved Screen ---
         composable(Screen.BottomBar.Saved.route) { backStackEntry ->
-            val viewModel: SavedViewModel = viewModel(
-                factory = SavedViewModelFactory(application, repository)
-            )
+            val savedViewModel: SavedViewModel = koinViewModel()
             SavedScreen(
+                viewModel = savedViewModel,
                 snackbarHostState = snackbarHostState,
                 onOpenMapPicker = { navController.navigate(Screen.MapPicker.route) },
                 navBackStackEntry = backStackEntry,
-                viewModel = viewModel,
                 onLocationClicked = { id, lat, lon ->
                     navController.navigate(
                         Screen.WeatherDetails.route
-                            .replace("{lat}", lat.toFloat().toString())
-                            .replace("{lon}", lon.toFloat().toString())
+                            .replace("{lat}", lat.toString())
+                            .replace("{lon}", lon.toString())
                             .replace("{id}", id.toString())
                     )
                 }
             )
         }
 
+        // --- Alerts Screen ---
         composable(Screen.BottomBar.Alerts.route) {
             val alertViewModel: AlertViewModel = koinViewModel()
-            AlertsScreen(
-                viewModel = alertViewModel
-            )
+            AlertsScreen(viewModel = alertViewModel)
         }
 
+        // --- Settings Screen ---
         composable(Screen.BottomBar.Settings.route) { backStackEntry ->
-            val settingsViewModel: SettingsViewModel = viewModel(
-                factory = SettingsViewModelFactory(application)
-            )
+            val settingsViewModel: SettingsViewModel = koinViewModel()
             SettingsScreen(
                 settingsViewModel = settingsViewModel,
                 onOpenMapPicker = { navController.navigate(Screen.MapPicker.route) },
@@ -142,12 +108,13 @@ fun AppNavGraph(
             )
         }
 
-        // inner screens
+        // --- Map Picker ---
         composable(Screen.MapPicker.route) {
+            val viewModel: MapPickerViewModel = koinViewModel()
             MapPickerScreen(
+                viewModel = viewModel,
                 onBack = { navController.popBackStack() },
                 onLocationSaved = { lat, lon, name ->
-                    // Write result into the caller's savedStateHandle
                     navController.previousBackStackEntry?.savedStateHandle?.apply {
                         set("map_lat", lat)
                         set("map_lon", lon)
@@ -158,6 +125,7 @@ fun AppNavGraph(
             )
         }
 
+        // --- Weather Details ---
         composable(
             route = Screen.WeatherDetails.route,
             arguments = listOf(
@@ -166,15 +134,11 @@ fun AppNavGraph(
                 navArgument("id") { type = NavType.IntType }
             )
         ) { backStackEntry ->
-
-            val weatherDetailViewModel: WeatherDetailViewModel = viewModel(
-                factory = WeatherDetailViewModelFactory(repository, application)
-            )
+            val weatherDetailViewModel: WeatherDetailViewModel = koinViewModel()
 
             val lat = backStackEntry.arguments?.getFloat("lat")?.toDouble() ?: 0.0
             val lon = backStackEntry.arguments?.getFloat("lon")?.toDouble() ?: 0.0
             val id = backStackEntry.arguments?.getInt("id") ?: 0
-
 
             WeatherDetailScreen(
                 lat = lat,

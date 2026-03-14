@@ -1,6 +1,5 @@
 [versions]
 agp = "9.0.1"
-appcompat = "1.7.0"
 coreKtx = "1.17.0"
 datastorePreferences = "1.1.4"
 coreSplashscreen = "1.0.1"
@@ -31,14 +30,12 @@ foundationLayout = "1.10.4"
 room = "2.7.0"
 ksp = "2.0.21-1.0.28"
 work = "2.9.0"
-hiltWork = "1.2.0"
 koin = "3.5.3"
 lifecycleProcess = "2.10.0"
 foundation = "1.10.5"
 
 [libraries]
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -80,14 +77,11 @@ androidx-compose-foundation-layout = { group = "androidx.compose.foundation", na
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
-androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }
-androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltWork" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
