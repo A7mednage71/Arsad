@@ -15,7 +15,7 @@ interface IWeatherRepository {
 
     suspend fun getWeather(lat: Double, lon: Double, lang: String): ApiResult<WeatherResponse>
 
-    suspend fun fetchAndSaveLocation(lat: Double, lon: Double): Result<Unit>
+    suspend fun fetchAndSaveLocation(lat: Double, lon: Double, lang: String): Result<Unit>
 
     fun getAllSavedLocations(): Flow<List<SavedLocationEntity>>
 

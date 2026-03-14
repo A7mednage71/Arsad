@@ -10,6 +10,7 @@ import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.data.remote.datasource.ApiResult
 import com.example.arsad.data.remote.datasource.IWeatherRemoteDataSource
 import com.example.arsad.data.remote.responses.WeatherResponse
+import com.example.arsad.util.getCountryNameFromCode
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -74,23 +75,28 @@ class WeatherRepositoryImpl(
         return remoteDataSource.getCurrentWeather(params)
     }
 
-    override suspend fun fetchAndSaveLocation(lat: Double, lon: Double): Result<Unit> {
+    override suspend fun fetchAndSaveLocation(
+        lat: Double,
+        lon: Double,
+        lang: String
+    ): Result<Unit> {
         return try {
             val params = GetWeatherParams(
                 lat = lat, lon = lon,
-                units = "metric", lang = "en",
+                units = "metric", lang = lang,
                 tempUnit = "C", windUnit = "MS"
             )
             when (val result = remoteDataSource.getCurrentWeather(params)) {
                 is ApiResult.Success -> {
                     val response = result.data
+                    val country = response.sys.country.getCountryNameFromCode(lang)
                     val entity = SavedLocationEntity(
                         cityName = response.name,
                         lat = lat,
                         lon = lon,
                         lastTemp = response.weatherMain.temp,
                         iconCode = response.weather.firstOrNull()?.icon ?: "",
-                        country = response.sys.country,
+                        country = country,
                         timestamp = System.currentTimeMillis()
                     )
                     localDataSource.insertSavedLocation(entity)

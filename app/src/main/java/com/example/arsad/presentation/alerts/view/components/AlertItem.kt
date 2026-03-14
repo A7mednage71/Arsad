@@ -189,19 +189,15 @@ fun AlertItem(
                     Spacer(modifier = Modifier.height(8.dp))
                     TimeRow(
                         label = stringResource(R.string.alert_sheet_from),
-                        date = alert.fromDate,
-                        time = alert.fromTime,
+                        formattedDateTime = alert.from,
                         isHighlighted = isEffectivelyActive
                     )
                     TimeRow(
                         label = stringResource(R.string.alert_sheet_to),
-                        date = alert.toDate,
-                        time = alert.toTime,
+                        formattedDateTime = alert.to,
                         isHighlighted = false
                     )
-
                     Spacer(modifier = Modifier.height(8.dp))
-
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
@@ -255,11 +251,14 @@ fun AlertItem(
 }
 
 @Composable
-private fun TimeRow(label: String, date: String, time: String, isHighlighted: Boolean) {
+private fun TimeRow(
+    label: String,
+    formattedDateTime: String,
+    isHighlighted: Boolean
+) {
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
     val contentAlpha = if (isHighlighted) 1f else 0.65f
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -277,7 +276,7 @@ private fun TimeRow(label: String, date: String, time: String, isHighlighted: Bo
             modifier = Modifier.size(12.dp)
         )
         Text(
-            text = "$date  •  $time",
+            text = formattedDateTime,
             style = typography.labelMedium.copy(
                 fontWeight = if (isHighlighted) FontWeight.SemiBold else FontWeight.Normal
             ),
@@ -285,3 +284,4 @@ private fun TimeRow(label: String, date: String, time: String, isHighlighted: Bo
         )
     }
 }
+

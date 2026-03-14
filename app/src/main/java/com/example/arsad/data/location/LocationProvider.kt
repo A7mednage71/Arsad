@@ -10,47 +10,45 @@ import kotlinx.coroutines.withContext
 import java.util.Locale
 import kotlin.coroutines.resume
 
-
 class LocationProvider(private val context: Context) {
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     @SuppressLint("MissingPermission")
-    suspend fun getCurrentLocation(): LocationResult {
-        return withContext(Dispatchers.IO) {
-            // suspendCancellableCoroutine is my way of converting the Callback-based API to a
-            // Sequential suspend function that returns data and handles the Cancellation safely.
+    suspend fun getCurrentLocation(lang: String): LocationResult {
+        val location = withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { continuation ->
-                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                    if (location != null) {
-                        val name = resolveLocationName(location.latitude, location.longitude)
-                        continuation.resume(
-                            LocationResult.Success(
-                                location.latitude, location.longitude, name
-                            )
-                        )
-                    } else {
-                        continuation.resume(LocationResult.Failure)
-                    }
+                fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
+                    continuation.resume(loc)
                 }.addOnFailureListener {
-                    continuation.resume(LocationResult.Failure)
+                    continuation.resume(null)
                 }
             }
         }
+        if (location == null) return LocationResult.Failure
+        val name = resolveLocationName(location.latitude, location.longitude, lang)
+        return LocationResult.Success(location.latitude, location.longitude, name)
     }
 
-    suspend fun getCoordinatesFromName(name: String): LocationResult {
+    suspend fun getCoordinatesFromName(name: String, currentLang: String): LocationResult {
         return withContext(Dispatchers.IO) {
             try {
-                val geocoder = Geocoder(context, Locale.getDefault())
+                val geocoder = Geocoder(context, Locale(currentLang))
                 val addresses = geocoder.getFromLocationName(name, 1)
                 val address = addresses?.firstOrNull()
 
                 if (address != null) {
+                    val city = address.locality ?: address.adminArea ?: ""
+                    val country = address.countryName ?: ""
+                    val displayName = if (city.isNotEmpty() && country.isNotEmpty()) {
+                        "$city, $country"
+                    } else {
+                        city.ifEmpty { country }.ifEmpty { name }
+                    }
                     LocationResult.Success(
                         lat = address.latitude,
                         lon = address.longitude,
-                        name = address.locality ?: address.adminArea ?: name
+                        name = displayName
                     )
                 } else {
                     LocationResult.Failure
@@ -61,19 +59,28 @@ class LocationProvider(private val context: Context) {
         }
     }
 
-    fun resolveLocationName(lat: Double, lon: Double): String {
-        return try {
-            val geocoder = Geocoder(context, Locale.getDefault())
-            val addresses = geocoder.getFromLocation(lat, lon, 1)
-            val address = addresses?.firstOrNull()
+    suspend fun resolveLocationName(lat: Double, lon: Double, lang: String): String {
+        return withContext(Dispatchers.IO) {
+            try {
+                val geocoder = Geocoder(context, Locale(lang))
+                val addresses = geocoder.getFromLocation(lat, lon, 1)
+                val address = addresses?.firstOrNull()
 
-            val city = address?.locality ?: address?.subAdminArea ?: address?.adminArea
-            val country = address?.countryName
+                if (address != null) {
+                    val city = address.locality ?: address.adminArea ?: ""
+                    val country = address.countryName ?: ""
 
-            if (city != null && country != null) "$city, $country"
-            else city ?: "%.4f, %.4f".format(lat, lon)
-        } catch (e: Exception) {
-            "%.4f, %.4f".format(lat, lon)
+                    if (city.isNotEmpty() && country.isNotEmpty()) {
+                        "$city, $country"
+                    } else {
+                        city.ifEmpty { country }.ifEmpty { "Unknown Location" }
+                    }
+                } else {
+                    "Unknown Location"
+                }
+            } catch (e: Exception) {
+                "Unknown Location"
+            }
         }
     }
 }

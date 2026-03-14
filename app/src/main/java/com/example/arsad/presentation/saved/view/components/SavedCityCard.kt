@@ -24,7 +24,11 @@ import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,10 +40,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
 import com.example.arsad.data.models.SavedLocationModel
+import com.example.arsad.presentation.components.WarningDialog
+import com.example.arsad.ui.theme.DeleteRed
 import com.example.arsad.util.getTempSymbol
 import com.example.arsad.util.getWeatherIcon
 import com.example.arsad.util.localize
 import com.example.arsad.util.toRelativeTime
+import kotlinx.coroutines.launch
 
 @Composable
 fun SavedCityCard(
@@ -48,14 +55,43 @@ fun SavedCityCard(
     onClick: () -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
-    val dismissState = rememberSwipeToDismissBoxState()
     val icon = getWeatherIcon(location.iconCode)
     val tempSymbol = getTempSymbol(location.tempUnit)
+    val scope = rememberCoroutineScope()
 
-    LaunchedEffect(dismissState.currentValue) {
-        if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart) {
-            onDelete()
-        }
+
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.EndToStart) {
+                showDeleteDialog = true
+            }
+            false
+        },
+        positionalThreshold = { distance -> distance * 0.5f }
+    )
+
+
+    if (showDeleteDialog) {
+        WarningDialog(
+            title = stringResource(R.string.delete_saved_title),
+            message = stringResource(R.string.delete_saved_message),
+            confirmText = stringResource(R.string.delete_saved_confirm),
+            dismissText = stringResource(R.string.delete_saved_cancel),
+            iconRes = R.drawable.ic_delete_2,
+            confirmButtonColor = DeleteRed,
+            onConfirm = {
+                onDelete()
+                showDeleteDialog = false
+            },
+            onDismiss = {
+                scope.launch {
+                    dismissState.reset()
+                }
+                showDeleteDialog = false
+            }
+        )
     }
 
     SwipeToDismissBox(

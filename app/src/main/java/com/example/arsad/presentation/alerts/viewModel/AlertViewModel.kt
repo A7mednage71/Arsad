@@ -12,13 +12,12 @@ import com.example.arsad.data.mapper.toUIModel
 import com.example.arsad.data.models.WeatherAlertModel
 import com.example.arsad.data.repository.IWeatherRepository
 import com.example.arsad.data.worker.WeatherWorker
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -32,18 +31,17 @@ class AlertViewModel(
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    val alerts: StateFlow<List<WeatherAlertModel>> = repository.getAllAlerts()
-        .map { entities ->
-            val list = entities.map { it.toUIModel() }
-            delay(500)
-            _isLoading.value = false
-            list
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
+    val alerts: StateFlow<List<WeatherAlertModel>> = combine(
+        repository.getAllAlerts(), settingsManager.languageFlow
+    ) { entities, lang ->
+        val uiList = entities.map { it.toUIModel(lang) }
+        _isLoading.value = false
+        uiList
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 
     fun saveAlert(startTime: Long, endTime: Long, alertType: String) {
         viewModelScope.launch {

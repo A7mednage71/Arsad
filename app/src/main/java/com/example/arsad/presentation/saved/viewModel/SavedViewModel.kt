@@ -13,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SavedViewModel(
@@ -60,7 +61,8 @@ class SavedViewModel(
 
     fun addSavedLocation(location: Coordinates) {
         viewModelScope.launch {
-            weatherRepository.fetchAndSaveLocation(location.lat, location.lon)
+            val lang = settingsManager.languageFlow.first()
+            weatherRepository.fetchAndSaveLocation(location.lat, location.lon, lang)
         }
     }
 

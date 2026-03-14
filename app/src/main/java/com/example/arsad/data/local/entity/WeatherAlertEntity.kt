@@ -12,6 +12,6 @@ data class WeatherAlertEntity(
     val locationName: String,
     val startTime: Long,
     val endTime: Long,
-    val alertType: String,  //  Type (Notification vs Alarm)
+    val alertType: String,  // Type (Notification vs Alarm)
     val isEnabled: Boolean = true
 )

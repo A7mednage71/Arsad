@@ -1,5 +1,6 @@
 package com.example.arsad.presentation.settings.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arsad.data.local.ds.SettingsManager
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
@@ -123,7 +125,10 @@ class SettingsViewModel(
 
     fun fetchGpsLocation() {
         viewModelScope.launch {
-            val result = locationProvider.getCurrentLocation()
+            val lang = settingsManager.languageFlow.first()
+            Log.d("TAG", "fetchGpsLocation: ---------${lang}---")
+            val result = locationProvider.getCurrentLocation(lang)
+            Log.d("TAG", "fetchGpsLocation: ---------${result}---")
             if (result is LocationResult.Success) {
                 saveLocation(result.lat, result.lon, result.name)
                 _toastMessage.emit("Location has been successfully saved! ✅")
