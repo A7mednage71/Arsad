@@ -114,7 +114,7 @@ fun WeatherDetailsContent(data: WeatherModel, modifier: Modifier = Modifier) {
                 tempUnit = data.tempUnit,
                 windUnit = data.windUnit
             )
-            Spacer(modifier = Modifier.height(150.dp))
+            Spacer(modifier = Modifier.height(120.dp))
         }
     }
 }

@@ -9,7 +9,7 @@ val NightModeSurfaceAlt = Color(0xFF2B4A6F)
 
 // Light Theme Colors
 val DayModeBackground = Color(0xFFA8C5E5)
-val DayModeSurface = Color(0xFF7BA3D1)
+val DayModeSurface = Color(0xFFD4E4F7)
 val DayModeSurfaceAlt = Color(0xFF8FB4DB)
 
 // Accent / Brand Colors
@@ -17,13 +17,15 @@ val SunYellow = Color(0xFFFDB750)
 val SkyBlue = Color(0xFF71C8FF)
 val Turquoise = Color(0xFF82E6D7)
 
+val MutedTurquoise = Color(0xFF38A3A5)
+
 // Text Colors - Dark Theme
 val TextOnDarkPrimary = Color(0xFFFFFFFF)
 val TextOnDarkSecondary = Color(0xFFE0E9F5)
 val TextOnDarkHint = Color(0xFFB8C9E0)
 
 // Text Colors - Light Theme
-val TextOnLightPrimary = Color(0xFFFFFFFF)
+val TextOnLightPrimary = Color(0xFF1E3A5F)
 val TextOnLightSecondary = Color(0xFF1E3A5F)
 val TextOnLightHint = Color(0xFF4A6B8A)
 

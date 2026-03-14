@@ -28,6 +28,20 @@
     <string name="saved_add_location">إضافة موقع</string>
     <string name="saved_delete">حذف</string>
     <string name="saved_swipe_hint">اسحب يساراً للحذف</string>
+    <string name="updated">تم التحديث</string>
+
+    <string name="delete_saved_title">حذف الموقع</string>
+    <string name="delete_saved_message">هل أنت متأكد من حذف هذا الموقع من قائمة المواقع المحفوظة؟</string>
+    <string name="delete_saved_confirm">حذف</string>
+    <string name="delete_saved_cancel">إلغاء</string>
+
+    <string name="weather_alert_title"> تحذير جوي طارئ</string>
+    <string name="weather_notification_title">إشعار بحالة الطقس</string>
+    <string name="weather_message_format">في %1$s: %2$s</string>
+
+    <string name="alarm_weather_emergency">طوارئ الطقس</string>
+    <string name="alarm_view_report">عرض التقرير الكامل</string>
+    <string name="alarm_dismiss">تجاهل</string>
 
     <string name="settings_title">الإعدادات</string>
     <string name="settings_subtitle">خصّص تجربتك</string>
@@ -75,7 +89,15 @@
     <string name="alert_sheet_cancel">إلغاء</string>
     <string name="alert_active">نشط</string>
     <string name="alert_expired">منتهي</string>
-    <string name="alert_stop">إيقاف</string>
+    <string name="alert_Inactive">غير نشط</string>
+    <string name="delete_dialog_title">حذف التنبيه؟</string>
+    <string name="delete_dialog_message">هل أنت متأكد من رغبتك في حذف تنبيه الطقس هذا؟ لن تتمكن من استعادته مرة أخرى.</string>
+    <string name="delete_confirm">حذف</string>
+    <string name="delete_cancel">إلغاء</string>
+    <string name="location_required_error">لا يمكن ضبط تنبيه بدون تحديد موقعك أولاً.</string>
+
+    <string name="alert_deleted">تم حذف التنبيه بنجاح</string>
+    <string name="undo">تراجع</string>
 
     <!-- قسم تفاصيل الطقس -->
     <string name="section_weather_details">تفاصيل الطقس</string>
@@ -144,7 +166,14 @@
 
     <!-- شاشة البداية -->
     <string name="splash_version">الإصدار 1.0</string>
+    <string name="overlay_permission_msg">يرجى تفعيل "الظهور فوق التطبيقات" لضمان عمل منبه الطقس بشكل صحيح.</string>
+    <string name="unknown_location">موقع غير معروف</string>
 
     <string name="label_today">اليوم</string>
     <string name="label_tomorrow">غداً</string>
+
+    <string name="settings_section_theme">السمة</string>
+    <string name="settings_theme">سمة التطبيق</string>
+    <string name="settings_theme_light">فاتح</string>
+    <string name="settings_theme_dark">داكن</string>
 </resources>

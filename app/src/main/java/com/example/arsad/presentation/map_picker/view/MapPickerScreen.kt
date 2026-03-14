@@ -69,7 +69,7 @@ fun MapPickerScreen(
 
     // Define the MapView using remember so it
     // doesn't repeat with the Recomposition
-    
+
     val mapView = remember { MapView(context) }
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -172,7 +172,7 @@ fun MapPickerScreen(
                     singleLine = true,
                     shape = RoundedCornerShape(14.dp),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                    keyboardActions = KeyboardActions(onSearch = { viewModel.performSearch() }), // تفعيل السيرش
+                    keyboardActions = KeyboardActions(onSearch = { viewModel.performSearch() }),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = colors.surface,
                         unfocusedContainerColor = colors.surface.copy(alpha = 0.9f)

@@ -3,6 +3,7 @@ package com.example.arsad.util
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.arsad.R
+import java.util.Locale
 
 fun getWeatherIcon(iconCode: String?): Int {
     return when (iconCode) {
@@ -37,5 +38,15 @@ fun getWindSymbol(unit: String): String {
     return when (unit) {
         "MPH" -> stringResource(R.string.wind_mph)
         else -> stringResource(R.string.wind_ms)
+    }
+}
+
+fun String.getCountryNameFromCode(lang: String): String {
+    return try {
+        val targetLocale = Locale(lang)
+        val countryLocale = Locale("", this)
+        countryLocale.getDisplayCountry(targetLocale)
+    } catch (e: Exception) {
+        this
     }
 }

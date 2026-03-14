@@ -1,15 +1,18 @@
 package com.example.arsad.data.local.datasource
 
 import com.example.arsad.data.local.dao.SavedLocationDao
+import com.example.arsad.data.local.dao.WeatherAlertDao
 import com.example.arsad.data.local.dao.WeatherDao
 import com.example.arsad.data.local.entity.SavedLocationEntity
+import com.example.arsad.data.local.entity.WeatherAlertEntity
 import com.example.arsad.data.local.entity.WeatherEntity
 import kotlinx.coroutines.flow.Flow
 
 
 class WeatherLocalDataSourceImpl(
     private val dao: WeatherDao,
-    private val savedLocationDao: SavedLocationDao
+    private val savedLocationDao: SavedLocationDao,
+    private val weatherAlertDao: WeatherAlertDao
 ) : IWeatherLocalDataSource {
 
     override suspend fun saveWeather(weather: WeatherEntity) {
@@ -38,5 +41,25 @@ class WeatherLocalDataSourceImpl(
 
     override suspend fun updateSavedLocation(id: Int, temp: Double, icon: String, time: Long) {
         savedLocationDao.updateLocationWeather(id, temp, icon, time)
+    }
+
+    override fun getAllAlerts(): Flow<List<WeatherAlertEntity>> {
+        return weatherAlertDao.getAllAlerts()
+    }
+
+    override suspend fun insertAlert(alert: WeatherAlertEntity): Long {
+        return weatherAlertDao.insertAlert(alert)
+    }
+
+    override suspend fun deleteAlert(alertId: Int) {
+        weatherAlertDao.deleteAlertById(alertId)
+    }
+
+    override suspend fun updateAlertStatus(alertId: Int, isEnabled: Boolean) {
+        weatherAlertDao.updateAlertStatus(alertId, isEnabled)
+    }
+
+    override suspend fun getAlertById(alertId: Int): WeatherAlertEntity? {
+        return weatherAlertDao.getAlertById(alertId)
     }
 }

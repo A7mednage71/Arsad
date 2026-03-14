@@ -1,5 +1,6 @@
 package com.example.arsad.presentation.alerts.view.components
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,35 +37,39 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.arsad.R
-import com.example.arsad.presentation.alerts.model.AlertType
+import com.example.arsad.data.models.AlertType
 import com.example.arsad.util.formatTime
 import com.example.arsad.util.toDisplayDate
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddAlertBottomSheet(
     sheetState: SheetState,
     onDismiss: () -> Unit,
-    onSave: (fromDate: String, fromTime: String, toDate: String, toTime: String, alertType: AlertType) -> Unit
+    onSave: (startTime: Long, endTime: Long, alertType: AlertType) -> Unit
 ) {
+    val context = LocalContext.current
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
 
     var selectedAlertType by remember { mutableStateOf(AlertType.NOTIFICATION) }
+    val calendar = remember { Calendar.getInstance() }
     val todayMillis = System.currentTimeMillis()
 
     // From date/time state
     var fromDateMillis by remember { mutableStateOf(todayMillis) }
-    var fromHour by remember { mutableStateOf(8) }
-    var fromMinute by remember { mutableStateOf(0) }
+    var fromHour by remember { mutableStateOf(calendar.get(Calendar.HOUR_OF_DAY)) }
+    var fromMinute by remember { mutableStateOf(calendar.get(Calendar.MINUTE)) }
 
     // To date/time state
     var toDateMillis by remember { mutableStateOf(todayMillis) }
-    var toHour by remember { mutableStateOf(20) }
-    var toMinute by remember { mutableStateOf(0) }
+    var toHour by remember { mutableStateOf((calendar.get(Calendar.HOUR_OF_DAY) + 2) % 24) }
+    var toMinute by remember { mutableStateOf(calendar.get(Calendar.MINUTE)) }
 
     // Dialog visibility
     var showFromDatePicker by remember { mutableStateOf(false) }
@@ -263,13 +268,45 @@ fun AddAlertBottomSheet(
                 }
                 Button(
                     onClick = {
-                        onSave(
-                            fromDateDisplay,
-                            fromTimeDisplay,
-                            toDateDisplay,
-                            toTimeDisplay,
-                            selectedAlertType
-                        )
+                        val startCal = Calendar.getInstance().apply {
+                            timeInMillis = fromDateMillis
+                            set(Calendar.HOUR_OF_DAY, fromHour)
+                            set(Calendar.MINUTE, fromMinute)
+                            set(Calendar.SECOND, 0)
+                            set(Calendar.MILLISECOND, 0)
+                        }
+
+                        val endCal = Calendar.getInstance().apply {
+                            timeInMillis = toDateMillis
+                            set(Calendar.HOUR_OF_DAY, toHour)
+                            set(Calendar.MINUTE, toMinute)
+                            set(Calendar.SECOND, 0)
+                            set(Calendar.MILLISECOND, 0)
+                        }
+
+                        val startMillis = startCal.timeInMillis
+                        val endMillis = endCal.timeInMillis
+                        val currentTime = System.currentTimeMillis()
+
+                        when {
+                            startMillis < currentTime -> {
+                                Toast.makeText(
+                                    context,
+                                    "Start time must be in the future ❌", Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            endMillis <= startMillis -> {
+                                Toast.makeText(
+                                    context,
+                                    "End time must be after start time ❌", Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            else -> {
+                                onSave(startMillis, endMillis, selectedAlertType)
+                            }
+                        }
                     },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(14.dp),

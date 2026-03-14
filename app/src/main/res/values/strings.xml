@@ -27,6 +27,21 @@
     <string name="saved_add_location">Add Location</string>
     <string name="saved_delete">Delete</string>
     <string name="saved_swipe_hint">Swipe left to remove</string>
+    <string name="updated">Updated</string>
+
+    <string name="delete_saved_title">Delete Location</string>
+    <string name="delete_saved_message">Are you sure you want to delete this location from your saved list?</string>
+    <string name="delete_saved_confirm">Delete</string>
+    <string name="delete_saved_cancel">Cancel</string>
+    <string name="location_required_error">Please set your location before creating an alert.</string>
+
+    <string name="weather_alert_title">Weather Alert</string>
+    <string name="weather_notification_title">Weather Notification</string>
+    <string name="weather_message_format">In %1$s: %2$s</string>
+
+    <string name="alarm_weather_emergency">WEATHER EMERGENCY</string>
+    <string name="alarm_view_report">VIEW FULL REPORT</string>
+    <string name="alarm_dismiss">DISMISS</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_subtitle">Customize your experience</string>
@@ -65,7 +80,7 @@
     <string name="alerts_delete">Delete alert</string>
 
     <string name="alert_sheet_title">New Weather Alert</string>
-    <string name="alert_sheet_from">Fr</string>
+    <string name="alert_sheet_from">From</string>
     <string name="alert_sheet_to">To</string>
     <string name="alert_sheet_type">Alert Type</string>
     <string name="alert_type_notification">Notification</string>
@@ -74,7 +89,15 @@
     <string name="alert_sheet_cancel">Cancel</string>
     <string name="alert_active">Active</string>
     <string name="alert_expired">Expired</string>
-    <string name="alert_stop">Stop</string>
+    <string name="alert_Inactive">Inactive</string>
+
+    <string name="delete_dialog_title">Delete Alert?</string>
+    <string name="delete_dialog_message">Are you sure you want to delete this weather alert? You won\'t be able to recover it.</string>
+    <string name="delete_confirm">Delete</string>
+    <string name="delete_cancel">Cancel</string>
+
+    <string name="alert_deleted">Alert deleted successfully</string>
+    <string name="undo">Undo</string>
 
     <!-- Weather Details Section -->
     <string name="section_weather_details">Weather Details</string>
@@ -143,7 +166,14 @@
 
     <!-- Splash -->
     <string name="splash_version">V 1.0</string>
+    <string name="overlay_permission_msg">Please enable "Display over other apps" to ensure the weather alarm works correctly.</string>
+    <string name="unknown_location">Unknown Location</string>
 
     <string name="label_today">Today</string>
     <string name="label_tomorrow">Tomorrow</string>
+
+    <string name="settings_section_theme">Theme</string>
+    <string name="settings_theme">App Theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
 </resources>

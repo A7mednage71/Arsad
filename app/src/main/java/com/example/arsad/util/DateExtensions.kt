@@ -86,3 +86,18 @@ fun Long.toRelativeTime(): String {
     ).toString()
 }
 
+fun Long.formatToWeatherAlertTime(lang: String): String {
+    val locale = Locale(lang)
+    val dateFormatter = SimpleDateFormat("dd MMMM, yyyy", locale)
+    val timeFormatter = SimpleDateFormat("hh:mm a", locale)
+
+    val datePart = dateFormatter.format(Date(this))
+    val timePart = timeFormatter.format(Date(this))
+    val fullText = "$datePart ▪ $timePart"
+    return if (lang == "ar") {
+        fullText.toArabicNumbers()
+    } else {
+        fullText
+    }
+}
+

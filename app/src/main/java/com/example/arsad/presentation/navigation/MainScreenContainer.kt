@@ -9,6 +9,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -25,7 +26,7 @@ import com.example.arsad.ui.theme.ArsadGradient
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreenContainer() {
+fun MainScreenContainer(onSplashFinished: () -> Unit, shouldNavigateNow: Boolean) {
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -53,10 +54,15 @@ fun MainScreenContainer() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(ArsadGradient.screenBackground)
+                .padding(
+                    bottom = innerPadding.calculateBottomPadding()
+                )
         ) {
             AppNavGraph(
                 navController = navController,
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                onSplashFinished = onSplashFinished,
+                shouldNavigateNow = shouldNavigateNow,
             )
 
             AnimatedVisibility(

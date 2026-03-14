@@ -3,6 +3,7 @@ package com.example.arsad.presentation.settings.view
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -23,6 +24,7 @@ import androidx.navigation.NavBackStackEntry
 import com.example.arsad.R
 import com.example.arsad.presentation.settings.view.components.LanguageSection
 import com.example.arsad.presentation.settings.view.components.LocationSection
+import com.example.arsad.presentation.settings.view.components.ThemeSection
 import com.example.arsad.presentation.settings.view.components.UnitsSection
 import com.example.arsad.presentation.settings.viewModel.SettingsViewModel
 import kotlinx.coroutines.launch
@@ -68,7 +70,8 @@ fun SettingsScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(0.dp)
+        verticalArrangement = Arrangement.spacedBy(0.dp),
+        contentPadding = PaddingValues(bottom = 100.dp)
     ) {
 
         // Header
@@ -110,6 +113,14 @@ fun SettingsScreen(
                         (context as? Activity)?.recreate()
                     }
                 }
+            )
+        }
+
+        // Theme Section
+        item {
+            ThemeSection(
+                selectedTheme = state.theme,
+                onThemeSelected = { settingsViewModel.setTheme(it) }
             )
         }
 

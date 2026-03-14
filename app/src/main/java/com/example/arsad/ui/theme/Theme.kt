@@ -1,6 +1,7 @@
 package com.example.arsad.ui.theme
 
 import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -10,6 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+
+private val LightColorScheme = lightColorScheme(
+    primary = SunYellow,
+    onPrimary = TextOnLightPrimary,
+    secondary = SkyBlue,
+    tertiary = Turquoise,
+    background = DayModeBackground,
+    onBackground = TextOnLightPrimary,
+    surface = DayModeSurface,
+    onSurface = TextOnLightPrimary,
+    surfaceVariant = DayModeSurfaceAlt,
+    onSurfaceVariant = TextOnLightSecondary
+)
 
 private val DarkColorScheme = darkColorScheme(
     primary = SunYellow,
@@ -24,23 +38,9 @@ private val DarkColorScheme = darkColorScheme(
     onSurfaceVariant = TextOnDarkSecondary
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = SunYellow,
-    onPrimary = NightModeBackground,
-    secondary = SkyBlue,
-    tertiary = Turquoise,
-    background = DayModeBackground,
-    onBackground = TextOnLightPrimary,
-    surface = DayModeSurface,
-    onSurface = TextOnLightPrimary,
-    surfaceVariant = DayModeSurfaceAlt,
-    onSurfaceVariant = TextOnLightSecondary
-)
-
 @Composable
 fun ArsadTheme(
-    darkTheme: Boolean = true,
-    // Keep a fixed palette unless explicitly enabled.
+    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {

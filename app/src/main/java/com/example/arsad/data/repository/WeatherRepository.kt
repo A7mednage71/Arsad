@@ -2,12 +2,15 @@ package com.example.arsad.data.repository
 
 import com.example.arsad.data.local.datasource.IWeatherLocalDataSource
 import com.example.arsad.data.local.entity.SavedLocationEntity
+import com.example.arsad.data.local.entity.WeatherAlertEntity
 import com.example.arsad.data.mapper.toEntity
 import com.example.arsad.data.mapper.toUIModel
 import com.example.arsad.data.models.GetWeatherParams
 import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.data.remote.datasource.ApiResult
 import com.example.arsad.data.remote.datasource.IWeatherRemoteDataSource
+import com.example.arsad.data.remote.responses.WeatherResponse
+import com.example.arsad.util.getCountryNameFromCode
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -59,23 +62,41 @@ class WeatherRepositoryImpl(
         }
     }
 
-    override suspend fun fetchAndSaveLocation(lat: Double, lon: Double): Result<Unit> {
+    override suspend fun getWeather(
+        lat: Double,
+        lon: Double,
+        lang: String
+    ): ApiResult<WeatherResponse> {
+        val params = GetWeatherParams(
+            lat = lat, lon = lon,
+            units = "metric", lang = lang,
+            tempUnit = "C", windUnit = "MS"
+        )
+        return remoteDataSource.getCurrentWeather(params)
+    }
+
+    override suspend fun fetchAndSaveLocation(
+        lat: Double,
+        lon: Double,
+        lang: String
+    ): Result<Unit> {
         return try {
             val params = GetWeatherParams(
                 lat = lat, lon = lon,
-                units = "metric", lang = "en",
+                units = "metric", lang = lang,
                 tempUnit = "C", windUnit = "MS"
             )
             when (val result = remoteDataSource.getCurrentWeather(params)) {
                 is ApiResult.Success -> {
                     val response = result.data
+                    val country = response.sys.country.getCountryNameFromCode(lang)
                     val entity = SavedLocationEntity(
                         cityName = response.name,
                         lat = lat,
                         lon = lon,
                         lastTemp = response.weatherMain.temp,
                         iconCode = response.weather.firstOrNull()?.icon ?: "",
-                        country = response.sys.country,
+                        country = country,
                         timestamp = System.currentTimeMillis()
                     )
                     localDataSource.insertSavedLocation(entity)
@@ -100,6 +121,26 @@ class WeatherRepositoryImpl(
 
     override suspend fun updateSavedLocationById(id: Int, temp: Double, icon: String) {
         localDataSource.updateSavedLocation(id, temp, icon, System.currentTimeMillis())
+    }
+
+    override fun getAllAlerts(): Flow<List<WeatherAlertEntity>> {
+        return localDataSource.getAllAlerts()
+    }
+
+    override suspend fun insertAlert(alert: WeatherAlertEntity): Long {
+        return localDataSource.insertAlert(alert)
+    }
+
+    override suspend fun deleteAlert(alertId: Int) {
+        localDataSource.deleteAlert(alertId)
+    }
+
+    override suspend fun updateAlertStatus(alertId: Int, isEnabled: Boolean) {
+        localDataSource.updateAlertStatus(alertId, isEnabled)
+    }
+
+    override suspend fun getAlertById(alertId: Int): WeatherAlertEntity? {
+        return localDataSource.getAlertById(alertId)
     }
 
     private suspend fun fetchFromLocal(errorMessage: String): ApiResult<WeatherModel> {

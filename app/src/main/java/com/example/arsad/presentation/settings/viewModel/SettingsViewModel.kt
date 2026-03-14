@@ -1,5 +1,6 @@
 package com.example.arsad.presentation.settings.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arsad.data.local.ds.SettingsManager
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
@@ -31,6 +33,11 @@ enum class AppLanguage(val label: String, val code: String) {
     ARABIC("العربية", "ar")
 }
 
+enum class AppTheme(val label: String) {
+    LIGHT("Light"),
+    DARK("Dark")
+}
+
 enum class LocationMethod(val label: String) {
     GPS("GPS"),
     MAP("Map")
@@ -41,6 +48,7 @@ data class SettingsUiState(
     val temperatureUnit: TemperatureUnit = TemperatureUnit.CELSIUS,
     val windSpeedUnit: WindSpeedUnit = WindSpeedUnit.METER_PER_SEC,
     val language: AppLanguage = AppLanguage.ENGLISH,
+    val theme: AppTheme = AppTheme.LIGHT,
     val locationMethod: LocationMethod = LocationMethod.GPS,
     val latitude: Double? = null,
     val longitude: Double? = null,
@@ -68,7 +76,8 @@ class SettingsViewModel(
                 settingsManager.locationMethodFlow,
                 settingsManager.latitudeFlow,
                 settingsManager.longitudeFlow,
-                settingsManager.locationNameFlow
+                settingsManager.locationNameFlow,
+                settingsManager.isDarkModeFlow
             ) { args ->
                 val lang = args[0] as String
                 val tempUnit = args[1] as String
@@ -77,6 +86,7 @@ class SettingsViewModel(
                 val lat = args[4] as? Double
                 val lon = args[5] as? Double
                 val locName = args[6] as? String
+                val isDark = args[7] as Boolean
 
                 SettingsUiState(
                     language = if (lang == "ar") AppLanguage.ARABIC else AppLanguage.ENGLISH,
@@ -87,6 +97,7 @@ class SettingsViewModel(
                     },
                     windSpeedUnit = if (windUnit == "MPH") WindSpeedUnit.MILE_PER_HOUR else WindSpeedUnit.METER_PER_SEC,
                     locationMethod = if (locationMethod == "MAP") LocationMethod.MAP else LocationMethod.GPS,
+                    theme = if (isDark) AppTheme.DARK else AppTheme.LIGHT,
                     latitude = lat,
                     longitude = lon,
                     locationName = locName
@@ -116,6 +127,11 @@ class SettingsViewModel(
         settingsManager.saveLanguage(language.code)
     }
 
+    fun setTheme(theme: AppTheme) {
+        val isDark = theme == AppTheme.DARK
+        viewModelScope.launch { settingsManager.saveTheme(isDark) }
+    }
+
     fun setLocationMethod(method: LocationMethod) {
         val code = if (method == LocationMethod.MAP) "MAP" else "GPS"
         viewModelScope.launch { settingsManager.saveLocationMethod(code) }
@@ -123,7 +139,10 @@ class SettingsViewModel(
 
     fun fetchGpsLocation() {
         viewModelScope.launch {
-            val result = locationProvider.getCurrentLocation()
+            val lang = settingsManager.languageFlow.first()
+            Log.d("TAG", "fetchGpsLocation: ---------${lang}---")
+            val result = locationProvider.getCurrentLocation(lang)
+            Log.d("TAG", "fetchGpsLocation: ---------${result}---")
             if (result is LocationResult.Success) {
                 saveLocation(result.lat, result.lon, result.name)
                 _toastMessage.emit("Location has been successfully saved! ✅")
