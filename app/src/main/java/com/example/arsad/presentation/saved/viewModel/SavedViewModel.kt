@@ -1,6 +1,5 @@
 package com.example.arsad.presentation.saved.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.arsad.data.local.ds.SettingsManager
@@ -38,7 +37,6 @@ class SavedViewModel(
                 weatherRepository.getAllSavedLocations(),
                 settingsManager.tempUnitFlow,
             ) { entities, unit ->
-                Log.d("SavedViewModel", "Combine triggered! Mapping data...")
                 entities.map { entity ->
                     val model = entity.toUIModel()
                     val convertedTemp = WeatherUnitsConverter.convertTemp(

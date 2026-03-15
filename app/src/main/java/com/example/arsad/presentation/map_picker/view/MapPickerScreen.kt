@@ -1,6 +1,5 @@
 package com.example.arsad.presentation.map_picker.view
 
-import android.app.Application
 import android.view.MotionEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -43,10 +42,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.arsad.R
 import com.example.arsad.presentation.map_picker.viewModel.MapPickerViewModel
-import com.example.arsad.presentation.map_picker.viewModel.MapPickerViewModelFactory
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -56,16 +53,13 @@ import org.osmdroid.views.overlay.Overlay
 
 @Composable
 fun MapPickerScreen(
+    viewModel: MapPickerViewModel,
     onBack: () -> Unit,
     onLocationSaved: (lat: Double, lon: Double, label: String) -> Unit
 ) {
     val context = LocalContext.current
     val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
-
-    val viewModel: MapPickerViewModel = viewModel(
-        factory = MapPickerViewModelFactory(context.applicationContext as Application)
-    )
 
     // Define the MapView using remember so it
     // doesn't repeat with the Recomposition

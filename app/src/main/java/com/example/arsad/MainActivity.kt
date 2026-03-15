@@ -30,6 +30,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.android.ext.android.inject
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -37,8 +38,9 @@ class MainActivity : ComponentActivity() {
     private var canNavigateToHome = mutableStateOf(false)
     private var fetchJob: Job? = null
     private var isSplashTimerFinished = false
-    private lateinit var settingsManager: SettingsManager
-    private lateinit var locationProvider: LocationProvider
+
+    private val settingsManager: SettingsManager by inject()
+    private val locationProvider: LocationProvider by inject()
 
     // Launcher of location , notification request
     private val requestPermissionsLauncher = registerForActivityResult(
@@ -62,10 +64,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        settingsManager = SettingsManager(this)
-        locationProvider = LocationProvider(this)
-
         setContent {
             val isDark by settingsManager.isDarkModeFlow.collectAsState(initial = isSystemInDarkTheme())
             ArsadTheme(darkTheme = isDark) {

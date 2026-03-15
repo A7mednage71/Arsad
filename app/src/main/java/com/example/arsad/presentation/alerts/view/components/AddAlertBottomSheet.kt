@@ -1,5 +1,6 @@
 package com.example.arsad.presentation.alerts.view.components
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -46,6 +47,7 @@ import com.example.arsad.util.formatTime
 import com.example.arsad.util.toDisplayDate
 import java.util.Calendar
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddAlertBottomSheet(
@@ -292,14 +294,16 @@ fun AddAlertBottomSheet(
                             startMillis < currentTime -> {
                                 Toast.makeText(
                                     context,
-                                    "Start time must be in the future ❌", Toast.LENGTH_SHORT
+                                    context.getString(R.string.error_start_time_not_future) + " ❌",
+                                    Toast.LENGTH_SHORT
                                 ).show()
                             }
 
                             endMillis <= startMillis -> {
                                 Toast.makeText(
                                     context,
-                                    "End time must be after start time ❌", Toast.LENGTH_SHORT
+                                    context.getString(R.string.error_end_time_after_start) + " ❌",
+                                    Toast.LENGTH_SHORT
                                 ).show()
                             }
 

@@ -127,6 +127,7 @@ class SettingsViewModel(
         settingsManager.saveLanguage(language.code)
     }
 
+
     fun setTheme(theme: AppTheme) {
         val isDark = theme == AppTheme.DARK
         viewModelScope.launch { settingsManager.saveTheme(isDark) }
