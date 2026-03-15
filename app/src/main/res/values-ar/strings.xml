@@ -90,6 +90,10 @@
     <string name="alert_active">نشط</string>
     <string name="alert_expired">منتهي</string>
     <string name="alert_Inactive">غير نشط</string>
+
+    <string name="error_start_time_not_future">يجب أن يكون وقت البدء في المستقبل</string>
+    <string name="error_end_time_after_start">يجب أن يكون وقت النهاية بعد وقت البداية</string>
+
     <string name="delete_dialog_title">حذف التنبيه؟</string>
     <string name="delete_dialog_message">هل أنت متأكد من رغبتك في حذف تنبيه الطقس هذا؟ لن تتمكن من استعادته مرة أخرى.</string>
     <string name="delete_confirm">حذف</string>
