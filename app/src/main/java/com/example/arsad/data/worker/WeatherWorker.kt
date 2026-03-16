@@ -102,7 +102,7 @@ class WeatherWorker(
     private fun reScheduleNextCheck(id: Int, type: String) {
         val data = workDataOf(KEY_ALERT_ID to id, KEY_ALERT_TYPE to type)
         val nextWork = OneTimeWorkRequestBuilder<WeatherWorker>()
-            .setInitialDelay(5, TimeUnit.MINUTES)
+            .setInitialDelay(30, TimeUnit.SECONDS)
             .setInputData(data)
             .addTag("weather_alert_$id")
             .build()
@@ -115,6 +115,7 @@ class WeatherWorker(
     }
 
     private fun isWeatherDangerous(description: String): Boolean {
+        return true
         val dangerousKeywords =
             listOf("storm", "rain", "snow", "thunderstorm", "dust", "sand", "clouds")
         return dangerousKeywords.any { description.contains(it, ignoreCase = true) }

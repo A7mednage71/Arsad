@@ -149,7 +149,7 @@ fun AlertItem(
                 1.dp,
                 Color.White.copy(alpha = if (isEffectivelyActive) 0.08f else 0.02f)
             ),
-            shadowElevation = if (isEffectivelyActive) 2.dp else 0.dp
+            shadowElevation = if (isEffectivelyActive) 0.dp else 0.dp
         ) {
             Row(
                 modifier = Modifier
