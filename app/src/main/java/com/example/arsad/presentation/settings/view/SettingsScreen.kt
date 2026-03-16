@@ -1,5 +1,6 @@
 package com.example.arsad.presentation.settings.view
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import com.example.arsad.presentation.settings.view.components.UnitsSection
 import com.example.arsad.presentation.settings.viewModel.SettingsViewModel
 import kotlinx.coroutines.launch
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
@@ -59,7 +61,8 @@ fun SettingsScreen(
     }
 
     LaunchedEffect(Unit) {
-        settingsViewModel.toastMessage.collect { message ->
+        settingsViewModel.toastMessage.collect { messageResId ->
+            val message = context.getString(messageResId)
             Toast.makeText(
                 context, message, Toast.LENGTH_SHORT,
             ).show()

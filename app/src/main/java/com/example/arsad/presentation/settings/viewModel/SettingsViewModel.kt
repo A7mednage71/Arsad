@@ -3,6 +3,7 @@ package com.example.arsad.presentation.settings.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.arsad.R
 import com.example.arsad.data.local.ds.SettingsManager
 import com.example.arsad.data.location.LocationProvider
 import com.example.arsad.data.location.LocationResult
@@ -64,8 +65,8 @@ class SettingsViewModel(
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
-    private val _toastMessage = MutableSharedFlow<String>(extraBufferCapacity = 1)
-    val toastMessage: SharedFlow<String> = _toastMessage.asSharedFlow()
+    private val _toastMessage = MutableSharedFlow<Int>(extraBufferCapacity = 1)
+    val toastMessage: SharedFlow<Int> = _toastMessage.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -146,9 +147,9 @@ class SettingsViewModel(
             Log.d("TAG", "fetchGpsLocation: ---------${result}---")
             if (result is LocationResult.Success && result.name != "Unknown Location") {
                 saveLocation(result.lat, result.lon, result.name)
-                _toastMessage.emit("Location has been successfully saved! ✅")
+                _toastMessage.emit(R.string.toast_location_saved_success)
             } else {
-                _toastMessage.emit("Could not get location. Try again. ❌")
+                _toastMessage.emit(R.string.toast_location_failed)
             }
         }
     }

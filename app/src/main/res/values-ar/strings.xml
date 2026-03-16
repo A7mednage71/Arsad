@@ -166,9 +166,6 @@
     <!-- شاشة مؤقتة -->
     <string name="placeholder_coming_soon">قريباً…</string>
 
-    <!-- شريط الإشعارات -->
-    <string name="snackbar_dismiss">إغلاق</string>
-
     <!-- شاشة البداية -->
     <string name="splash_version">الإصدار 1.0</string>
     <string name="overlay_permission_msg">يرجى تفعيل "الظهور فوق التطبيقات" لضمان عمل منبه الطقس بشكل صحيح.</string>
@@ -181,4 +178,13 @@
     <string name="settings_theme">سمة التطبيق</string>
     <string name="settings_theme_light">فاتح</string>
     <string name="settings_theme_dark">داكن</string>
+
+    <!-- رسائل Toast -->
+    <string name="toast_location_saved_success">تم حفظ الموقع بنجاح! ✅</string>
+    <string name="toast_location_failed">تعذّر تحديد الموقع. حاول مرة أخرى. ❌</string>
+
+    <!-- رسائل Snackbar -->
+    <string name="snackbar_no_internet">لا توجد اتصال بالإنترنت. عرض البيانات المحفوظة.</string>
+    <string name="snackbar_update_failed">فشل التحديث. يرجى التحقق من الاتصال.</string>
+    <string name="snackbar_dismiss">إغلاق</string>
 </resources>

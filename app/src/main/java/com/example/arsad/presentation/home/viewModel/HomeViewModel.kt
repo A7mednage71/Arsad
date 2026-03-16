@@ -2,6 +2,7 @@ package com.example.arsad.presentation.home.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.arsad.R
 import com.example.arsad.data.local.ds.SettingsManager
 import com.example.arsad.data.mapper.applyUnitConversion
 import com.example.arsad.data.models.GetWeatherParams
@@ -32,7 +33,7 @@ class HomeViewModel(
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _showOfflineEvent = MutableSharedFlow<String>()
+    private val _showOfflineEvent = MutableSharedFlow<Int>()
     val showOfflineEvent = _showOfflineEvent.asSharedFlow()
 
     private val _isRefreshing = MutableStateFlow(false)
@@ -79,7 +80,7 @@ class HomeViewModel(
 
             // Pre-fetch Connectivity Check
             if (!networkManager.hasInternet()) {
-                _showOfflineEvent.emit("No internet connection. Showing offline data.")
+                _showOfflineEvent.emit(R.string.snackbar_no_internet)
             }
 
             // Data Fetching
@@ -98,7 +99,7 @@ class HomeViewModel(
                         _uiState.value = HomeUiState.Error(result.message)
                     } else {
                         // Just notify the user that refresh failed
-                        _showOfflineEvent.emit("Update failed. Please check your connection.")
+                        _showOfflineEvent.emit(R.string.snackbar_update_failed)
                     }
                 }
 

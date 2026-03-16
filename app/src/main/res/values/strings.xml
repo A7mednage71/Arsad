@@ -165,9 +165,6 @@
     <!-- Placeholder Screen -->
     <string name="placeholder_coming_soon">Coming soon…</string>
 
-    <!-- Snackbar -->
-    <string name="snackbar_dismiss">Dismiss</string>
-
     <!-- Splash -->
     <string name="splash_version">V 1.0</string>
     <string name="overlay_permission_msg">Please enable "Display over other apps" to ensure the weather alarm works correctly.</string>
@@ -180,4 +177,13 @@
     <string name="settings_theme">App Theme</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
+
+    <!-- Toast Messages -->
+    <string name="toast_location_saved_success">Location has been successfully saved! ✅</string>
+    <string name="toast_location_failed">Could not get location. Try again. ❌</string>
+
+    <!-- Snackbar Messages -->
+    <string name="snackbar_no_internet">No internet connection. Showing offline data.</string>
+    <string name="snackbar_update_failed">Update failed. Please check your connection.</string>
+    <string name="snackbar_dismiss">Dismiss</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.arsad.presentation.home.view
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.arsad.data.models.WeatherModel
@@ -35,6 +37,7 @@ import com.example.arsad.presentation.home.viewModel.HomeUiState
 import com.example.arsad.presentation.home.viewModel.HomeViewModel
 import com.example.arsad.util.formatTimestamp
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -46,14 +49,15 @@ fun HomeScreen(
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val isRefreshing by homeViewModel.isRefreshing.collectAsStateWithLifecycle()
     val pullState = rememberPullToRefreshState()
+    val context = LocalContext.current
+
 
     LaunchedEffect(Unit) {
-        homeViewModel.showOfflineEvent.collect { message ->
-            snackbarHostState.showSnackbar(
-                message = message,
-                actionLabel = "Dismiss",
-                duration = SnackbarDuration.Short
-            )
+        homeViewModel.showOfflineEvent.collect { messageResId ->
+            val message = context.getString(messageResId)
+            Toast.makeText(
+                context, message, Toast.LENGTH_SHORT,
+            ).show()
         }
     }
 

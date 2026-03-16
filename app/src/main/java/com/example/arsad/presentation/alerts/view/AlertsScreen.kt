@@ -59,7 +59,7 @@ fun AlertsScreen(modifier: Modifier = Modifier, viewModel: AlertViewModel) {
             val msg = context.getString(messageResId.toInt())
             Toast.makeText(
                 context,
-                "$msg ❌",
+                "$msg$ ❌",
                 Toast.LENGTH_SHORT
             ).show()
         }
