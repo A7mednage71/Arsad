@@ -92,8 +92,6 @@ fun SavedScreen(
 
             if (isLoading) {
                 SavedListShimmer()
-            } else if (savedLocations.isEmpty()) {
-                SavedLocationsEmptyState(modifier = Modifier.weight(1f))
             } else {
                 SavedLocationsList(
                     savedLocations, onCityClick = {
@@ -103,6 +101,12 @@ fun SavedScreen(
                         viewModel.deleteSavedLocation(it.id)
                     })
             }
+        }
+
+        if (!isLoading && savedLocations.isEmpty()) {
+            SavedLocationsEmptyState(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
 
         FloatingActionButton(

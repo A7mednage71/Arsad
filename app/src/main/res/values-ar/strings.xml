@@ -14,6 +14,7 @@
     <string name="no_location_subtitle">اذهب إلى الإعدادات واختر موقعاً لعرض الطقس.</string>
     <string name="action_go_to_settings">الذهاب إلى الإعدادات</string>
     <string name="home_subtitle">الشاشة الرئيسية جاهزة لعرض بيانات الطقس.</string>
+    <string name="error_no_internet_body">لا يمكننا جلب بيانات الطقس الآن. يرجى التحقق من الاتصال والمحاولة مرة أخرى.</string>
 
     <string name="section_today_hourly">اليوم</string>
     <string name="section_five_day">توقعات 5 أيام</string>

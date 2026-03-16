@@ -13,6 +13,7 @@
     <string name="no_location_title">No Location Set</string>
     <string name="no_location_subtitle">Go to Settings and choose a location to see your weather.</string>
     <string name="action_go_to_settings">Go to Settings</string>
+    <string name="error_no_internet_body">We can\'t fetch the weather right now. Please check your connection and try again.</string>
 
     <string name="section_today_hourly">Today</string>
     <string name="section_five_day">5-Day Forecast</string>

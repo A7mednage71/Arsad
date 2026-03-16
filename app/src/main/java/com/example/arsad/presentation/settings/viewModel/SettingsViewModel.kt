@@ -144,7 +144,7 @@ class SettingsViewModel(
             Log.d("TAG", "fetchGpsLocation: ---------${lang}---")
             val result = locationProvider.getCurrentLocation(lang)
             Log.d("TAG", "fetchGpsLocation: ---------${result}---")
-            if (result is LocationResult.Success) {
+            if (result is LocationResult.Success && result.name != "Unknown Location") {
                 saveLocation(result.lat, result.lon, result.name)
                 _toastMessage.emit("Location has been successfully saved! ✅")
             } else {

@@ -92,7 +92,7 @@ fun FailureDisplay(
     modifier: Modifier = Modifier
 ) = HomeInfoState(
     title = stringResource(R.string.error_title),
-    subtitle = message,
+    subtitle = stringResource(R.string.error_no_internet_body),
     buttonLabel = stringResource(R.string.action_retry),
     onButtonClick = onRetry,
     modifier = modifier

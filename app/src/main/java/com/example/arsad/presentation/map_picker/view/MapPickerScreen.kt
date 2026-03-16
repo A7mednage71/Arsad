@@ -105,6 +105,7 @@ fun MapPickerScreen(
             modifier = Modifier.fillMaxSize(),
             factory = {
                 mapView.apply {
+                    setBuiltInZoomControls(false)
                     setTileSource(TileSourceFactory.MAPNIK)
                     setMultiTouchControls(true)
                     Configuration.getInstance().userAgentValue = context.packageName
@@ -175,31 +176,31 @@ fun MapPickerScreen(
             }
         }
 
-        if (viewModel.selectedLocation != null) {
-            Button(
-                onClick = {
-                    onLocationSaved(
-                        viewModel.selectedLocation!!.latitude,
-                        viewModel.selectedLocation!!.longitude,
-                        viewModel.locationName
-                    )
-                },
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .padding(24.dp)
-                    .height(54.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = colors.primary)
-            ) {
-                Icon(Icons.Default.Check, contentDescription = null)
-                Spacer(modifier = Modifier.size(8.dp))
-                Text(
-                    text = stringResource(R.string.map_save_location),
-                    style = typography.titleSmall
+        Button(
+            enabled = (viewModel.selectedLocation != null && viewModel.locationName != "Unknown Location"),
+            onClick = {
+                onLocationSaved(
+                    viewModel.selectedLocation!!.latitude,
+                    viewModel.selectedLocation!!.longitude,
+                    viewModel.locationName
                 )
-            }
+            },
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .padding(24.dp)
+                .height(54.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = colors.primary)
+        ) {
+            Icon(Icons.Default.Check, contentDescription = null)
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(
+                text = stringResource(R.string.map_save_location),
+                style = typography.titleSmall
+            )
         }
+
     }
 }
 
