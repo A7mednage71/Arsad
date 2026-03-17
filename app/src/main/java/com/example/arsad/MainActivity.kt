@@ -21,9 +21,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import androidx.work.BackoffPolicy
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.arsad.data.local.ds.SettingsManager
 import com.example.arsad.data.location.LocationProvider
 import com.example.arsad.data.location.LocationResult
+import com.example.arsad.data.worker.WeatherGlanceSyncWorker
 import com.example.arsad.presentation.navigation.MainScreenContainer
 import com.example.arsad.ui.theme.ArsadTheme
 import kotlinx.coroutines.Job
@@ -32,6 +39,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
 
@@ -64,6 +72,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        weatherGlanceWidgetSync(this)
         setContent {
             val isDark by settingsManager.isDarkModeFlow.collectAsState(initial = isSystemInDarkTheme())
             ArsadTheme(darkTheme = isDark) {
@@ -139,5 +148,24 @@ class MainActivity : ComponentActivity() {
         if (isSplashTimerFinished && !canNavigateToHome.value) {
             fetchLocationAndFinalize()
         }
+    }
+
+
+    fun weatherGlanceWidgetSync(context: Context) {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val syncRequest = PeriodicWorkRequestBuilder<WeatherGlanceSyncWorker>(
+            1, TimeUnit.HOURS
+        ).setConstraints(constraints).setBackoffCriteria(
+            BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES
+        ).build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "WEATHER_WIDGET_SYNC",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            syncRequest
+        )
     }
 }
