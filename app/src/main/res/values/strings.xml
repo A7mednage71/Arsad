@@ -14,6 +14,11 @@
     <string name="no_location_subtitle">Go to Settings and choose a location to see your weather.</string>
     <string name="action_go_to_settings">Go to Settings</string>
     <string name="error_no_internet_body">We can\'t fetch the weather right now. Please check your connection and try again.</string>
+    <string name="widget_loading_msg">Updating weather...</string>
+    <string name="tap_to_fix">Tap to resolve issue</string>
+    <string name="error_no_internet">No internet connection</string>
+    <string name="error_no_location">Location permission required</string>
+    <string name="error_unknown">Something went wrong</string>
 
     <string name="section_today_hourly">Today</string>
     <string name="section_five_day">5-Day Forecast</string>
@@ -21,6 +26,7 @@
     <string name="label_pressure">Pressure</string>
     <string name="label_clouds">Clouds</string>
     <string name="label_wind">Wind</string>
+    <string name="current_weather_label">Current Weather</string>
 
     <string name="saved_title">Saved Locations</string>
     <string name="saved_empty_title">No saved locations yet</string>
@@ -186,4 +192,8 @@
     <string name="snackbar_no_internet">No internet connection. Showing offline data.</string>
     <string name="snackbar_update_failed">Update failed. Please check your connection.</string>
     <string name="snackbar_dismiss">Dismiss</string>
+
+    <string name="widget_name">Weather - Current Weather</string>
+    <string name="widget_description">A widget to follow the weather from your home screen</string>
+
 </resources>

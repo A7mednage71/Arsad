@@ -15,6 +15,12 @@
     <string name="action_go_to_settings">الذهاب إلى الإعدادات</string>
     <string name="home_subtitle">الشاشة الرئيسية جاهزة لعرض بيانات الطقس.</string>
     <string name="error_no_internet_body">لا يمكننا جلب بيانات الطقس الآن. يرجى التحقق من الاتصال والمحاولة مرة أخرى.</string>
+    <string name="current_weather_label">الطقس الحالي</string>
+    <string name="widget_loading_msg">جاري تحديث الطقس...</string>
+    <string name="tap_to_fix">اضغط لحل المشكلة</string>
+    <string name="error_no_internet">لا يوجد اتصال بالإنترنت</string>
+    <string name="error_no_location">مطلوب صلاحية الموقع</string>
+    <string name="error_unknown">حدث خطأ غير متوقع</string>
 
     <string name="section_today_hourly">اليوم</string>
     <string name="section_five_day">توقعات 5 أيام</string>
@@ -187,4 +193,7 @@
     <string name="snackbar_no_internet">لا توجد اتصال بالإنترنت. عرض البيانات المحفوظة.</string>
     <string name="snackbar_update_failed">فشل التحديث. يرجى التحقق من الاتصال.</string>
     <string name="snackbar_dismiss">إغلاق</string>
+
+    <string name="widget_name">أرصاد - الطقس الآن</string>
+    <string name="widget_description">ويدجت لمتابعة حالة الطقس من الشاشة الرئيسية</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.arsad.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import androidx.glance.color.ColorProvider
 
 // Dark Theme Colors
 val NightModeBackground = Color(0xFF1E3A5F)
@@ -41,3 +42,30 @@ val MutedTurquoise = Color(0xFF38A3A5)
 val DeleteRed = Color(0xFFFF3B30)
 val SoftErrorBg = Color(0xFFFFDAD6)
 val DeepWarning = Color(0xFF410002)
+
+// --- Glance Widget Colors ---
+
+val WidgetPrimaryText = ColorProvider(
+    day = TextOnLightPrimary,
+    night = Color.White
+)
+
+val WidgetSecondaryText = ColorProvider(
+    day = TextOnLightSecondary,
+    night = Color(0xFF94A3B8)
+)
+
+val WidgetAccentColor = ColorProvider(
+    day = Color(0xFF475569),
+    night = Color(0xFF38BDF8)
+)
+
+val WidgetFooterBackground = ColorProvider(
+    day = Color.White.copy(alpha = 0.85f),
+    night = Color(0xFF1E293B).copy(alpha = 0.85f)
+)
+
+val WidgetWarningIconColor = ColorProvider(
+    day = Color(0xFFD97706),
+    night = Color(0xFFFFD166)
+)

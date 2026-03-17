@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.glance.appwidget.GlanceAppWidgetManager
+import com.example.arsad.presentation.glance_app_widget.ArsadGlanceWidget
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -27,6 +29,9 @@ class SettingsManager(private val context: Context) {
 
     suspend fun saveLanguage(lang: String) {
         context.dataStore.edit { it[LANGUAGE_KEY] = lang }
+        GlanceAppWidgetManager(context).getGlanceIds(ArsadGlanceWidget::class.java).forEach { id ->
+            ArsadGlanceWidget().update(context, id)
+        }
     }
 
     suspend fun saveTempUnit(unit: String) {

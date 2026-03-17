@@ -1,7 +1,11 @@
 package com.example.arsad.presentation.home.viewModel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.arsad.R
 import com.example.arsad.data.local.ds.SettingsManager
 import com.example.arsad.data.mapper.applyUnitConversion
@@ -9,6 +13,7 @@ import com.example.arsad.data.models.GetWeatherParams
 import com.example.arsad.data.models.WeatherModel
 import com.example.arsad.data.remote.datasource.ApiResult
 import com.example.arsad.data.repository.IWeatherRepository
+import com.example.arsad.data.worker.WeatherGlanceSyncWorker
 import com.example.arsad.util.NetworkManager
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +32,8 @@ sealed class HomeUiState {
 class HomeViewModel(
     private val repository: IWeatherRepository,
     private val settingsManager: SettingsManager,
-    private val networkManager: NetworkManager
+    private val networkManager: NetworkManager,
+    private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
@@ -92,6 +98,7 @@ class HomeViewModel(
                             targetWindUnit = params.windUnit
                         )
                     )
+                    refreshGlanceWidget(context = context)
                 }
 
                 is ApiResult.Failure -> {
@@ -114,5 +121,15 @@ class HomeViewModel(
         lastParams?.let {
             fetchWeatherData(it, isRefresh = true)
         }
+    }
+
+    fun refreshGlanceWidget(context: Context) {
+        val immediateWork = OneTimeWorkRequestBuilder<WeatherGlanceSyncWorker>()
+            .build()
+        WorkManager.getInstance(context).enqueueUniqueWork(
+            "IMMEDIATE_WIDGET_SYNC",
+            ExistingWorkPolicy.REPLACE,
+            immediateWork
+        )
     }
 }

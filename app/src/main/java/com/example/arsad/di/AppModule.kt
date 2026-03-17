@@ -12,6 +12,7 @@ import com.example.arsad.data.remote.datasource.IWeatherRemoteDataSource
 import com.example.arsad.data.remote.datasource.WeatherRemoteDataSourceImpl
 import com.example.arsad.data.repository.IWeatherRepository
 import com.example.arsad.data.repository.WeatherRepositoryImpl
+import com.example.arsad.data.worker.WeatherGlanceSyncWorker
 import com.example.arsad.data.worker.WeatherWorker
 import com.example.arsad.presentation.alerts.viewModel.AlertViewModel
 import com.example.arsad.presentation.home.viewModel.HomeViewModel
@@ -92,7 +93,7 @@ val appModule = module {
     single<IWeatherRepository> { WeatherRepositoryImpl(get(), get()) }
 
     //  ViewModels
-    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), androidContext()) }
     viewModel { AlertViewModel(get(), get(), get()) }
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { SavedViewModel(get(), get()) }
@@ -101,4 +102,5 @@ val appModule = module {
 
     //  Worker (Koin WorkManager support)
     worker { WeatherWorker(get(), get(), get(), get()) }
+    worker { WeatherGlanceSyncWorker(get(), get(), get(), get()) }
 }

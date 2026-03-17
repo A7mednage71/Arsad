@@ -43,6 +43,10 @@ fun String.toArabicNumbers(): String {
     }.joinToString("")
 }
 
+fun String.localize(lang: String): String {
+    return if (lang == "ar") this.toArabicNumbers() else this
+}
+
 fun formatTo12Hour(dtTxt: String): String {
     return try {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)

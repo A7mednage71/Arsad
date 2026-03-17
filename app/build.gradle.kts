@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
 
     // --- Lifecycle & Navigation ---
     implementation(libs.androidx.lifecycle.runtime.ktx)
